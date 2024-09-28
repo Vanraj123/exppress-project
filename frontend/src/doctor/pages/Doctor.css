@@ -1,0 +1,53 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f2f5;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+.header {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1;
+}
+.sidebar {
+    background-color: #343a40;
+    color: white;
+    width: 200px;
+    padding-top: 60px;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    overflow-y: auto;
+    transition: width 0.3s;
+}
+.main {
+    margin-left: 200px;
+    padding: 20px;
+    padding-top: 80px;
+    width: calc(100% - 200px);
+    overflow-y: auto;
+    transition: margin-left 0.3s, width 0.3s;
+}
+.doctor-card {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+}
+.search-bar {
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: flex-end;
+}

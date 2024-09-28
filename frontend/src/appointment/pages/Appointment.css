@@ -1,0 +1,125 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f2f5;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    padding-left: 0%;
+}
+.header {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1;
+}
+.welcome-message {
+    font-size: 18px;
+}
+.sidebar {
+    background-color: #343a40;
+    color: white;
+    width: 200px;
+    padding-top: 60px; /* Adjusted for fixed header */
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    overflow-y: auto;
+    transition: width 0.3s;
+}
+.sidebar a {
+    color: white;
+    padding: 15px;
+    display: block;
+    text-decoration: none;
+}
+.sidebar a:hover {
+    background-color: #007bff;
+}
+.main {
+    margin-left: 200px;
+    padding: 20px;
+    padding-top: 80px; /* Adjusted for fixed header */
+    width: calc(100% - 200px);
+    overflow-y: auto;
+    transition: margin-left 0.3s, width 0.3s;
+}
+.main h2 {
+    margin-top: 0;
+}
+.appointment-card {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.btn-cancel {
+    background-color: #dc3545;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.btn-cancel:hover {
+    background-color: #c82333;
+}
+.footer {
+    background-color: #007bff;
+    color: white;
+    text-align: center;
+    padding: 10px;
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+}
+@media (max-width: 768px) {
+    .sidebar {
+        width: 150px;
+    }
+    .main {
+        margin-left: 150px;
+        width: calc(100% - 150px);
+    }
+}
+@media (max-width: 480px) {
+    .header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .sidebar {
+        width: 100px;
+    }
+    .main {
+        margin-left: 100px;
+        width: calc(100% - 100px);
+    }
+}
+@media (max-width: 320px) {
+    .header {
+        padding: 5px 10px;
+    }
+    .header h1 {
+        font-size: 18px;
+    }
+    .header .user-menu {
+        font-size: 14px;
+    }
+    .sidebar {
+        width: 80px;
+    }
+    .main {
+        margin-left: 80px;
+        width: calc(100% - 80px);
+    }
+}

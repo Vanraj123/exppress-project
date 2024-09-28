@@ -1,0 +1,128 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f2f5;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    padding-left: 0%;
+    /* padding-left: 2%; */
+}
+.dashboard {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    margin-right: -110%;
+}
+.header {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1;
+}
+
+.doctor-selection select {
+    padding: 5px;
+    font-size: 16px;
+}
+
+.user-menu {
+    padding-right: 20px;
+}
+
+.sidebar {
+    background-color: #343a40;
+    color: white;
+    width: 200px;
+    padding-top: 60px;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    overflow-y: auto;
+}
+
+.sidebar a {
+    color: white;
+    padding: 15px;
+    display: block;
+    text-decoration: none;
+}
+
+.sidebar a:hover {
+    background-color: #007bff;
+}
+
+.main {
+    margin-left: 200px;
+    padding: 20px;
+    padding-top: 60px;
+    width: calc(100% - 200px);
+    overflow-y: auto;
+}
+
+.stats {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.stat-card {
+    flex: 1;
+    margin: 10px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    text-align: center;
+    min-width: 150px;
+}
+x
+.card {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.footer {
+    background-color: #007bff;
+    color: white;
+    text-align: center;
+    padding: 10px;
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        width: 150px;
+    }
+    .main {
+        margin-left: 150px;
+        width: calc(100% - 150px);
+    }
+}
+
+@media (max-width: 480px) {
+    .header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .header .doctor-selection {
+        margin: 10px 0;
+    }
+    .sidebar {
+        width: 100px;
+    }
+    .main {
+        margin-left: 100px;
+        width: calc(100% - 100px);
+    }
+}
