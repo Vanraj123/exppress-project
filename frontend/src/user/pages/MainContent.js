@@ -11,28 +11,36 @@ const MainContent = () => {
         upcomingAppointments: 0,
         totalPatients: 0,
     });
+    const [appointments, setAppointments] = useState([]); // Add state to store all appointments
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
     useEffect(() => {
         const fetchStats = async () => {
             try {
-                const docId = auth.roleid;
-                // Assuming the backend API accepts doctor's username as a query parameter
+                const docId = auth.roleid; // Use doctor ID from the AuthContext
                 const response = await axios.get(`http://localhost:5000/api/appointments/${docId}`);
-                // const appointment = await response.json();
+                const allAppointments = response.data.appointment;
+
                 if (response.data) {
-                    // Assuming response.data is an array of appointments
-                    const totalAppointments = response.data.appointment.length; // Length of the array
-                    // const upcomingAppointments = response.data.filter(appointment => {
-                    //     // Add your logic here to determine if the appointment is upcoming
-                    //     return new Date(appointment.date) > new Date(); // Example logic
-                    // }).length; // Length of upcoming appointments
-                console.log(totalAppointments);
+                    const totalAppointments = allAppointments.length;
+
+                    // Filter for upcoming appointments (based on date)
+                    const upcomingAppointments = allAppointments.filter(appointment => {
+                        const appointmentDate = new Date(appointment.date);
+                        const currentDate = new Date();
+                        return appointmentDate >= currentDate; // Check if appointment date is in the future
+                    }).length;
+
+                    // Set appointments in state
+                    setAppointments(allAppointments); // Save all appointments to state
+
+                    console.log("Upcoming Appointments:", upcomingAppointments);
+
                     setStats({
                         totalAppointments: totalAppointments,
-                        upcomingAppointments: 0,
-                        totalPatients: response.data.totalPatients // Adjust according to your API response
+                        upcomingAppointments: upcomingAppointments, // Set the count of upcoming appointments
+                        totalPatients: response.data.totalPatients || 0 // Adjust according to your API response
                     });
                 }
             } catch (error) {
@@ -44,7 +52,7 @@ const MainContent = () => {
         };
 
         fetchStats();
-    }, [auth.username]); // Fetch data whenever the logged-in doctor changes
+    }, [auth.roleid]); // Fetch data whenever the logged-in doctor changes
 
     if (loading) {
         return <div>Loading...</div>;
@@ -66,9 +74,13 @@ const MainContent = () => {
             <div className="card appointments">
                 <h3>Upcoming Appointments</h3>
                 <ul>
-                    <li>Appointment 1 - 10:00 AM</li>
-                    <li>Appointment 2 - 11:00 AM</li>
-                    <li>Appointment 3 - 12:00 PM</li>
+                    {/* Use the state variable `appointments` to display upcoming appointments */}
+                    {appointments.filter(appointment => new Date(appointment.date) >= new Date())
+                        .map((appointment, index) => (
+                            <li key={index}>
+                                {appointment.date} - {appointment.time}
+                            </li>
+                    ))}
                 </ul>
             </div>
 

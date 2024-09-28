@@ -59,6 +59,7 @@ const PatientDashboard = () => {
                 
     
                 setAppointments(allAppointments); 
+                console.log(`hii`,upcomingWithDoctors);
                 setUpcomingAppointments(upcomingWithDoctors);
     
             } catch (err) {
@@ -132,8 +133,8 @@ const PatientDashboard = () => {
     console.log(appointment.doctor);  // Log doctor data to check its structure
     return (
         <li key={index}>
-            {appointment.date} - {appointment.doctor && appointment.doctor.docName ? appointment.doctor.docName : "Unknown Doctor"}
-            - {appointment.time}
+            <b>Date:</b>{appointment.date} - <b>Doctor:</b>{appointment.doctor.doctor && appointment.doctor.doctor.docName ? appointment.doctor.doctor.docName : "Unknown Doctor"}
+            <br></br> <b>Time:</b>{appointment.time}
         </li>
     );
 })}
