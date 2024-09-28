@@ -13,13 +13,30 @@ const MainContent = () => {
     const fetchAppointments = async () => {
       try {
         setLoading(true);
-        const patientId = auth.roleid; 
-        const response = await axios.get(`http://localhost:5000/api/appointments/pati/${patientId}`);
+        const doctorId = auth.roleid; 
+        const response = await axios.get(`http://localhost:5000/api/appointments/pati/${doctorId}`);
         
-        console.log(response.data);  // Log the response to check its structure
-
         const fetchedAppointments = response.data.appointment || [];  // Adjust based on response structure
-        setAppointments(fetchedAppointments);  // Make sure appointments is always an array
+
+        // Now, for each appointment, fetch the patient and doctor details
+        const appointmentsWithDetails = await Promise.all(
+          fetchedAppointments.map(async (appointment) => {
+            const patientResponse = await axios.get(`http://localhost:5000/api/patients/pati/${appointment.patient}`);
+            const doctorResponse = await axios.get(`http://localhost:5000/api/doctors/doc/${appointment.doctor}`);
+            
+            const patientData = patientResponse.data;
+            const doctorData = doctorResponse.data;
+
+            return {
+              ...appointment,
+              patientName: patientData.patient.patientName,  // Assuming the API returns `patientName`
+              doctorName: doctorData.doctor.docName         // Assuming the API returns `docName`
+            };
+          })
+        );
+
+        setAppointments(appointmentsWithDetails);  // Set the appointments with patient and doctor names included
+        console.log(appointmentsWithDetails);
       } catch (err) {
         console.error("Error fetching appointments: ", err);
         setError("Failed to load appointments.");
@@ -61,8 +78,8 @@ const MainContent = () => {
             title={appointment.title || `Appointment with ${appointment.patientName}`}
             date={appointment.date}
             time={appointment.time}
-            patient={appointment.patientName}
-            doctor={appointment.doctorName}
+            patient={appointment.patientName}  // Use fetched patientName
+            doctor={appointment.doctorName}    // Use fetched doctorName
             onDelete={handleDeleteAppointment}  // Pass down the delete handler
           />
         ))

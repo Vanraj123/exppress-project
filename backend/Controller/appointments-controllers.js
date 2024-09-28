@@ -67,33 +67,17 @@ const getbypatient = async (req, res, next) => {
 };
 
 const signup = async (req, res, next) => {
- const errors = validationResult(req);
- if (!errors.isEmpty()) {
-   return next(
-     new HttpError('Invalid inputs passed, please check your data.', 422)
-   );
- }
+//  const errors = validationResult(req);
+//  if (!errors.isEmpty()) {
+//    return next(
+//      new HttpError('Invalid inputs passed, please check your data.', 422)
+//    );
+//  }
+
  const {patient,doctor,hospital,status,date,time} = req.body;
+ 
+ 
 
-
- let existingAppointment
- try {
-    existingAppointment = await Appointment.findOne({ patient: patient })
- } catch (err) {
-   const error = new HttpError(
-     'Signing up failed, please try again later.',
-     500
-   );
-   return next(error);
- }
-
-  if (existingAppointment) {
-   const error = new HttpError(
-     'User exists already, please login instead.',
-     422
-   );
-   return next(error);
- }
   const createdAppointment = new Appointment({
     patient,
     doctor,

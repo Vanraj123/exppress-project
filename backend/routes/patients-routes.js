@@ -10,6 +10,7 @@ const router = express.Router();
 
 router.get('/', patientsController.getPatient);
 router.get('/doc/:docid', patientsController.getbydoc);
+router.get('/pati/:patientid', patientsController.getbypati);
 
 router.post(
  '/',

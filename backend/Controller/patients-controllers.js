@@ -36,6 +36,21 @@ const getbyId = async (req, res, next) => {
  res.status(200).json({ patient: patient.toObject({ getters: true }) });
 };
 
+const getbypati = async (req, res, next) => {
+  const patientId = req.params.patientid;
+
+  let patient;
+  try {
+    patient = await Patient.findById(patientId);
+ } catch (err) {
+   const error = new HttpError(
+     'Fetching users failed, please try again later.',
+     500
+   );
+ }
+ res.status(200).json({ patient: patient.toObject({ getters: true }) });
+};
+
 const getbydoc = async (req, res, next) => {
   const docId = req.params.docid;
   const doctor = new mongoose.Types.ObjectId(docId);
@@ -176,6 +191,7 @@ exports.signup = signup;
 exports.deletePatient = deletePatient;
 exports.updatePatient = updatePatient;
 exports.getbyId = getbyId;
+exports.getbypati = getbypati;
 exports.getbydoc = getbydoc;
 
 // exports.login = login;
