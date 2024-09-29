@@ -1,53 +1,62 @@
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f0f2f5;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
-}
-.header {
-    background-color: #007bff;
-    color: white;
-    padding: 10px 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    position: fixed;
-    width: 100%;
-    top: 0;
-    z-index: 1;
-}
-.sidebar {
-    background-color: #343a40;
-    color: white;
-    width: 200px;
-    padding-top: 60px;
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    overflow-y: auto;
-    transition: width 0.3s;
-}
-.main {
-    margin-left: 200px;
+.main-docList {
+    margin-left: 40vh;
+    margin-bottom: 40px;
+    margin-top: 20px;
     padding: 20px;
     padding-top: 80px;
-    width: calc(100% - 200px);
+    width: calc(200vh - 300px);
     overflow-y: auto;
     transition: margin-left 0.3s, width 0.3s;
 }
-.doctor-card {
-    background-color: white;
+.doctor-cards-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Ensure 3 columns or fewer per row */
+    gap: 20px;
     padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    margin-bottom: 20px;
+  }
+  
+  .doctor-card {
+    /* width: 90%; Card takes the available grid space */
+    height: 300px; /* Keep the square shape */
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     align-items: center;
-}
-.search-bar {
-    margin-bottom: 20px;
+    text-align: center;
+    background-color: #fff;
+    padding: 15px;
+  }
+  
+  .doctor-card img {
+    width: 150px; /* Fixed size for the image */
+    height: 150px; /* Ensure the image remains a square */
+    border-radius: 50%; /* Create a circular image */
+    object-fit: cover; /* Cover the image fully within the circle, cropping excess */
+    object-position: center; /* Center the image */
+  }
+  
+  .doctor-details h3 {
+    font-size: 18px;
+    margin: 10px 0 5px;
+    color: #333;
+  }
+  
+  .doctor-details p {
+    font-size: 14px;
+    color: #666;
+    margin: 5px 0;
+  }  
+
+.search-bar_doc{
+    position: fixed;
+    margin-left: 25vh;
+    width: 50%;
+    top: 5vw;
+    overflow-x: auto; /* Enable vertical scrolling if content overflows */
+    transition: margin-left 0.3s, width 0.3s;
     display: flex;
-    justify-content: flex-end;
 }

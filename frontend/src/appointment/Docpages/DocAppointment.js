@@ -14,7 +14,7 @@ const DocAppointment = () => {
       <Header />
       <Sidebar />
       <MainContent />
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 };

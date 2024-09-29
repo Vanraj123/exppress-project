@@ -63,7 +63,7 @@ const MainContent = () => {
     }
 
     return (
-        <div className="main">
+        <div className="main-doc_dash"> 
             <h2>Dashboard</h2>
             <div className="stats">
                 <StatCard title="Total Appointments" value={stats.totalAppointments} />

@@ -11,6 +11,7 @@ const router = express.Router();
 router.get('/', appointmentsController.getAppointment);
 router.get('/:docid', appointmentsController.getbydoc);
 router.get('/pati/:patientid', appointmentsController.getbypatient);
+router.get('/hos/:hosid', appointmentsController.getbyhospital);
 
 router.post(
  '/',
@@ -19,6 +20,7 @@ router.post(
 
 router.delete('/:appointmentId', appointmentsController.deleteAppointment);
 
+router.patch('/appo/:appointmentId', appointmentsController.confirmappo);
 router.patch('/:appointmentId', appointmentsController.updateAppointment);
 
 // router.post('/login', usersController.login);

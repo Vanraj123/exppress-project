@@ -13,11 +13,11 @@ const Sidebar = () => {
       <a href="#">Settings</a>
       <a href="#">Change Appointment</a>
       <a href="#">Doctor List</a> */}
-            <NavLink to="/">Dashboard</NavLink>
+            <NavLink to="/patient/">Dashboard</NavLink>
             <NavLink to="/appointment">Appointments</NavLink>
             <NavLink to="/auth/">Patients</NavLink>
-            <NavLink to="/">Doctors</NavLink>
-            <NavLink to="/">Settings</NavLink>
+            <NavLink to="/patient/doctor">Doctors</NavLink>
+            {/* <NavLink to="/">Settings</NavLink> */}
             </React.Fragment>
     </div>
   );

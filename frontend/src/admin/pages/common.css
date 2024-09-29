@@ -1,0 +1,51 @@
+/* common.css */
+
+.list-container {
+    padding: 20px;
+}
+
+.list-title {
+    font-size: 24px;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.list-item {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 15px;
+    margin-bottom: 10px;
+    transition: background-color 0.3s ease;
+}
+
+.list-item:hover {
+    background-color: #f1f1f1; /* Highlight effect on hover */
+}
+
+.list-item h4 {
+    margin: 0 0 10px 0;
+    font-size: 18px;
+    color: #007bff; /* Bootstrap primary color */
+}
+
+.list-item p {
+    margin: 5px 0;
+    color: #555;
+}
+
+/* Additional styles for responsiveness */
+@media (max-width: 600px) {
+    .list-item {
+        padding: 10px;
+    }
+
+    .list-title {
+        font-size: 20px;
+    }
+}

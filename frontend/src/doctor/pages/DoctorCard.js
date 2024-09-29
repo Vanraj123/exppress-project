@@ -1,7 +1,7 @@
 import React from 'react';
 
 const DoctorCard = ({ doctor }) => {
-  const defaultImage = 'default.jpg'; // Replace with the path to your default image
+  const defaultImage = 'https://img.freepik.com/free-photo/rendering-anime-doctor-job_23-2151151782.jpg'; // Replace with the path to your default image
 
   return (
     <div className="doctor-card">

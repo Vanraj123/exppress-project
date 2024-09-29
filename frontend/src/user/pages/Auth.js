@@ -76,7 +76,7 @@ const Auth = () => {
 
   return (
     <div className="login-container">
-      <h2>{isLoginMode ? "Login" : "Signup"}</h2>
+      <h2>{isLoginMode ? "Signup" : "Login"}</h2>
       <form onSubmit={handleSubmit}>
         <input
           type="email"

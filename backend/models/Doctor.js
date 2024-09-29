@@ -8,6 +8,7 @@ const Schema = mongoose.Schema;
 
 
 const doctorSchema = new Schema({
+   imgSrc: { type: String }, 
    docName: { type: String},
    docGender: { type: String},
    docSpeciality: { type: String },

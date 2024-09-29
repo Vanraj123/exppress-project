@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import '../user/pages/Dashboard.css'; // Separate CSS file
+import '../shared/Footer.css'; // Separate CSS file
 
 const Footer = () => (
     <div className="footer">

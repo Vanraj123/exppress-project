@@ -66,6 +66,58 @@ const getbypatient = async (req, res, next) => {
   res.json({appointment: appointment.map(appointment => appointment.toObject({ getters: true }))});
 };
 
+const getbyhospital = async (req, res, next) => {
+  const hosID = req.params.hosid;
+
+  let appointment;
+  try {
+    appointment = await Appointment.find({ hospital: hosID });
+    if (!appointment) {
+      const error = new HttpError('Could not find appointment for this ID.', 404);
+      return next(error);
+    }
+  
+  } catch (err) {
+    const error = new HttpError(
+      // 
+      err,
+      500
+    );
+    return next(error);
+  }
+
+  res.json({appointment: appointment.map(appointment => appointment.toObject({ getters: true }))});
+};
+
+
+const confirmappo = async (req, res, next) => {
+
+  const appointmentId = req.params.appointmentId;
+
+  let appointment;
+  try {
+    appointment = await Appointment.findById(appointmentId);
+    if (!appointment) {
+      const error = new HttpError('Could not find appointment for this ID.', 404);
+      return next(error);
+    }
+
+    const status = "Confirmed"
+    appointment.status = status;
+
+    await appointment.save();
+  } catch (err) {
+    const error = new HttpError(
+      'Something went wrong, could not update appointment.',
+      500
+    );
+    return next(error);
+  }
+
+  res.status(200).json({ appointment: appointment.toObject({ getters: true }) });
+};
+
+
 const signup = async (req, res, next) => {
 //  const errors = validationResult(req);
 //  if (!errors.isEmpty()) {
@@ -168,7 +220,9 @@ exports.getAppointment = getAppointment;
 exports.signup = signup;
 exports.getbydoc = getbydoc;
 exports.getbypatient = getbypatient;
+exports.getbyhospital = getbyhospital;
 exports.deleteAppointment = deleteAppointment;
+exports.confirmappo = confirmappo;
 exports.updateAppointment = updateAppointment;
 
 // exports.login = login;

@@ -1,0 +1,62 @@
+/* Header styling with light green background */
+.header {
+    background-color: #a8e6a3; /* Light green background */
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    width: 100%;
+    top: 0;
+    right: 0;
+    z-index: 1000;
+  }
+  
+  /* Container for logo, welcome message, and user menu */
+  .header-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
+  
+  /* Logo styling */
+  .logo h1 {
+    color: #2c3e50; /* Dark text for contrast */
+    font-size: 28px;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin: 0;
+  }
+  
+  /* Welcome message */
+  .welcome-message {
+    color: #2c3e50; /* Dark text */
+    font-size: 18px;
+    font-weight: 400;
+  }
+  
+  /* User menu styling */
+  .user-menu {
+    display: flex;
+    align-items: center;
+    color: #2c3e50; /* Dark text */
+    font-size: 18px;
+  }
+  
+  .user-menu span {
+    margin-right: 10px;
+  }
+  
+  .user-menu a {
+    color: #ff5f5f; /* Red logout link */
+    text-decoration: none;
+    font-weight: 500;
+  }
+  
+  .user-menu a:hover {
+    color: #ff2f2f;
+  }

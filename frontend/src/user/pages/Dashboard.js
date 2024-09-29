@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import './Dashboard.css'; // Separate CSS file
-import Footer from './Footer.js';
+import Footer from '../../shared/Footer';
 import MainContent from './MainContent.js';
-import Header from './Header.js';
+import Header from '../../shared/Header.js';
 import Sidebar from './Sidebar.js';
 
 
@@ -18,7 +18,7 @@ const Dashboard = () => {
             <Header selectedDoctor={selectedDoctor} handleDoctorChange={handleDoctorChange} />
             <Sidebar />
             <MainContent />
-            <Footer />
+            {/* <Footer /> */}
         </div>
     );
 };

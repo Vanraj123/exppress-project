@@ -8,6 +8,7 @@ const MainContent = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null); 
   const auth = useContext(AuthContext); 
+  const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
     const fetchAppointments = async () => {
@@ -63,15 +64,33 @@ const MainContent = () => {
     return <div>{error}</div>;
   }
 
-  return (
-    <div className="main">
-      <h2>Dashboard</h2>
-      <div className="search-bar">
-        <input type="text" placeholder="Search..." />
-      </div>
+  const handleSearch = (e) => {
+    setSearchTerm(e.target.value.toLowerCase());
+  };
 
+  // Corrected search logic using the appointments state
+  const filteredAppointments = appointments.filter((appointment) =>
+    (appointment.title && appointment.title.toLowerCase().includes(searchTerm)) ||
+    (appointment.date && appointment.date.includes(searchTerm)) ||
+    (appointment.time && appointment.time.includes(searchTerm)) ||
+    (appointment.patientName && appointment.patientName.toLowerCase().includes(searchTerm)) ||
+    (appointment.doctorName && appointment.doctorName.toLowerCase().includes(searchTerm))
+  );
+
+  return (
+    <div>
+      <h2>Dashboard</h2>
+        <div className="search-bar">
+        <input 
+          type="text"
+          id="searchInput"
+          placeholder="Search appointments..."
+          onChange={handleSearch}
+        />
+      </div>
+      <div className="main-appo">
       {appointments.length > 0 ? (
-        appointments.map((appointment) => (
+       filteredAppointments.map((appointment) => (
           <AppointmentCard
             key={appointment._id}          // React's key for rendering list items efficiently
             id={appointment._id}           // Custom id prop to be used in the component
@@ -86,6 +105,7 @@ const MainContent = () => {
       ) : (
         <div>No appointments available</div>
       )}
+      </div>
     </div>
   );
 };

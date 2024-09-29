@@ -1,9 +1,10 @@
 import React from 'react';
-import Header from './Header.js';
+import Header from '../../shared/Header.js';
 import Sidebar from './Sidebar.js';
-import MainContent from './MainContent.js';
 import Footer from '../../shared/Footer.js';
 import './Appointment.css';  // Importing the CSS for styling
+import '../../shared/Footer.css'
+import MainContent from './MainContent.js';
 
 const Appointment = () => {
   return (
@@ -11,7 +12,7 @@ const Appointment = () => {
       <Header />
       <Sidebar />
       <MainContent />
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 }

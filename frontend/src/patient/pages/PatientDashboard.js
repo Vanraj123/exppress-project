@@ -4,7 +4,8 @@ import { NavLink } from 'react-router-dom';
 import axios from 'axios';
 import { AuthContext } from "../../shared/context/auth-context";
 import { useNavigate } from 'react-router-dom';
-
+import Header from '../../shared/Header';
+import Sidebar from './Sidebar';
 const PatientDashboard = () => {
     const [appointments, setAppointments] = useState([]);
     const [upcomingAppointments, setUpcomingAppointments] = useState([]);
@@ -15,37 +16,37 @@ const PatientDashboard = () => {
     const auth = useContext(AuthContext);
     const navigate = useNavigate();
 
-    
+
     useEffect(() => {
         const fetchDashboardData = async () => {
             try {
                 setLoading(true);
                 const patientId = auth.roleid;
-    
+
                 // Fetch all appointments
                 const appointmentsResponse = await axios.get(`http://localhost:5000/api/appointments/pati/${patientId}`);
                 const allAppointments = appointmentsResponse.data.appointment;
-    
+
                 console.log("Appointments Data:", allAppointments);  // Log appointments data to check structure
-    
+
                 // Filter upcoming appointments
                 const upcoming = allAppointments.filter(appointment => {
                     const appointmentDate = new Date(appointment.date);
                     const currentDate = new Date();
                     return appointmentDate >= currentDate;
                 });
-    
+
                 // Fetch doctors for each appointment
                 const upcomingWithDoctors = await Promise.all(upcoming.map(async (appointment) => {
                     if (!appointment.doctor) {
                         console.error(`Appointment ${appointment._id} does not have a valid doctor ID`);
                         return appointment;
                     }
-                
+
                     try {
                         const doctorResponse = await axios.get(`http://localhost:5000/api/doctors/doc/${appointment.doctor}`);
                         console.log(`Doctor Details for Appointment ${appointment._id}:`, doctorResponse.data);
-                        
+
                         // Attach doctor data to the appointment object
                         return {
                             ...appointment,
@@ -56,12 +57,12 @@ const PatientDashboard = () => {
                         return appointment;
                     }
                 }));
-                
-    
-                setAppointments(allAppointments); 
-                console.log(`hii`,upcomingWithDoctors);
+
+
+                setAppointments(allAppointments);
+                console.log(`hii`, upcomingWithDoctors);
                 setUpcomingAppointments(upcomingWithDoctors);
-    
+
             } catch (err) {
                 console.error("Error fetching data: ", err);
                 setError("Error fetching data from the server");
@@ -69,10 +70,10 @@ const PatientDashboard = () => {
                 setLoading(false);
             }
         };
-    
+
         fetchDashboardData();
     }, [auth.roleid]);
-    
+
     const handleLogout = () => {
         auth.logout();
         navigate("/");
@@ -88,7 +89,9 @@ const PatientDashboard = () => {
 
     return (
         <div>
-            <div className="header">
+            <Header />
+            <Sidebar />
+            {/* <div className="header">
                 <div className="logo">
                     <h1>DocAppoint</h1>
                 </div>
@@ -98,8 +101,8 @@ const PatientDashboard = () => {
                 <div className="user-menu">
                     <span>{auth.username}</span> | <a href="/" style={{ color: 'white' }} onClick={handleLogout}>Logout</a>
                 </div>
-            </div>
-            <div className="sidebar">
+            </div> */}
+            {/* <div className="sidebar">
                 <NavLink to="/patient/dashboard">Dashboard</NavLink>
                 <NavLink to="/patient/appointment">Appointments</NavLink>
                 <NavLink to="/patient/makeappo">Make Appointment</NavLink>
@@ -109,8 +112,8 @@ const PatientDashboard = () => {
                 <NavLink to="/patient/prescriptions">Prescriptions</NavLink>
                 <NavLink to="/patient/profile">Profile</NavLink>
                 <NavLink to="/patient/settings">Settings</NavLink>
-            </div>
-            <div className="main">
+            </div> */}
+            <div className="main-pat_Dash">
                 <h2>Dashboard</h2>
                 <div className="stats">
                     <div className="stat-card">
@@ -129,27 +132,25 @@ const PatientDashboard = () => {
                 <div className="card upcoming-appointments">
                     <h3>Upcoming Appointments</h3>
                     <ul>
-                    {upcomingAppointments.map((appointment, index) => {
-    console.log(appointment.doctor);  // Log doctor data to check its structure
-    return (
-        <li key={index}>
-            <b>Date:</b>{appointment.date} - <b>Doctor:</b>{appointment.doctor.doctor && appointment.doctor.doctor.docName ? appointment.doctor.doctor.docName : "Unknown Doctor"}
-            <br></br> <b>Time:</b>{appointment.time}
-        </li>
-    );
-})}
+                        {upcomingAppointments.map((appointment, index) => {
+                            console.log(appointment.doctor);  // Log doctor data to check its structure
+                            return (
+                                <li key={index}>
+                                    <b>Date:</b>{appointment.date} - <b>Doctor:</b>{appointment.doctor.doctor && appointment.doctor.doctor.docName ? appointment.doctor.doctor.docName : "Unknown Doctor"}
+                                    <br></br> <b>Time:</b>{appointment.time}
+                                </li>
+                            );
+                        })}
                     </ul>
                 </div>
-                <div className="card profile">
+                {/* <div className="card profile">
                     <h3>Profile</h3>
                     <p>Name: {auth.username}</p>
                     <p>Email: user@example.com</p>
                     <p>Phone: 123-456-7890</p>
-                </div>
+                </div> */}
             </div>
-            <div className="footer">
-                <p>© 2024 DocAppoint. All rights reserved.</p>
-            </div>
+            {/* <Footer/> */}
         </div>
     );
 };

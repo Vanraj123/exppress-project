@@ -1,0 +1,77 @@
+.profile-page {
+    padding: 20px;
+}
+
+
+
+.profile-card {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.profile-info {
+    margin-bottom: 20px;
+}
+
+.profile-field {
+    display: flex;
+    justify-content: space-between;
+    margin: 10px 0;
+}
+
+.label {
+    font-weight: bold;
+    color: #333;
+}
+
+.value {
+    color: #555;
+}
+
+.edit-button {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-align: center;
+    display: block;
+    margin: 0 auto;
+}
+
+.edit-button:hover {
+    background-color: #0056b3;
+}
+
+
+@media (max-width: 768px) {
+    .sidebar {
+        width: 150px;
+    }
+    .main {
+        margin-left: 150px;
+        width: calc(100% - 150px);
+    }
+}
+
+@media (max-width: 480px) {
+    .header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .header .doctor-selection {
+        margin: 10px 0;
+    }
+    .sidebar {
+        width: 100px;
+    }
+    .main {
+        margin-left: 100px;
+        width: calc(100% - 100px);
+    }
+}

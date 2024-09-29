@@ -1,14 +1,3 @@
-body {
-  font-family: Arial, sans-serif;
-  background-color: #f0f2f5;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  margin: 0;
-  
-}
-
 .login-container {
   background-color: #ffffff;
   padding: 20px;
@@ -28,7 +17,7 @@ body {
 .login-container input {
   width: 100%;
   padding: 10px;
-  margin: 10px 0;
+  margin-bottom: 20px;
   border: 1px solid #ddd;
   border-radius: 4px;
   box-sizing: border-box;
@@ -62,18 +51,6 @@ body {
 .login-container .links a:hover {
   text-decoration: underline;
 }
-.role-selection {
-  margin: 20px 0;
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-}
-
-.role-selection label {
-  font-size: 16px;
-  color: #333;
-  cursor: pointer;
-}
 
 /* New styles for the radio buttons */
 .login-container .radio-group {
@@ -92,7 +69,6 @@ body {
 .radio-group input[type="radio"] {
   margin-right: 8px;
 }
-
 @media (max-width: 600px) {
   .login-container {
     padding: 15px;

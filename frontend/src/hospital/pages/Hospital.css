@@ -1,0 +1,63 @@
+.main-hospitalList {
+    margin-left: 40vh;
+    margin-bottom: 40px;
+    margin-top: 20px;
+    padding: 20px;
+    padding-top: 80px;
+    width: calc(200vh - 300px);
+    overflow-y: auto;
+    transition: margin-left 0.3s, width 0.3s;
+}
+
+.hospital-cards-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Ensure 3 columns or fewer per row */
+    gap: 20px;
+    padding: 20px;
+}
+
+.hospital-card {
+    height: 300px; /* Keep the square shape */
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+    background-color: #fff;
+    padding: 15px;
+}
+
+.hospital-card img {
+    margin: auto;
+    border-radius: 10px;
+    width: auto; /* Fixed size for the image */
+    height: 150px; /* Ensure the image remains a square */
+    /*border-radius: 50%; /* Create a circular image */
+    object-fit: cover; /* Cover the image fully within the circle, cropping excess */
+    object-position: center; /* Center the image */
+}
+
+.hospital-details h3 {
+    font-size: 18px;
+    margin: 10px 0 5px;
+    color: #333;
+}
+
+.hospital-details p {
+    font-size: 14px;
+    color: #666;
+    margin: 5px 0;
+}
+
+.search-bar_hospital {
+    position: fixed;
+    margin-left: 25vh;
+    width: 50%;
+    top: 45pt;
+    overflow-x: auto; /* Enable vertical scrolling if content overflows */
+    transition: margin-left 0.3s, width 0.3s;
+}

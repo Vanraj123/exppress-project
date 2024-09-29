@@ -1,17 +1,19 @@
 import React from 'react';
-import Header from './Header';
+import Header from '../../shared/Header';
 import Sidebar from './Sidebar';
 import DoctorList from './DoctorList';
+import Footer from '../../shared/Footer';
 import "./Doctor.css";
 const Doctor = () => {
   return (
     <div className="app-container">
       <Header />
       <Sidebar />
-      <div className="main">
+      <div className="main-docList">
         <h2>Doctor List</h2>
         <DoctorList />
       </div>
+      {/* <Footer/> */}
     </div>
   );
 };

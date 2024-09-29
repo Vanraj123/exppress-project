@@ -1,167 +1,123 @@
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f0f2f5;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
-    padding-right: 60%;
-}
-
-.header {
-    background-color: #007bff;
-    color: white;
-    padding: 10px 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    position: fixed;
-    width: 100%;
-    top: 0;
-    z-index: 1;
-}
-
-.welcome-message {
-    font-size: 18px;
-}
-
-.sidebar {
-    background-color: #343a40;
-    color: white;
-    width: 200px;
-    padding-top: 60px;
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    overflow-y: auto;
-    transition: width 0.3s;
-}
-
-.sidebar a {
-    color: white;
-    padding: 15px;
-    display: block;
-    text-decoration: none;
-}
-
-.sidebar a:hover {
-    background-color: #007bff;
-}
-
-.main {
-    margin-left: 200px;
-    padding: 20px;
-    padding-top: 80px;
-    width: calc(100% - 200px);
+/* Main Dashboard container */
+.main-pat_Dash {
+    margin-top: 4vh;
+    margin-left: 35vh; /* Adjust margin to accommodate sidebar */
+    padding: 40px 40px; /* Increased padding for better spacing */
+    padding-top: 80px; /* Maintain padding at the top */
+    width: calc(96vw - 310px); /* Adjust width based on sidebar size */
+    /*height: calc(100vh - 0px); /* Full-height minus header/footer */
     overflow-y: auto;
     transition: margin-left 0.3s, width 0.3s;
 }
 
+/* Individual card styling */
 .card {
-    background-color: white;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    margin-bottom: 20px;
+    background-color: #fff;
+    padding: 30px; /* More padding for better layout */
+    border-radius: 12px; /* Smoother corners */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Softer, elevated shadow */
+    margin-bottom: 30px; /* Space between cards */
+    transition: transform 0.2s ease-in-out; /* Hover effect transition */
 }
 
+/* Card hover effect */
+.card:hover {
+    transform: translateY(-10px); /* Slight elevation on hover */
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15); /* Stronger shadow on hover */
+}
+
+/* Stats container */
 .stats {
     display: flex;
-    flex-wrap: wrap;
     justify-content: space-between;
+    gap: 20px; /* Space between stat cards */
+    margin-bottom: 40px; /* More space under the stats section */
+    flex-wrap: wrap; /* Responsive for smaller screens */
 }
 
-.user-menu {
-    padding-right: 3%;
-}
-
+/* Individual stat card */
 .stat-card {
     flex: 1;
-    margin: 10px;
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    color: #fff; /* Text color for better contrast */
+    border-radius: 12px;
+    padding: 30px;
+    margin-right: 20px; /* Space between cards */
     text-align: center;
-    min-width: 150px;
+    transition: background-color 0.3s ease;
+    min-width: 250px; /* Ensure minimum size on smaller screens */
 }
 
+/* Hover effect for stat cards */
+.stat-card:hover {
+    background-color: #eff3f2; /* Slightly darker green on hover */
+}
+
+/* Stat card title */
+.stat-card h3 {
+    font-size: 18px;
+    margin-bottom: 10px;
+    color: #4caf50;
+    font-weight: bold;
+}
+
+/* Stat card number */
+.stat-card p {
+    font-size: 36px; /* Larger for numbers */
+    font-weight: bold;
+    margin: 0;
+}
+
+/* Appointments, History, and Prescriptions section */
 .upcoming-appointments, .medical-history, .prescriptions, .profile {
-    margin-top: 20px;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 20px;
 }
 
-.footer {
-    background-color: #007bff;
-    color: white;
-    text-align: center;
-    padding: 10px;
-    position: fixed;
-    width: 100%;
-    bottom: 0;
+/* Section headings */
+.card h3 {
+    font-size: 20px;
+    font-weight: 600;
+    color: #333; /* Darker text color for better readability */
+    margin-bottom: 15px;
+    border-bottom: 2px solid #f0f0f0; /* Separator line under section title */
+    padding-bottom: 10px;
 }
 
+/* List inside each card */
+.card ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.card ul li {
+    font-size: 16px;
+    padding: 10px 0;
+    border-bottom: 1px solid #e0e0e0; /* Divider between items */
+    color: #555;
+}
+
+/* Last list item without border */
+.card ul li:last-child {
+    border-bottom: none;
+}
+
+
+/* Responsive layout for smaller screens */
 @media (max-width: 768px) {
-    .sidebar {
-        width: 150px;
-    }
-
-    .main {
-        margin-left: 150px;
-        width: calc(100% - 150px);
-    }
-}
-
-@media (max-width: 480px) {
-    .header {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
-    .sidebar {
-        width: 100px;
-    }
-
-    .main {
-        margin-left: 100px;
-        width: calc(100% - 100px);
-    }
-
     .stats {
-        flex-direction: column;
-        align-items: center;
+        flex-direction: column; /* Stack stats vertically */
     }
 
     .stat-card {
-        width: 100%;
-        max-width: 300px;
-        margin: 10px 0;
-    }
-}
-
-@media (max-width: 320px) {
-    .header {
-        padding: 5px 10px;
+        margin-right: 0;
+        margin-bottom: 20px;
     }
 
-    .header h1 {
-        font-size: 18px;
-    }
-
-    .header .user-menu {
-        font-size: 14px;
-    }
-
-    .sidebar {
-        width: 80px;
-    }
-
-    .main {
-        margin-left: 80px;
-        width: calc(100% - 80px);
-    }
-
-    .stat-card {
-        font-size: 14px;
-        padding: 10px;
+    .main-pat_Dash {
+        margin-left: 0; /* Adjust for mobile screens */
+        width: 100vw;
     }
 }

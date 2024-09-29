@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import DoctorCard from './DoctorCard';
 import SearchBar from './Searchbar';
-
+import './Doctor.css'
 const DoctorList = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [doctors, setDoctors] = useState([]);
@@ -56,12 +56,14 @@ const DoctorList = () => {
   return (
     <div>
       <SearchBar handleSearch={handleSearch} />
+      <div className='doctor-cards-container'>
       {filteredDoctors.map((doctor) => (
         <DoctorCard
           key={doctor._id} // Assuming each doctor has a unique _id
           doctor={doctor} // Pass the whole doctor object
         />
       ))}
+      </div>
     </div>
   );
 };

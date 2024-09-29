@@ -1,30 +1,13 @@
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f0f2f5;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
-    padding-left: 0%;
-    /* padding-left: 2%; */
-}
-.dashboard {
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
-    margin-right: -110%;
-}
-.header {
-    background-color: #007bff;
-    color: white;
-    padding: 10px 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    position: fixed;
-    width: 100%;
-    top: 0;
-    z-index: 1;
+
+.main-doc_dash{
+    margin-top: 4vh;
+    margin-left: 35vh; /* Adjust margin to accommodate sidebar */
+    padding: 40px 40px; /* Increased padding for better spacing */
+    padding-top: 80px; /* Maintain padding at the top */
+    width: calc(98vw - 310px); /* Adjust width based on sidebar size */
+    /* height: calc(100vh - 10px); /* Full-height minus header/footer */
+    overflow-y: auto;
+    transition: margin-left 0.3s, width 0.3s;
 }
 
 .doctor-selection select {
@@ -35,29 +18,6 @@ body {
 .user-menu {
     padding-right: 20px;
 }
-
-.sidebar {
-    background-color: #343a40;
-    color: white;
-    width: 200px;
-    padding-top: 60px;
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    overflow-y: auto;
-}
-
-.sidebar a {
-    color: white;
-    padding: 15px;
-    display: block;
-    text-decoration: none;
-}
-
-.sidebar a:hover {
-    background-color: #007bff;
-}
-
 .main {
     margin-left: 200px;
     padding: 20px;
@@ -81,7 +41,6 @@ body {
     text-align: center;
     min-width: 150px;
 }
-x
 .card {
     background-color: white;
     padding: 20px;
@@ -90,20 +49,8 @@ x
     margin-bottom: 20px;
 }
 
-.footer {
-    background-color: #007bff;
-    color: white;
-    text-align: center;
-    padding: 10px;
-    position: fixed;
-    width: 100%;
-    bottom: 0;
-}
 
 @media (max-width: 768px) {
-    .sidebar {
-        width: 150px;
-    }
     .main {
         margin-left: 150px;
         width: calc(100% - 150px);
@@ -111,16 +58,6 @@ x
 }
 
 @media (max-width: 480px) {
-    .header {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-    .header .doctor-selection {
-        margin: 10px 0;
-    }
-    .sidebar {
-        width: 100px;
-    }
     .main {
         margin-left: 100px;
         width: calc(100% - 100px);

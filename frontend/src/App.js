@@ -22,6 +22,24 @@ import MakeAppointment from './appointment/pages/MakeAppointment';
 import Doctor from './doctor/pages/Doctor';
 import Patient from './patient/pages/Patient';
 
+import Profile_Doc from './user/pages/Profile_Doc';
+import Profile_Pat from './patient/pages/Profile_Pat';
+import Profile_Recep from './Receptionist/pages/Profile_Recep'
+import Profile_Admin from './admin/pages/Profile_Admin'
+
+import ReceptionistDashboard from './Receptionist/pages/ReceptionistDashboard';
+
+import Hospital from './hospital/pages/Hospital';
+
+import PatientList from './admin/pages/PatientList';
+import DoctorList from './admin/pages/DoctorList';
+import ReceptionistList from './admin/pages/ReceptionistList';
+
+
+import ProfileEdit_pat from './patient/pages/ProfileEdit_pat';
+import ProfileEdit_recep from './Receptionist/pages/ProfileEdit_recep';
+
+import AdminDashboard from './admin/pages/AdminDashboard';
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userId, setUserId] = useState(false);
@@ -53,8 +71,13 @@ const App = () => {
         <Route path="/doc/appointment" element={<DocAppointment />} />
         <Route path="/patient/makeappo" element={<MakeAppointment />} />
         <Route path="/patient/doctor" element={<Doctor />} />
-        <Route path="/doc/doctor" element={<Doctor />} />
         <Route path="/doc/patient" element={<Patient />} />
+        <Route path="/patient/profile" element={<Profile_Pat />} />
+        <Route path="/doc/profile" element={<Profile_Doc />} />
+        <Route path="/receptionist/profile" element={<Profile_Recep />} />
+        <Route path="/admin/profile" element={<Profile_Admin />} />
+        <Route path="/patient/hospital" element={<Hospital />} />
+        <Route path="/patient/profile/edit-profile" element={<ProfileEdit_pat />} />
         {/* <Route path="/:userId/places" element={<UserPlaces />} />
         <Route path="/places/new" element={<NewPlace />} />
         <Route path="/places/:placeId" element={<UpdatePlace />} />
@@ -67,6 +90,19 @@ const App = () => {
            <Route path="/" element={<Auth />} />
            {/* <Route path="/auth" element={<Auth />} /> */}
            <Route path="/register" element={<Register />} />
+
+{/* for testing  */}
+           <Route path="/receptionist" element={<ReceptionistDashboard/>}/>
+           <Route path="/receptionist/profile" element={<Profile_Recep />} />
+           <Route path="receptionist/profile/edit-profile" element={<ProfileEdit_recep />} />
+           {/* <Route path="/receptionist/appointments" element={</>}/> */}
+           
+           <Route path="/admin" element={<AdminDashboard/>}/>
+           <Route path="/admin/doctors" element={<PatientList/>}/>
+           <Route path="/admin/hospitals" element={<DoctorList/>}/>
+           <Route path="/admin/receptionists" element={<ReceptionistList/>}/>
+           <Route path="/admin/patients" element={<PatientList/>}/>
+
            {/* <Route path="/:userId/places" element={<UserPlaces />} />
            <Route path="/auth" element={<Auth />} />
            <Route path="*" element={<Navigate to="/auth" />} /> */}

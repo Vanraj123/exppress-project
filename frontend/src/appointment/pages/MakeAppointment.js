@@ -3,8 +3,9 @@ import { AuthContext } from "../../shared/context/auth-context";
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './MakeAppointment.css';
-
-
+import Header from '../../shared/Header';
+import Footer from '../../shared/Footer';
+import { NavLink } from 'react-router-dom';
 const MakeAppointment = () => {
     const auth = useContext(AuthContext);
     const [formData, setFormData] = useState({
@@ -88,7 +89,7 @@ const MakeAppointment = () => {
 
     return (
         <div className="make-appointment">
-            <div className="header">
+            {/* <div className="header">
                 <div className="logo">
                     <h1>DocAppoint</h1>
                 </div>
@@ -98,20 +99,20 @@ const MakeAppointment = () => {
                 <div className="user-menu">
                     <span>User Name</span> | <a href="/" style={{ color: 'white' }} onClick={handleLogout}>Logout</a>
                 </div>
-            </div>
-
+            </div> */}
+            <Header/>
             <div className="sidebar">
                 <a href="#">Dashboard</a>
                 <a href="#">Upcoming Appointments</a>
                 <a href="#">Medical History</a>
                 <a href="#">Prescriptions</a>
-                <a href="#">Profile</a>
+                <NavLink to="/patient/profile">Profile</NavLink>
                 <a href="#">Settings</a>
             </div>
 
-            <div className="main">
-                <h2>Make an Appointment</h2>
-                <div className="form-card">
+            <div className="main-make_appoint">
+                {/* <h2>Make an Appointment</h2>
+                <div className="form-card"> */}
                     <form onSubmit={handleSubmit}>
                         <div className="form-group">
                             <label htmlFor="hospital">Select Hospital:</label>
@@ -155,14 +156,11 @@ const MakeAppointment = () => {
                             <label htmlFor="details">Additional Details:</label>
                             <textarea id="details" name="details" rows="4" value={formData.details} onChange={handleChange} placeholder="Enter any additional details..." />
                         </div>
-                        <button type="submit" className="btn">Book Appointment</button>
+                        <button type="submit" className="btn-make-appo">Book Appointment</button>
                     </form>
-                </div>
+                {/* </div> */}
             </div>
-
-            <div className="footer">
-                <p>© 2024 DocAppoint. All rights reserved.</p>
-            </div>
+            {/* <Footer/> */}
         </div>
     );
 };

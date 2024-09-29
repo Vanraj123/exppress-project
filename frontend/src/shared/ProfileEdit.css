@@ -1,0 +1,135 @@
+/* Container for the profile edit form */
+.profile-edit-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10vh;
+    margin-bottom: 5vh;
+    width: calc(160vh - 100px);
+    margin-left: 50vh;
+}
+
+/* Card styling for the edit profile form */
+.profile-edit-card {
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    padding: 30px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    width: 600px;
+    text-align: center;
+}
+/* Styles for the image preview section */
+.profile-edit-field {
+    margin-bottom: 15px;
+}
+
+/* Styling for the image preview container */
+.image-preview {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 15px;
+    margin-left: 23px;
+}
+
+.profile-image {
+    width: 160px;
+    height: 160px;
+    object-fit: cover;
+    border-radius: 50%; /* Circle shape */
+    border: 2px solid #ccc;
+    margin-bottom: 10px;
+}
+
+/* File input styling */
+input[type="file"] {
+    font-size: 14px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 100%;
+    box-sizing: border-box;
+    cursor: pointer;
+}
+
+input[type="file"]::file-selector-button {
+    padding: 5px 10px;
+    border: none;
+    background-color: #4caf50;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+input[type="file"]::file-selector-button:hover {
+    background-color: #45a049;
+}
+
+/* Heading style */
+.profile-edit-card h2 {
+    margin-bottom: 20px;
+    color: #333;
+}
+
+/* Form container for all fields */
+.profile-edit-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Individual field styling */
+.profile-edit-field {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+/* Label styling */
+.label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #555;
+}
+
+/* Input field styling */
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+input[type="date"],
+select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    color: #555;
+    box-sizing: border-box;
+}
+
+/* Input focus styling */
+input:focus,
+select:focus {
+    outline: none;
+    border-color: #4caf50;
+    box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
+}
+
+/* Styling for the Save button */
+.save-button {
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 20px;
+    width: 100%;
+}
+
+/* Hover effect for Save button */
+.save-button:hover {
+    background-color: #45a049;
+}
