@@ -21,6 +21,7 @@ router.post(
 router.delete('/:appointmentId', appointmentsController.deleteAppointment);
 
 router.patch('/appo/:appointmentId', appointmentsController.confirmappo);
+router.patch('/scheduled/:appointmentId', appointmentsController.scheduled);
 router.patch('/:appointmentId', appointmentsController.updateAppointment);
 
 // router.post('/login', usersController.login);

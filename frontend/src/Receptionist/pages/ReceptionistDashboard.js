@@ -3,6 +3,7 @@ import './ReceptionistDashboard.css'; // Custom styles for this page
 import Sidebar from './Sidebar';
 import Header from '../../shared/Header';
 import { AuthContext } from '../../shared/context/auth-context';
+import axios from 'axios'; // Add axios for API calls
 
 const ReceptionistDashboard = () => {
   const [appointments, setAppointments] = useState([]);
@@ -48,7 +49,41 @@ const ReceptionistDashboard = () => {
               ? data.appointment.filter((appointment) => appointment.status === 'Pending')
               : [];
               
-            setAppointments(pendingAppointments); // Store only pending appointments
+            // Fetch doctor and patient details for each appointment
+            const detailedAppointments = await Promise.all(
+              pendingAppointments.map(async (appointment) => {
+                let doctorResponse, patientResponse;
+
+                // Fetch doctor details if the appointment has a doctor ID
+                if (appointment.doctor) {
+                  try {
+                    doctorResponse = await axios.get(`http://localhost:5000/api/doctors/doc/${appointment.doctor}`);
+                    console.log(`Doctor Details for Appointment ${appointment._id}:`, doctorResponse.data);
+                  } catch (err) {
+                    console.error(`Error fetching doctor data for appointment ${appointment._id}:`, err);
+                  }
+                }
+
+                // Fetch patient details if the appointment has a patient ID
+                if (appointment.patient) {
+                  try {
+                    patientResponse = await axios.get(`http://localhost:5000/api/patients/pati/${appointment.patient}`);
+                    console.log(`Patient Details for Appointment ${appointment._id}:`, patientResponse.data);
+                  } catch (err) {
+                    console.error(`Error fetching patient data for appointment ${appointment._id}:`, err);
+                  }
+                }
+
+                // Attach doctor and patient data to the appointment object
+                return {
+                  ...appointment,
+                  doctor: doctorResponse ? doctorResponse.data.doctor.docName : 'Unknown Doctor',
+                  patient: patientResponse ? patientResponse.data.patient.patientName : 'Unknown Patient',
+                };
+              })
+            );
+            console.log(detailedAppointments);
+            setAppointments(detailedAppointments); // Store appointments with doctor and patient details
           } else {
             throw new Error(data.message || 'Failed to load appointments.');
           }
@@ -62,51 +97,6 @@ const ReceptionistDashboard = () => {
 
     fetchAppointments();
   }, [hospitalId]);
-
-  // Fetch doctor and patient names based on IDs
-  useEffect(() => {
-    const fetchDetails = async () => {
-      if (appointments.length > 0) {
-        try {
-          // Use a Set to track unique doctor and patient IDs
-          const doctorIds = new Set(appointments.map(appointment => appointment.doctor));
-          const patientIds = new Set(appointments.map(appointment => appointment.patient));
-
-          // Fetch doctor details
-          for (const id of doctorIds) {
-            const response = await fetch(`http://localhost:5000/api/doctors/doc/${id}`);
-            if (response.ok) {
-              const doctor = await response.json();
-              console.log(response);
-              if (doctor._id) {
-                setDoctorDetails((prev) => ({ ...prev, [doctor._id]: doctor.docName }));
-              }
-            } else {
-              console.error(`Error fetching doctor with ID ${id}: ${response.statusText}`);
-            }
-          }
-
-          // Fetch patient details
-          for (const id of patientIds) {
-            const response = await fetch(`http://localhost:5000/api/patients/pati/${id}`);
-            if (response.ok) {
-              const patient = await response.json();
-              if (patient._id) {
-                setPatientDetails((prev) => ({ ...prev, [patient._id]: patient.patientName }));
-              }
-            } else {
-              console.error(`Error fetching patient with ID ${id}: ${response.statusText}`);
-            }
-          }
-        } catch (err) {
-          console.error('Error fetching doctor or patient details:', err);
-          setError('Failed to load doctor or patient details.');
-        }
-      }
-    };
-
-    fetchDetails();
-  }, [appointments]);
 
   // Handle appointment confirmation
   const handleConfirm = async (appointmentId) => {
@@ -159,7 +149,7 @@ const ReceptionistDashboard = () => {
           <ul>
             {appointments.map((appointment) => (
               <li key={appointment._id}>
-                {doctorDetails[appointment.doctor]} - {appointment.time} - {patientDetails[appointment.patient]}
+                <b>Doctor:</b> {appointment.doctor} - <b>Patient:</b> {appointment.patient} - <b>Time:</b> {appointment.time}
                 <button
                   className='confirm_app'
                   type='button'

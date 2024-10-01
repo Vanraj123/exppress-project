@@ -117,6 +117,34 @@ const confirmappo = async (req, res, next) => {
   res.status(200).json({ appointment: appointment.toObject({ getters: true }) });
 };
 
+const scheduled = async (req, res, next) => {
+
+  const appointmentId = req.params.appointmentId;
+
+  let appointment;
+  try {
+    appointment = await Appointment.findById(appointmentId);
+    if (!appointment) {
+      const error = new HttpError('Could not find appointment for this ID.', 404);
+      return next(error);
+    }
+
+    const status = "Scheduled"
+    appointment.status = status;
+
+    await appointment.save();
+  } catch (err) {
+    const error = new HttpError(
+      'Something went wrong, could not update appointment.',
+      500
+    );
+    return next(error);
+  }
+
+  res.status(200).json({ appointment: appointment.toObject({ getters: true }) });
+};
+
+
 
 const signup = async (req, res, next) => {
 //  const errors = validationResult(req);
@@ -218,6 +246,7 @@ const updateAppointment = async (req, res, next) => {
 
 exports.getAppointment = getAppointment;
 exports.signup = signup;
+exports.scheduled = scheduled;
 exports.getbydoc = getbydoc;
 exports.getbypatient = getbypatient;
 exports.getbyhospital = getbyhospital;

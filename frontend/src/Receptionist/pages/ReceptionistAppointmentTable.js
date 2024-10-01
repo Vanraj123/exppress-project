@@ -5,7 +5,7 @@ import Header from '../../shared/Header';
 import Sidebar from './Sidebar';
 
 const ReceptionistAppointmentTable = () => {
-  const [appointments, setAppointments] = useState([]); // Ensure it's initialized as an empty array
+  const [appointments, setAppointments] = useState([]); // Initialize as an empty array
   const [loading, setLoading] = useState(true);
   const [hospitalId, setHospitalId] = useState(null);
   const [error, setError] = useState(null);
@@ -41,11 +41,33 @@ const ReceptionistAppointmentTable = () => {
           const data = await response.json();
 
           if (response.ok) {
-            // Ensure appointments is an array and filter only confirmed ones
-            const confirmedAppointments = Array.isArray(data)
-              ? data.filter(appointment => appointment.status === 'confirmed')
-              : [];
-            setAppointments(confirmedAppointments);
+            // Assuming the API returns an object containing an 'appointments' array
+            const appointmentsArray = data.appointment || []; // Access the appointments array
+
+            // Filter confirmed appointments from the appointmentsArray
+            const confirmedAppointments = appointmentsArray.filter(appointment => appointment.status === 'Confirmed');
+            console.log('Confirmed Appointments:', confirmedAppointments); // Debugging: Check the filtered results
+
+            // Fetch additional doctor and patient info for each appointment
+            const appointmentsWithDetails = await Promise.all(
+              confirmedAppointments.map(async (appointment) => {
+                const [doctorResponse, patientResponse] = await Promise.all([
+                  fetch(`http://localhost:5000/api/doctors/doc/${appointment.doctor}`),
+                  fetch(`http://localhost:5000/api/patients/pati/${appointment.patient}`)
+                ]);
+
+                const doctorData = await doctorResponse.json();
+                const patientData = await patientResponse.json();
+
+                return {
+                  ...appointment,
+                  doctorName: doctorResponse.ok ? doctorData.doctor.docName : 'Unknown Doctor',
+                  patientName: patientResponse.ok ? patientData.patient.patientName : 'Unknown Patient'
+                };
+              })
+            );
+
+            setAppointments(appointmentsWithDetails);
           } else {
             throw new Error(data.message || 'Failed to load appointments.');
           }
@@ -60,10 +82,35 @@ const ReceptionistAppointmentTable = () => {
   }, [hospitalId]);
 
   // Handle appointment scheduling
-  const handleSchedule = (appointmentId) => {
-    // Add logic to handle scheduling an appointment
-    console.log('Scheduling appointment with ID:', appointmentId);
-  };
+  // Handle appointment scheduling
+const handleSchedule = async (appointmentId) => {
+  try {
+    const response = await fetch(`http://localhost:5000/api/appointments/scheduled/${appointmentId}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ status: 'Scheduled' }), // Update status to 'Scheduled'
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+      // Update the appointments state to reflect the change
+      setAppointments((prevAppointments) =>
+        prevAppointments.map((appointment) =>
+          appointment._id === appointmentId ? { ...appointment, status: 'Scheduled' } : appointment
+        )
+      );
+      console.log('Appointment scheduled successfully:', data);
+    } else {
+      throw new Error(data.message || 'Failed to schedule appointment.');
+    }
+  } catch (err) {
+    setError(err.message);
+  }
+};
+
 
   // Filter appointments based on selected date
   const filteredAppointments = selectedDate
@@ -88,9 +135,30 @@ const ReceptionistAppointmentTable = () => {
       <div className="appointment-table">
         <h2>Confirmed Appointments</h2>
 
+        <div className="card confirmed-appointments">
+          <ul>
+            {appointments.length > 0 ? (
+              appointments.map((appointment, index) => (
+                <li key={index}>
+                  <strong>Doctor:</strong> {appointment.doctorName} - 
+                  <strong> Date:</strong> {new Date(appointment.date).toLocaleDateString()} - 
+                  <strong> Time:</strong> {appointment.time} - 
+                  <strong> Patient:</strong> {appointment.patientName} - 
+                  <strong> Status:</strong> {appointment.status || 'Not Specified'}
+                  <button className='schedule_app' type='button' onClick={() => handleSchedule(appointment._id)}>
+                    Schedule
+                  </button>
+                </li>
+              ))
+            ) : (
+              <p>No confirmed appointments found.</p>
+            )}
+          </ul>
+        </div>
+
         {/* Date Filter */}
         <div className="date-filter">
-          <label htmlFor="appointment-date">Select Date:</label>
+          <label htmlFor="appointment-date">Filter by Date:</label>
           <input
             type="date"
             id="appointment-date"
@@ -99,22 +167,30 @@ const ReceptionistAppointmentTable = () => {
           />
         </div>
 
-        <div className="card confirmed-appointments">
-          <ul>
-            {Array.isArray(filteredAppointments) && filteredAppointments.length > 0 ? (
-              filteredAppointments.map((appointment, index) => (
-                <li key={index}>
-                  {appointment.doctorName} - {appointment.time} - {appointment.patientName}
-                  <button className='schedule_app' type='button' onClick={() => handleSchedule(appointment._id)}>
-                    Schedule
-                  </button>
-                </li>
-              ))
-            ) : (
-              <p>No confirmed appointments found for this date.</p>
-            )}
-          </ul>
-        </div>
+        {/* Show filtered appointments if a date is selected */}
+        {selectedDate && (
+          <div className="card filtered-appointments">
+            <h3>Appointments on {selectedDate}</h3>
+            <ul>
+              {filteredAppointments.length > 0 ? (
+                filteredAppointments.map((appointment, index) => (
+                  <li key={index}>
+                    <strong>Doctor:</strong> {appointment.doctorName} - 
+                    <strong> Date:</strong> {new Date(appointment.date).toLocaleDateString()} - 
+                    <strong> Time:</strong> {appointment.time} - 
+                    <strong> Patient:</strong> {appointment.patientName} - 
+                    <strong> Status:</strong> {appointment.status || 'Not Specified'}
+                    <button className='schedule_app' type='button' onClick={() => handleSchedule(appointment._id)}>
+                      Schedule
+                    </button>
+                  </li>
+                ))
+              ) : (
+                <p>No appointments found for this date.</p>
+              )}
+            </ul>
+          </div>
+        )}
       </div>
     </div>
   );
