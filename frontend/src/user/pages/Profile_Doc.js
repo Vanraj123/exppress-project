@@ -1,67 +1,69 @@
-import React from 'react';
-import './Profile_Doc.css'; // Assuming you create a separate CSS file for Profile styles
-import Header from './Header';
-import Footer from './Footer';
+import React, { useState, useEffect, useContext } from 'react';
+import Header from '../../shared/Header';
+import Profile from '../../shared/Profile';
+import Sidebar from './Sidebar';
+import axios from 'axios';
+import { AuthContext } from '../../shared/context/auth-context';
+import moment from 'moment';
+
 const Profile_Doc = () => {
-    const userProfile = {
-        name: "John Doe",
-        email: "user@example.com",
-        phone: "123-456-7890",
-        address: "123 Main St, Anytown, USA",
-        dob: "01/01/1990",
-        gender: "Male",
-        medicalID: "MED1234567",
-    };
+    const [userProfile, setUserProfile] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    const auth = useContext(AuthContext);
+
+    useEffect(() => {
+        const fetchDoctorProfile = async () => {
+            try {
+                setLoading(true);
+                const doctorId = auth.roleid; 
+                const response = await axios.get(`http://localhost:5000/api/doctors/doc/${doctorId}`);
+                console.log(response.data.doctor); // Log the raw response for debugging
+
+                // Structure userProfile object based on response data
+                const doctorData = response.data.doctor;
+                const formattedAddress = `${doctorData.docAddress.streetOrSociety}, ${doctorData.docAddress.cityOrVillage}, ${doctorData.docAddress.state}, ${doctorData.docAddress.pincode}, ${doctorData.docAddress.country}`;
+
+                const formattedProfile = {
+                    name: doctorData.docName,
+                    email: doctorData.docEmail,
+                    phone: doctorData.docContact,
+                    specialization: doctorData.docSpeciality,
+                    address: formattedAddress,
+                    dob: moment(doctorData.DOB).format('MMMM Do YYYY'), 
+                    gender: doctorData.docGender,
+                    imageUrl: doctorData.imageUrl || 'https://img.freepik.com/free-photo/rendering-anime-doctor-job_23-2151151782.jpg' // Default image if none provided
+                };
+
+                setUserProfile(formattedProfile); 
+                setLoading(false);
+            } catch (err) {
+                console.error('Error fetching doctor profile:', err);
+                setError('Failed to load doctor profile');
+                setLoading(false);
+            }
+        };
+
+        fetchDoctorProfile();
+    }, [auth.roleid]); 
+
+    if (loading) {
+        return <div>Loading...</div>;
+    }
+
+    if (error) {
+        return <div>{error}</div>;
+    }
 
     return (
         <div className="profile-page">
-            <Header/>
-            {/* <div className="header">
-                <h1>Profile</h1>
-            </div> */}
-            <div className="sidebar">
-                <a href="#">Dashboard</a>
-                <a href="#">Upcoming Appointments</a>
-                <a href="#">Medical History</a>
-                <a href="#">Prescriptions</a>
-                <a href="#">Settings</a>
-            </div>
-            <div className="profile-card">
-                <h2>Personal Information</h2>
-                <div className="profile-info">
-                    <div className="profile-field">
-                        <span className="label">Name:</span>
-                        <span className="value">{userProfile.name}</span>
-                    </div>
-                    <div className="profile-field">
-                        <span className="label">Email:</span>
-                        <span className="value">{userProfile.email}</span>
-                    </div>
-                    <div className="profile-field">
-                        <span className="label">Phone:</span>
-                        <span className="value">{userProfile.phone}</span>
-                    </div>
-                    <div className="profile-field">
-                        <span className="label">Address:</span>
-                        <span className="value">{userProfile.address}</span>
-                    </div>
-                    <div className="profile-field">
-                        <span className="label">Date of Birth:</span>
-                        <span className="value">{userProfile.dob}</span>
-                    </div>
-                    <div className="profile-field">
-                        <span className="label">Gender:</span>
-                        <span className="value">{userProfile.gender}</span>
-                    </div>
-                    <div className="profile-field">
-                        <span className="label">Medical ID:</span>
-                        <span className="value">{userProfile.medicalID}</span>
-                    </div>
-                </div>
-                <button className="edit-button">Edit Profile</button>
-            </div>
-            <Footer/>
-        </div> 
+            <Header />
+            <Sidebar/>
+            {userProfile && (
+                <Profile userProfile={userProfile} role="doctor" />
+            )}
+        </div>
     );
 };
 

@@ -39,6 +39,7 @@ import ReceptionistAppointmentTable from './Receptionist/pages/ReceptionistAppoi
 
 import ProfileEdit_pat from './patient/pages/ProfileEdit_pat';
 import ProfileEdit_recep from './Receptionist/pages/ProfileEdit_recep';
+import ProfileEdit_Doc from './user/pages/ProfileEdit_Doc';
 
 import AdminDashboard from './admin/pages/AdminDashboard';
 const App = () => {
@@ -81,6 +82,7 @@ const App = () => {
         <Route path="/receptionist" element={<ReceptionistDashboard/>}/>
         <Route path="/receptionist/appointments" element={<ReceptionistAppointmentTable/>}/>
         <Route path="/patient/profile/edit-profile" element={<ProfileEdit_pat />} />
+        <Route path="/doc/profile/edit-profile" element={<ProfileEdit_Doc />} />
         {/* <Route path="/:userId/places" element={<UserPlaces />} />
         <Route path="/places/new" element={<NewPlace />} />
         <Route path="/places/:placeId" element={<UpdatePlace />} />

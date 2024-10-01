@@ -48,11 +48,18 @@ const getbypati = async (req, res, next) => {
      500
    );
  }
+ if (!patient) {
+  return res.status(404).json({ message: 'Patient not found.' });
+}
  res.status(200).json({ patient: patient.toObject({ getters: true }) });
 };
 
 const getbydoc = async (req, res, next) => {
   const docId = req.params.docid;
+  if (!mongoose.Types.ObjectId.isValid(docId)) {
+    return res.status(400).json({ message: 'Invalid doctor ID.' });
+  }
+
   const doctor = new mongoose.Types.ObjectId(docId);
   
   let patient;
@@ -72,6 +79,36 @@ const getbydoc = async (req, res, next) => {
   res.status(200).json({ patient: patient.toObject({ getters: true }) });
 };
 
+const getByDoctor = async (req, res, next) => {
+  const docId = req.params.docid;
+
+  // Check if the provided docId is a valid MongoDB ObjectId
+  if (!mongoose.Types.ObjectId.isValid(docId)) {
+    return res.status(400).json({ message: 'Invalid doctor ID.' });
+  }
+
+  const doctor = new mongoose.Types.ObjectId(docId);
+
+  let patients;
+  try {
+    // Fetch all patients associated with the doctor
+    patients = await Patient.find({ doctor: doctor });
+    
+    // If no patients found
+    if (patients.length === 0) {
+      return res.status(404).json({ message: 'No patients found for this doctor.' });
+    }
+  } catch (err) {
+    const error = new HttpError(
+      'Fetching patients failed, please try again later.',
+      500
+    );
+    return next(error);
+  }
+
+  // Return all patients
+  res.status(200).json({ patients: patients.map(patient => patient.toObject({ getters: true })) });
+};
 
 
 const signup = async (req, res, next) => {
@@ -193,5 +230,5 @@ exports.updatePatient = updatePatient;
 exports.getbyId = getbyId;
 exports.getbypati = getbypati;
 exports.getbydoc = getbydoc;
-
+exports.getByDoctor = getByDoctor;
 // exports.login = login;

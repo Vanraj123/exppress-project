@@ -2,8 +2,8 @@
 import React from 'react';
 import './DocAppointment.css';
 
-import Header from './Header';
-import Sidebar from './Sidebar';
+import Header from '../../shared/Header';
+import Sidebar from '../../user/pages/Sidebar';
 import MainContent from './MainContent';
 import Footer from '../../shared/Footer';
 

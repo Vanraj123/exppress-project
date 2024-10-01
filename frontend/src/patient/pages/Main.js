@@ -11,33 +11,47 @@ const Main = () => {
 
   useEffect(() => {
     const fetchPatients = async () => {
+      // If `roleid` is undefined, avoid making the request
+      if (!auth.roleid) {
+        setLoading(false);
+        setError('No doctor ID available.');
+        return;
+      }
+
       try {
         const docid = auth.roleid;
-        const response = await fetch(`http://localhost:5000/api/patients/doc/${docid}`); // Adjust the URL
-        const data = await response.json();
+        console.log("Fetching patients for doctor ID:", docid);
+        
+        const response = await fetch(`http://localhost:5000/api/patients/doc/patients/${docid}`); // Adjust the URL
 
-        // Log the fetched data
-        console.log('Fetched data:', data);
-
-        // Ensure the data contains the expected structure
-        if (data && data.patients && Array.isArray(data.patients)) {
-          setPatients(data.patients);
-        } else {
-          console.error('Unexpected data format:', data);
-          setError('Unexpected data format');
+        // Check if the response is OK (status 200-299)
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
         }
 
+        const data = await response.json();
+        console.log('Fetched data:', data);
+
+        // Check if `data.patients` exists and is an array
+        if (data && Array.isArray(data.patients)) {
+          setPatients(data.patients); // Set the `patients` array
+        } else {
+          console.error('Unexpected data format:', data);
+          setError('Unexpected data format received from server.');
+        }
+        
         setLoading(false);
       } catch (error) {
         console.error('Error fetching patients:', error);
-        setError('Error fetching patients');
+        setError('Error fetching patients. Please try again later.');
         setLoading(false);
       }
     };
 
     fetchPatients();
-  }, []);
+  }, [auth.roleid]); // Ensure this effect runs when `auth.roleid` changes
 
+  // Filter patients based on search term
   const filterPatients = () => {
     return patients.filter((patient) =>
       patient.patientName.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -46,6 +60,7 @@ const Main = () => {
     );
   };
 
+  // Conditional rendering based on the loading and error states
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -55,9 +70,8 @@ const Main = () => {
   }
 
   return (
-    <div className="main">
-      <h2>Patient List</h2>
-      <div className="search-bar">
+    <div className="main-patientList">
+      <div className="search-bar_patient">
         <input
           type="text"
           placeholder="Search patients..."
@@ -65,8 +79,8 @@ const Main = () => {
           onChange={(e) => setSearchTerm(e.target.value)}
         />
       </div>
-      <div id="patientList">
-        {filterPatients().map((patient) => (
+      <div className="patient-cards-container">
+      {filterPatients().map((patient) => (
           <PatientCard key={patient._id} patient={patient} />
         ))}
       </div>
