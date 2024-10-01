@@ -7,7 +7,7 @@ const hospitalsController = require('../Controller/hospitals-controllers');
 
 const router = express.Router();
 
-
+router.get('/:hospitalId',hospitalsController.getHos_hosId);
 router.get('/', hospitalsController.getHospital);
 
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 
-const AppointmentCard = ({ id, title, date, time, patient, doctor, onDelete }) => {
+const AppointmentCard = ({ id, title, date, time, patient, doctor,roleof, onDelete }) => {
   // Function to handle the appointment deletion
   const handleDelete = async () => {
     try {
@@ -28,7 +28,7 @@ const AppointmentCard = ({ id, title, date, time, patient, doctor, onDelete }) =
           <p>Doctor: {doctor}</p>
         </div>
       </div>
-      <button className="btn-cancel" onClick={handleDelete}>Cancel</button>
+      {(roleof != "MedicalHistory") && <button className="btn-cancel" onClick={handleDelete}>Cancel</button> }
     </div>
   );
 }

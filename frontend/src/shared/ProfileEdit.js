@@ -128,8 +128,8 @@ const ProfileEdit = ({ userProfile, role, onSave }) => {
                             <div className="profile-edit-field">
                                 <label className="label">specialization:</label>
                                 <input
-                                    type="date"
-                                    name="dob"
+                                    type="text"
+                                    name="specialization"
                                     value={editProfile.docSpeciality}
                                     onChange={handleInputChange}
                                 />

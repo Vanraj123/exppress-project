@@ -6,6 +6,7 @@ import { AuthContext } from "../../shared/context/auth-context";
 import { useNavigate } from 'react-router-dom';
 import Header from '../../shared/Header';
 import Sidebar from './Sidebar';
+
 const PatientDashboard = () => {
     const [appointments, setAppointments] = useState([]);
     const [upcomingAppointments, setUpcomingAppointments] = useState([]);
@@ -15,7 +16,6 @@ const PatientDashboard = () => {
     const [error, setError] = useState(null);
     const auth = useContext(AuthContext);
     const navigate = useNavigate();
-
 
     useEffect(() => {
         const fetchDashboardData = async () => {
@@ -36,7 +36,7 @@ const PatientDashboard = () => {
                     return appointmentDate >= currentDate;
                 });
 
-                // Fetch doctors for each appointment
+                // Fetch doctors for each upcoming appointment
                 const upcomingWithDoctors = await Promise.all(upcoming.map(async (appointment) => {
                     if (!appointment.doctor) {
                         console.error(`Appointment ${appointment._id} does not have a valid doctor ID`);
@@ -45,12 +45,12 @@ const PatientDashboard = () => {
 
                     try {
                         const doctorResponse = await axios.get(`http://localhost:5000/api/doctors/doc/${appointment.doctor}`);
-                        console.log(`Doctor Details for Appointment ${appointment._id}:`, doctorResponse.data);
-
-                        // Attach doctor data to the appointment object
+                        const hospitalResponse = await axios.get(`http://localhost:5000/api/hospitals/${appointment.hospital}`);
+                        // Attach doctor and hospital data to the appointment object
                         return {
                             ...appointment,
-                            doctor: doctorResponse.data  // Assuming doctorResponse.data has docName field
+                            doctor: doctorResponse.data,
+                            hospital: hospitalResponse.data
                         };
                     } catch (err) {
                         console.error(`Error fetching doctor data for appointment ${appointment._id}:`, err);
@@ -58,10 +58,16 @@ const PatientDashboard = () => {
                     }
                 }));
 
+                // Filter past appointments for medical history
+                const pastAppointments = allAppointments.filter(appointment => {
+                    const appointmentDate = new Date(appointment.date);
+                    const currentDate = new Date();
+                    return appointmentDate < currentDate;
+                });
 
                 setAppointments(allAppointments);
-                console.log(`hii`, upcomingWithDoctors);
                 setUpcomingAppointments(upcomingWithDoctors);
+                setMedicalHistory(pastAppointments);  // Set past appointments in medical history
 
             } catch (err) {
                 console.error("Error fetching data: ", err);
@@ -91,28 +97,6 @@ const PatientDashboard = () => {
         <div>
             <Header />
             <Sidebar />
-            {/* <div className="header">
-                <div className="logo">
-                    <h1>DocAppoint</h1>
-                </div>
-                <div className="welcome-message">
-                    <span>Welcome, {auth.username}</span>
-                </div>
-                <div className="user-menu">
-                    <span>{auth.username}</span> | <a href="/" style={{ color: 'white' }} onClick={handleLogout}>Logout</a>
-                </div>
-            </div> */}
-            {/* <div className="sidebar">
-                <NavLink to="/patient/dashboard">Dashboard</NavLink>
-                <NavLink to="/patient/appointment">Appointments</NavLink>
-                <NavLink to="/patient/makeappo">Make Appointment</NavLink>
-                <NavLink to="/patient/doctor">Doctor</NavLink>
-                <a href="#">Hospital</a>
-                <NavLink to="/patient/medical-history">Medical History</NavLink>
-                <NavLink to="/patient/prescriptions">Prescriptions</NavLink>
-                <NavLink to="/patient/profile">Profile</NavLink>
-                <NavLink to="/patient/settings">Settings</NavLink>
-            </div> */}
             <div className="main-pat_Dash">
                 <h2>Dashboard</h2>
                 <div className="stats">
@@ -122,7 +106,7 @@ const PatientDashboard = () => {
                     </div>
                     <div className="stat-card">
                         <h3>Medical History</h3>
-                        <p>{medicalHistory.length} records</p>
+                        <p>{medicalHistory.length} records</p>  {/* Display medical history count */}
                     </div>
                     <div className="stat-card">
                         <h3>Prescriptions</h3>
@@ -133,24 +117,22 @@ const PatientDashboard = () => {
                     <h3>Upcoming Appointments</h3>
                     <ul>
                         {upcomingAppointments.map((appointment, index) => {
-                            console.log(appointment.doctor);  // Log doctor data to check its structure
+                            const appointmentDate = new Date(appointment.date).toLocaleDateString('en-US', {
+                                year: 'numeric',
+                                month: 'long',
+                                day: 'numeric',
+                            });
                             return (
                                 <li key={index}>
-                                    <b>Date:</b>{appointment.date} - <b>Doctor:</b>{appointment.doctor.doctor && appointment.doctor.doctor.docName ? appointment.doctor.doctor.docName : "Unknown Doctor"}
-                                    <br></br> <b>Time:</b>{appointment.time}
+                                    {index + 1} | <br /><b>Date:</b>{appointmentDate}<br></br><b>Doctor:</b> {appointment.doctor.doctor && appointment.doctor.doctor.docName ? appointment.doctor.doctor.docName : "Unknown Doctor"}
+                                    <br /><b>Time:</b> {appointment.time}
+                                    <br /><b>Hospital:</b> {appointment.hospital && appointment.hospital.Hos_Name ? appointment.hospital.Hos_Name : "Unknown Hospital"}
                                 </li>
                             );
                         })}
                     </ul>
                 </div>
-                {/* <div className="card profile">
-                    <h3>Profile</h3>
-                    <p>Name: {auth.username}</p>
-                    <p>Email: user@example.com</p>
-                    <p>Phone: 123-456-7890</p>
-                </div> */}
             </div>
-            {/* <Footer/> */}
         </div>
     );
 };

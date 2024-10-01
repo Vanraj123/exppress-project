@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useContext } from 'react';
 import AppointmentCard from './AppointmentCard';
-import axios from 'axios'; 
+import axios from 'axios';
 import { AuthContext } from '../../shared/context/auth-context';
+import moment from 'moment';
 
 const MainContent = () => {
   const [appointments, setAppointments] = useState([]);  // Default to empty array
@@ -19,7 +20,7 @@ const MainContent = () => {
         
         const fetchedAppointments = response.data.appointment || [];  // Adjust based on response structure
 
-        // Now, for each appointment, fetch the patient and doctor details
+        // Fetch patient and doctor details for each appointment
         const appointmentsWithDetails = await Promise.all(
           fetchedAppointments.map(async (appointment) => {
             const patientResponse = await axios.get(`http://localhost:5000/api/patients/pati/${appointment.patient}`);
@@ -37,7 +38,6 @@ const MainContent = () => {
         );
 
         setAppointments(appointmentsWithDetails);  // Set the appointments with patient and doctor names included
-        console.log(appointmentsWithDetails);
       } catch (err) {
         console.error("Error fetching appointments: ", err);
         setError("Failed to load appointments.");
@@ -47,10 +47,9 @@ const MainContent = () => {
     };
 
     fetchAppointments();
-  }, [auth.roleid]);  // Add auth.roleid as a dependency
+  }, [auth.roleid]);
 
   const handleDeleteAppointment = (deletedId) => {
-    // Remove the deleted appointment from the state
     setAppointments((prevAppointments) =>
       prevAppointments.filter((appointment) => appointment._id !== deletedId)
     );
@@ -68,10 +67,17 @@ const MainContent = () => {
     setSearchTerm(e.target.value.toLowerCase());
   };
 
-  // Corrected search logic using the appointments state
-  const filteredAppointments = appointments.filter((appointment) =>
+  // Filter upcoming appointments
+  const upcomingAppointments = appointments.filter((appointment) => {
+    const appointmentDate = moment(appointment.date);
+    const isUpcoming = appointmentDate.isSameOrAfter(moment()); // Checks if appointment date is today or in the future
+    return isUpcoming;
+  });
+
+  // Further filter appointments based on search term
+  const filteredAppointments = upcomingAppointments.filter((appointment) =>
     (appointment.title && appointment.title.toLowerCase().includes(searchTerm)) ||
-    (appointment.date && appointment.date.includes(searchTerm)) ||
+    (appointment.date && moment(appointment.date).format('MMMM Do, YYYY').toLowerCase().includes(searchTerm)) ||
     (appointment.time && appointment.time.includes(searchTerm)) ||
     (appointment.patientName && appointment.patientName.toLowerCase().includes(searchTerm)) ||
     (appointment.doctorName && appointment.doctorName.toLowerCase().includes(searchTerm))
@@ -89,13 +95,13 @@ const MainContent = () => {
         />
       </div>
       <div className="main-appo">
-      {appointments.length > 0 ? (
+      {filteredAppointments.length > 0 ? (
        filteredAppointments.map((appointment) => (
           <AppointmentCard
             key={appointment._id}          // React's key for rendering list items efficiently
             id={appointment._id}           // Custom id prop to be used in the component
             title={appointment.title || `Appointment with ${appointment.patientName}`}
-            date={appointment.date}
+            date={moment(appointment.date).format('MMMM Do, YYYY')}
             time={appointment.time}
             patient={appointment.patientName}  // Use fetched patientName
             doctor={appointment.doctorName}    // Use fetched doctorName
@@ -103,7 +109,7 @@ const MainContent = () => {
           />
         ))
       ) : (
-        <div>No appointments available</div>
+        <div>No upcoming appointments available</div>
       )}
       </div>
     </div>

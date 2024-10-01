@@ -9,7 +9,7 @@ const Sidebar = () => {
                 <NavLink to="/patient/makeappo">Make Appointment</NavLink>
                 <NavLink to="/patient/doctor">Doctor</NavLink>
                 <NavLink to="/patient/hospital/">Hospital</NavLink>
-                <a href="#">Medical History</a>
+                <NavLink to="/patient/medicalhistory/">Medical History</NavLink>
                 <NavLink to="/patient/profile">Profile</NavLink>
             </div>
   );
