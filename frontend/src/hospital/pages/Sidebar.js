@@ -12,7 +12,6 @@ const Sidebar = () => {
                 <a href="#">Hospital</a>
                 <a href="#">Medical History</a>
                 <a href="#">Prescriptions</a>
-                {/* <a href="#">Profile</a> */}
                 <NavLink to="/patient/profile">Profile</NavLink>
                 <a href="#">Settings</a>
             </div>

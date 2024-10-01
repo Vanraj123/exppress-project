@@ -9,8 +9,8 @@ import './Hospital.css';
 const Hospital = () => {
   return (
     <div className="app-container">
-
-      <Sidebar />
+      <Header/>
+      <Sidebar_pat />
       <div className="main-hospitalList">
         <h2>Hospital List</h2>
         <HospitalList />
