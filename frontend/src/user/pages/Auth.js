@@ -31,6 +31,7 @@ const Auth = () => {
       });
 
       const data = await response.json();
+      console.log(data);
       if(userType == "patient"){
       const userId = data.user._id;
       // console.log('Extracted userId:', userId);
@@ -42,7 +43,22 @@ const Auth = () => {
       console.log('Login successful:', patientdata);
       }
       navigate("/patient");
-      }else{
+      }else if(userType == "receptionist"){
+        // console.log(":hghghghghhg");
+        const userId = data.user._id;
+        // console.log(userId);
+        if (userId) {
+          // console.log(":hiiiiiiiiii");
+          const receptionist = await fetch(`http://localhost:5000/api/receptionists/${userId}`); 
+          // console.log(receptionist);
+          const receptionistdata = await receptionist.json();
+          // console.log(receptionistdata);
+          auth.login(data.user._id,receptionistdata.receptionist.receptionistName ,receptionistdata.receptionist._id);
+          console.log('Login successful:', receptionistdata);
+          // console.log(receptionistdata.receptionist._id);
+          }
+        navigate("/receptionist");
+      }else {
         const userId = data.user._id;
         if (userId) {
           const doctor = await fetch(`http://localhost:5000/api/doctors/${userId}`); 
@@ -113,6 +129,16 @@ const Auth = () => {
             />
             Patient
           </label>
+          <label>
+            <input
+              type="radio"
+              value="receptionist"
+              checked={userType === "receptionist"}
+              onChange={(e) => setUserType(e.target.value)}
+            />
+            Receptionist
+          </label>
+          
         </div>
 
         <button type="submit">Login</button>

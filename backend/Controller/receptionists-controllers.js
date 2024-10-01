@@ -21,6 +21,37 @@ const getReceptionist = async (req, res, next) => {
 };
 
 
+const getbyuser = async (req, res, next) => {
+  const userId = req.params.userid;
+  const user = new mongoose.Types.ObjectId(userId);
+  let receptionist;
+  try {
+    receptionist = await Receptionist.findOne({ user: user })
+ } catch (err) {
+   const error = new HttpError(
+     'Fetching users failed, please try again later.',
+     500
+   );
+ }
+ res.status(200).json({ receptionist: receptionist.toObject({ getters: true }) });
+};
+
+const getbyid = async (req, res, next) => {
+  const Id = req.params.id;
+  const recep = new mongoose.Types.ObjectId(Id);
+  let receptionist;
+  try {
+    receptionist = await Receptionist.findById(recep);
+ } catch (err) {
+   const error = new HttpError(
+     'Fetching users failed, please try again later.',
+     500
+   );
+ }
+ res.status(200).json({ receptionist: receptionist.toObject({ getters: true }) });
+};
+
+
 const signup = async (req, res, next) => {
  const errors = validationResult(req);
  if (!errors.isEmpty()) {
@@ -28,7 +59,7 @@ const signup = async (req, res, next) => {
      new HttpError('Invalid inputs passed, please check your data.', 422)
    );
  }
- const {user,hospital,receptionistContact,receptionistEmail,adminAddress} = req.body;
+ const {user,hospital,receptionistName,receptionistContact,receptionistEmail,adminAddress} = req.body;
 
 
  let existingReceptionist 
@@ -52,6 +83,7 @@ const signup = async (req, res, next) => {
   const createdReceptionist = new Receptionist({
     user,
     hospital,
+    receptionistName,
     receptionistContact,
     receptionistEmail,
     adminAddress
@@ -141,5 +173,7 @@ const updateReceptionist = async (req, res, next) => {
 
 exports.getReceptionist = getReceptionist;
 exports.signup = signup;
+exports.getbyid = getbyid;
+exports.getbyuser = getbyuser;
 exports.deleteReceptionist = deleteReceptionist;
 exports.updateReceptionist = updateReceptionist;

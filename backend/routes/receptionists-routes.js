@@ -9,7 +9,8 @@ const router = express.Router();
 
 
 router.get('/', receptionistsController.getReceptionist);
-
+router.get('/:userid', receptionistsController.getbyuser);
+router.get('/hos/:id', receptionistsController.getbyid);
 
 router.post(
  '/',

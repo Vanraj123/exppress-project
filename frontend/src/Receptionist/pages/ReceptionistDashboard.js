@@ -1,276 +1,179 @@
-// import React, { useEffect, useState } from 'react';
-// import axios from 'axios';
-// import './ReceptionistDashboard.css'; // Custom styles for this page
-// import { NavLink } from 'react-router-dom';
-// import Footer from '../../shared/Footer';
-
-// const ReceptionistDashboard = () => {
-//     const [pendingAppointments, setPendingAppointments] = useState([]);
-//     const [confirmedAppointments, setConfirmedAppointments] = useState([]);
-//     const [canceledAppointments, setCanceledAppointments] = useState([]);
-//     const [loading, setLoading] = useState(true);
-//     const [error, setError] = useState(null);
-
-//     const receptionistName = "Alice Brown"; // You can get this dynamically from context or state
-
-//     // Fetch appointments on component load
-//     useEffect(() => {
-//         const fetchAppointments = async () => {
-//             try {
-//                 const response = await axios.get('/api/appointments'); // Adjust API endpoint as necessary
-//                 const { pending, confirmed, canceled } = response.data; // Adjust based on your API response structure
-
-//                 setPendingAppointments(pending);
-//                 setConfirmedAppointments(confirmed);
-//                 setCanceledAppointments(canceled);
-//             } catch (err) {
-//                 setError('Error fetching appointments.');
-//             } finally {
-//                 setLoading(false);
-//             }
-//         };
-//         fetchAppointments();
-//     }, []);
-
-//     if (loading) return <p>Loading appointments...</p>;
-//     if (error) return <p>{error}</p>;
-
-//     return (
-//         <div>
-//             <div className="header">
-//                 <div className="logo">
-//                     <h1>Reception App</h1>
-//                 </div>
-//                 <div className="welcome-message">
-//                     <span>Welcome, {receptionistName}</span>
-//                 </div>
-//                 <div className="user-menu">
-//                     <span>{receptionistName}</span> | <a href="#" style={{ color: 'white' }}>Logout</a>
-//                 </div>
-//             </div>
-//             <div className="sidebar">
-//                 <NavLink to="/receptionist/dashboard">Dashboard</NavLink>
-//                 <NavLink to="/receptionist/appointments">Appointments</NavLink>
-//                 <NavLink to="/receptionist/manage">Manage</NavLink>
-//                 <NavLink to="/receptionist/profile">Profile</NavLink>
-//                 <a href="#">Settings</a>
-//             </div>
-//             <div className="main">
-//                 <h2>Dashboard</h2>
-//                 <div className="stats">
-//                     <div className="stat-card">
-//                         <h3>Pending Appointments</h3>
-//                         <p>{pendingAppointments.length}</p>
-//                     </div>
-//                     <div className="stat-card">
-//                         <h3>Confirmed Appointments</h3>
-//                         <p>{confirmedAppointments.length}</p>
-//                     </div>
-//                     <div className="stat-card">
-//                         <h3>Canceled Appointments</h3>
-//                         <p>{canceledAppointments.length}</p>
-//                     </div>
-//                 </div>
-//                 <div className="card pending-appointments">
-//                     <h3>Pending Appointments</h3>
-//                     <ul>
-//                         {pendingAppointments.map((appointment, index) => (
-//                             <li key={index}>{appointment.time} - {appointment.patient}</li>
-//                         ))}
-//                     </ul>
-//                 </div>
-//                 <div className="card confirmed-appointments">
-//                     <h3>Confirmed Appointments</h3>
-//                     <ul>
-//                         {confirmedAppointments.map((appointment, index) => (
-//                             <li key={index}>{appointment.time} - {appointment.patient}</li>
-//                         ))}
-//                     </ul>
-//                 </div>
-//                 <div className="card canceled-appointments">
-//                     <h3>Canceled Appointments</h3>
-//                     <ul>
-//                         {canceledAppointments.map((appointment, index) => (
-//                             <li key={index}>{appointment.time} - {appointment.patient}</li>
-//                         ))}
-//                     </ul>
-//                 </div>
-//                 <div className="card profile">
-//                     <h3>Profile</h3>
-//                     <p>Name: {receptionistName}</p>
-//                     <p>Email: receptionist@example.com</p>
-//                     <p>Phone: 123-456-7890</p>
-//                 </div>
-//             </div>
-//             <Footer />
-//         </div>
-//     );
-// };
-
-// export default ReceptionistDashboard;
-
-import React, { useState, useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import './ReceptionistDashboard.css'; // Custom styles for this page
-import { NavLink, useLoaderData } from 'react-router-dom';
-import Footer from '../../shared/Footer';
 import Sidebar from './Sidebar';
 import Header from '../../shared/Header';
+import { AuthContext } from '../../shared/context/auth-context';
 
 const ReceptionistDashboard = () => {
-    const receptionistName = "Alice Brown"; // You can get this dynamically from context or state
-    const [appointment, setappointment] = useState("");
-    const pendingAppointments = [
-        { time: "9:00 AM", patient: "John Doe" ,doctor: "Dr.John Doe"},
-        { time: "10:30 AM", patient: "Jane Smith",doctor: "Dr.John Doe" },
-        { time: "1:00 PM", patient: "Michael Lee",doctor: "Dr.John Doe" }
-    ];
+  const [appointments, setAppointments] = useState([]);
+  const [doctorDetails, setDoctorDetails] = useState({});
+  const [patientDetails, setPatientDetails] = useState({});
+  const [loading, setLoading] = useState(true);
+  const [hospitalId, setHospitalId] = useState(null);
+  const [error, setError] = useState(null);
+  const auth = useContext(AuthContext); // Assuming the AuthContext provides roleid or receptionist ID
 
-    const useLoaderData = async() => {
-    try {
-        const hosId = "66b310f22787242ec946b79a";
-        const response = await fetch(`http://localhost:5000/api/appointments/hos/${hosId}` , {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        });
-  
+  // Fetch hospital ID based on receptionist's roleid
+  useEffect(() => {
+    const fetchHospitalId = async () => {
+      try {
+        const response = await fetch(`http://localhost:5000/api/receptionists/hos/${auth.roleid}`);
         const data = await response.json();
-        setappointment(data);
-      //   auth.login();
-        if (response.ok) {
-          // Handle success, e.g., store the token, redirect, etc.
-          console.log('Login successful:', data);
-          // if(userType == "doctor"){
-          //   navigate("/doc");
-          // }else{
-          //   navigate("/patient");
-          // }
+
+        if (response.ok && data.receptionist && data.receptionist.hospital) {
+          setHospitalId(data.receptionist.hospital); // Assuming API returns hospitalId
         } else {
-          // Handle error
-          console.log(data.message || 'Login failed');
+          throw new Error(data.message || 'Failed to fetch hospital ID.');
         }
-        
-      } catch (error) {
-        
+      } catch (err) {
+        setError(err.message);
+        setLoading(false);
       }
+    };
+    if (auth.roleid) {
+      fetchHospitalId();
     }
-    useLoaderData();
-    const handleConfirm = async (e) => {
-        e.preventDefault();
+  }, [auth.roleid]);
+
+  // Fetch appointments for the hospital once hospitalId is available
+  useEffect(() => {
+    const fetchAppointments = async () => {
+      if (hospitalId) {
         try {
-          const ap_id = "66f91f8a19f38dec3aebcdfa";
-          const response = await fetch(`http://localhost:5000/api/appointments/appo/${ap_id}` , {
-            method: 'PATCH',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-          });
-    
+          const response = await fetch(`http://localhost:5000/api/appointments/hos/${hospitalId}`);
           const data = await response.json();
-          
-        //   auth.login();
+
           if (response.ok) {
-            // Handle success, e.g., store the token, redirect, etc.
-            console.log('Login successful:', data);
-            // if(userType == "doctor"){
-            //   navigate("/doc");
-            // }else{
-            //   navigate("/patient");
-            // }
+            const pendingAppointments = Array.isArray(data.appointment)
+              ? data.appointment.filter((appointment) => appointment.status === 'Pending')
+              : [];
+              
+            setAppointments(pendingAppointments); // Store only pending appointments
           } else {
-            // Handle error
-            console.log(data.message || 'Login failed');
+            throw new Error(data.message || 'Failed to load appointments.');
           }
-          
-        } catch (error) {
-          
+        } catch (err) {
+          setError(err.message);
+        } finally {
+          setLoading(false);
         }
-        // Add login logic here (e.g., Firebase authentication or other login service)
-        // console.log("Email:", email);
-        // console.log("Password:", password);
-        // console.log("User Type:", userType); // Log the selected user type
-        
-      };
-    
-    // const confirmedAppointments = [
-    //     { time: "11:00 AM", patient: "Sarah Connor" },
-    //     { time: "2:00 PM", patient: "Bruce Wayne" },
-    //     { time: "4:00 PM", patient: "Diana Prince" }
-    // ];
+      }
+    };
 
-    // const canceledAppointments = [
-    //     { time: "3:00 PM", patient: "Peter Parker" },
-    //     { time: "5:30 PM", patient: "Tony Stark" }
-    // ];
+    fetchAppointments();
+  }, [hospitalId]);
 
-    return (
-        <div>
-          <Header/>
-            {/* <div className="header">
-                <div className="logo">
-                    <h1>Reception App</h1>
-                </div>
-                <div className="welcome-message">
-                    <span>Welcome, {receptionistName}</span>
-                </div>
-                <div className="user-menu">
-                    <span>{receptionistName}</span> | <a href="#" style={{ color: 'white' }}>Logout</a>
-                </div>
-            </div> */}
-            {/* <div className="sidebar">
-                <NavLink to="/receptionist/dashboard">Dashboard</NavLink>
-                <NavLink to="/receptionist/appointments">Appointments</NavLink>
-                <NavLink to="/receptionist/manage">Manage</NavLink>
-                <NavLink to="/receptionist/profile">Profile</NavLink>
-                <a href="#">Settings</a>
-            </div> */}
-            <Sidebar/>
-            <div className="main-recep">
-                <h2>Dashboard</h2>
-                <div className="stats">
-                    <div className="stat-card">
-                        <h3>Pending Appointments</h3>
-                        <p>{pendingAppointments.length}</p>
-                    </div>
-                    {/* <div className="stat-card">
-                        <h3>Confirmed Appointments</h3>
-                        <p>{confirmedAppointments.length}</p>
-                    </div>
-                    <div className="stat-card">
-                        <h3>Canceled Appointments</h3>
-                        <p>{canceledAppointments.length}</p>
-                    </div> */}
-                </div>
-                <h3>Pending Appointments</h3>
-                <div className="card pending-appointments">
-                    <ul>
-                        {pendingAppointments.map((appointment, index) => (
-                            <li key={index}>{appointment.doctor} - {appointment.time} - {appointment.patient}
-                            <button className='confirm_app' type='submit' onClick={handleConfirm}>Confirm</button></li>
-                        ))}
-                    </ul>
-                </div>
-                {/* <div className="card confirmed-appointments">
-                    <h3>Confirmed Appointments</h3>
-                    <ul>
-                        {confirmedAppointments.map((appointment, index) => (
-                            <li key={index}>{appointment.time} - {appointment.patient}</li>
-                        ))}
-                    </ul>
-                </div> */}
-                {/* <div className="card canceled-appointments">
-                    <h3>Canceled Appointments</h3>
-                    <ul>
-                        {canceledAppointments.map((appointment, index) => (
-                            <li key={index}>{appointment.time} - {appointment.patient}</li>
-                        ))}
-                    </ul>
-                </div> */}
-            </div>
-            {/* <Footer/>  */}
+  // Fetch doctor and patient names based on IDs
+  useEffect(() => {
+    const fetchDetails = async () => {
+      if (appointments.length > 0) {
+        try {
+          // Use a Set to track unique doctor and patient IDs
+          const doctorIds = new Set(appointments.map(appointment => appointment.doctor));
+          const patientIds = new Set(appointments.map(appointment => appointment.patient));
+
+          // Fetch doctor details
+          for (const id of doctorIds) {
+            const response = await fetch(`http://localhost:5000/api/doctors/doc/${id}`);
+            if (response.ok) {
+              const doctor = await response.json();
+              console.log(response);
+              if (doctor._id) {
+                setDoctorDetails((prev) => ({ ...prev, [doctor._id]: doctor.docName }));
+              }
+            } else {
+              console.error(`Error fetching doctor with ID ${id}: ${response.statusText}`);
+            }
+          }
+
+          // Fetch patient details
+          for (const id of patientIds) {
+            const response = await fetch(`http://localhost:5000/api/patients/pati/${id}`);
+            if (response.ok) {
+              const patient = await response.json();
+              if (patient._id) {
+                setPatientDetails((prev) => ({ ...prev, [patient._id]: patient.patientName }));
+              }
+            } else {
+              console.error(`Error fetching patient with ID ${id}: ${response.statusText}`);
+            }
+          }
+        } catch (err) {
+          console.error('Error fetching doctor or patient details:', err);
+          setError('Failed to load doctor or patient details.');
+        }
+      }
+    };
+
+    fetchDetails();
+  }, [appointments]);
+
+  // Handle appointment confirmation
+  const handleConfirm = async (appointmentId) => {
+    try {
+      const response = await fetch(`http://localhost:5000/api/appointments/appo/${appointmentId}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        // Remove the confirmed appointment from the list
+        setAppointments((prevAppointments) =>
+          prevAppointments.filter((appointment) => appointment._id !== appointmentId)
+        );
+        console.log('Appointment confirmed:', data);
+      } else {
+        throw new Error(data.message || 'Failed to confirm appointment.');
+      }
+    } catch (error) {
+      console.error('Error confirming appointment:', error);
+      setError('Failed to confirm the appointment. Please try again.');
+    }
+  };
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
+
+  return (
+    <div>
+      <Header />
+      <Sidebar />
+      <div className="main-recep">
+        <h2>Dashboard</h2>
+        <div className="stats">
+          <div className="stat-card">
+            <h3>Pending Appointments</h3>
+            <p>{appointments.length}</p>
+          </div>
         </div>
-    );
+        <h3>Pending Appointments</h3>
+        <div className="card pending-appointments">
+          <ul>
+            {appointments.map((appointment) => (
+              <li key={appointment._id}>
+                {doctorDetails[appointment.doctor]} - {appointment.time} - {patientDetails[appointment.patient]}
+                <button
+                  className='confirm_app'
+                  type='button'
+                  onClick={() => handleConfirm(appointment._id)}
+                >
+                  Confirm
+                </button>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default ReceptionistDashboard;

@@ -35,6 +35,7 @@ import PatientList from './admin/pages/PatientList';
 import DoctorList from './admin/pages/DoctorList';
 import ReceptionistList from './admin/pages/ReceptionistList';
 
+import ReceptionistAppointmentTable from './Receptionist/pages/ReceptionistAppointmentTable';
 
 import ProfileEdit_pat from './patient/pages/ProfileEdit_pat';
 import ProfileEdit_recep from './Receptionist/pages/ProfileEdit_recep';
@@ -77,6 +78,8 @@ const App = () => {
         <Route path="/receptionist/profile" element={<Profile_Recep />} />
         <Route path="/admin/profile" element={<Profile_Admin />} />
         <Route path="/patient/hospital" element={<Hospital />} />
+        <Route path="/receptionist" element={<ReceptionistDashboard/>}/>
+        <Route path="/receptionist/appointments" element={<ReceptionistAppointmentTable/>}/>
         <Route path="/patient/profile/edit-profile" element={<ProfileEdit_pat />} />
         {/* <Route path="/:userId/places" element={<UserPlaces />} />
         <Route path="/places/new" element={<NewPlace />} />
