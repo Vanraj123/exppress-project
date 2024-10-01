@@ -4,7 +4,7 @@ import { NavLink } from 'react-router-dom';
 import axios from 'axios';
 import { AuthContext } from "../../shared/context/auth-context";
 import { useNavigate } from 'react-router-dom';
-import Header from '../../shared/Header';
+import Header from './Header';
 import Sidebar from './Sidebar';
 const PatientDashboard = () => {
     const [appointments, setAppointments] = useState([]);
