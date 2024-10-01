@@ -4,7 +4,7 @@ import './Profile.css';
 
 const Profile = ({ userProfile, role }) => {
     const navigate = useNavigate();
-
+    const username = userProfile.name || '';
     // Navigate to the ProfileEdit page when 'Edit Profile' is clicked
     const handleEdit = () => {
         navigate('edit-profile'); // This assumes you have a route set up for '/edit-profile'
@@ -13,7 +13,8 @@ const Profile = ({ userProfile, role }) => {
     return (
         <div className="profile-container">
             <div className="profile-card">
-                <h2>{role.charAt(0).toUpperCase() + role.slice(1)} Profile</h2>
+                {/* <h2>{role.charAt(0).toUpperCase() + role.slice(1)} Profile</h2> */}
+                <h2>{username.charAt(0).toUpperCase() + username.slice(1)}</h2>
                 <div className="profile-info">
                     {/* Profile Image */}
                     <div className="profile-image">
@@ -37,22 +38,22 @@ const Profile = ({ userProfile, role }) => {
                         <span className="label">Address:</span>
                         <span className="value">{userProfile.address}</span>
                     </div>
-
-                    {/* Patient-specific fields */}
-                    {role === 'patient' && (
-                        <>
-                            <div className="profile-field">
+                    <div className="profile-field">
                                 <span className="label">Date of Birth:</span>
                                 <span className="value">{userProfile.dob}</span>
+                            </div>
+                    {/* Patient-specific fields */}
+                    {role === 'doctor' && (
+                        <>
+                            <div className="profile-field">
+                                <span className="label">Speciality:</span>
+                                <span className="value">{userProfile.specialization}</span>
                             </div>
                             <div className="profile-field">
                                 <span className="label">Gender:</span>
                                 <span className="value">{userProfile.gender}</span>
                             </div>
-                            <div className="profile-field">
-                                <span className="label">Medical ID:</span>
-                                <span className="value">{userProfile.medicalID}</span>
-                            </div>
+
                         </>
                     )}
                 </div>

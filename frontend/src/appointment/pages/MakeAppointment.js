@@ -6,6 +6,7 @@ import './MakeAppointment.css';
 import Header from '../../shared/Header';
 import Footer from '../../shared/Footer';
 import { NavLink } from 'react-router-dom';
+import Sidebar from '../../patient/pages/Sidebar';
 const MakeAppointment = () => {
     const auth = useContext(AuthContext);
     const [formData, setFormData] = useState({
@@ -101,15 +102,15 @@ const MakeAppointment = () => {
                 </div>
             </div> */}
             <Header/>
-            <div className="sidebar">
+            {/* <div className="sidebar">
                 <a href="#">Dashboard</a>
                 <a href="#">Upcoming Appointments</a>
                 <a href="#">Medical History</a>
                 <a href="#">Prescriptions</a>
                 <NavLink to="/patient/profile">Profile</NavLink>
                 <a href="#">Settings</a>
-            </div>
-
+            </div> */}
+            <Sidebar/>
             <div className="main-make_appoint">
                 {/* <h2>Make an Appointment</h2>
                 <div className="form-card"> */}

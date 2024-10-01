@@ -1,5 +1,5 @@
 import React from 'react';
-
+import './Patient.css';
 const PatientCard = ({ patient }) => {
   const address = patient.patientAddress || {}; // Safeguard against undefined address
   const {
@@ -12,7 +12,7 @@ const PatientCard = ({ patient }) => {
 
   return (
     <div className="patient-card">
-      <img src={patient.image || 'default.jpg'} alt={patient.patientName} />
+      <img src={patient.image || 'https://cdn2.iconfinder.com/data/icons/medical-flat-icons-part-2/513/95-1024.png'} alt={patient.patientName} />
       <div className="patient-details">
         <h3>{patient.patientName}</h3>
         {/* <p>Condition: {patient.condition || 'N/A'}</p> */}

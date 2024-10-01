@@ -16,6 +16,7 @@ const doctorSchema = new Schema({
    docContact: { type: String},
    docQualification: { type: String},
    docQualificationForm: { type: String },
+   DOB: {type: Date},
    docAddress: {
     cityOrVillage: { type: String },
     pincode: { type: String },

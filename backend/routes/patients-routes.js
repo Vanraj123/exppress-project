@@ -11,7 +11,7 @@ const router = express.Router();
 router.get('/', patientsController.getPatient);
 router.get('/doc/:docid', patientsController.getbydoc);
 router.get('/pati/:patientid', patientsController.getbypati);
-
+router.get('/doc/patients/:docid',patientsController.getByDoctor)
 router.post(
  '/',
  patientsController.signup

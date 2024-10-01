@@ -6,10 +6,10 @@
 }
 
 .main {
-    margin-left: 200px;
+    margin-left: 40vh;
     padding: 20px;
     padding-top: 80px; /* Adjusted for fixed header */
-    width: calc(100% - 200px);
+    width: calc(175vh - 10px);
     overflow-y: auto;
     transition: margin-left 0.3s, width 0.3s;
 }

@@ -13,8 +13,7 @@ const ProfileEdit = ({ userProfile, role, onSave }) => {
         address: userProfile.address || '',
         dob: userProfile.dob || '',
         gender: userProfile.gender || '',
-        medicalID: userProfile.medicalID || '',
-        image: userProfile.imageUrl || '' // Assuming imageUrl holds the current profile picture URL
+        image: userProfile.imageUrl || 'https://tse1.mm.bing.net/th?id=OIP.L-PLw9YL0s6ErCIcuprlKgAAAA&pid=Api&P=0&h=180' // Assuming imageUrl holds the current profile picture URL
     });
 
     const [selectedImage, setSelectedImage] = useState(null);
@@ -39,7 +38,7 @@ const ProfileEdit = ({ userProfile, role, onSave }) => {
         // Call the onSave function passed via props
         onSave(editProfile);
         // Navigate back to the profile page after saving
-        navigate('/profile');
+        navigate('/patient/profile/');
     };
 
     return (
@@ -100,11 +99,7 @@ const ProfileEdit = ({ userProfile, role, onSave }) => {
                             onChange={handleInputChange}
                         />
                     </div>
-
-                    {/* Patient-specific fields */}
-                    {role === 'patient' && (
-                        <>
-                            <div className="profile-edit-field">
+                    <div className="profile-edit-field">
                                 <label className="label">Date of Birth:</label>
                                 <input
                                     type="date"
@@ -126,12 +121,16 @@ const ProfileEdit = ({ userProfile, role, onSave }) => {
                                     <option value="other">Other</option>
                                 </select>
                             </div>
+                            
+                    {/* Patient-specific fields */}
+                    {role === 'doctor' && (
+                        <>
                             <div className="profile-edit-field">
-                                <label className="label">Medical ID:</label>
+                                <label className="label">specialization:</label>
                                 <input
-                                    type="text"
-                                    name="medicalID"
-                                    value={editProfile.medicalID}
+                                    type="date"
+                                    name="dob"
+                                    value={editProfile.docSpeciality}
                                     onChange={handleInputChange}
                                 />
                             </div>

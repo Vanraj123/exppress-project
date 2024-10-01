@@ -1,6 +1,6 @@
 import React from 'react';
 import Header from '../../shared/Header';
-import Sidebar from './Sidebar';
+import Sidebar from '../../patient/pages/Sidebar';
 import DoctorList from './DoctorList';
 import Footer from '../../shared/Footer';
 import "./Doctor.css";
