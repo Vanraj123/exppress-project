@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import './Header.css'; // Apply custom styles from the CSS file
 import { AuthContext } from '../shared/context/auth-context'; // Adjust the path to where your AuthContext is defined
-
+import { NavLink } from 'react-router-dom';
 const Header = () => {
   const { isLoggedIn, username, logout } = useContext(AuthContext); // Destructure values from context
 
@@ -22,7 +22,7 @@ const Header = () => {
           <div className="user-menu">
             <span>{username}</span>
             <span className="separator">|</span>
-            <a href="#" onClick={logout} className="logout-link">Logout</a>
+            <NavLink to="/" onClick={logout} className="logout-link">Logout</NavLink>
           </div>
         )}
       </div>

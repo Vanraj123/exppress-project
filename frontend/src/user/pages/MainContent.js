@@ -3,7 +3,7 @@ import './Dashboard.css'; // Separate CSS file
 import StatCard from './StatCard.js';
 import axios from 'axios';
 import { AuthContext } from '../../shared/context/auth-context'; // Assuming AuthContext is properly set up
-
+import AppointmentCalendar from './AppointmentCalendar.js';
 const MainContent = () => {
     const auth = useContext(AuthContext); // Get the logged-in user's info
     const [stats, setStats] = useState({
@@ -12,6 +12,7 @@ const MainContent = () => {
         totalPatients: 0,
     });
     const [appointments, setAppointments] = useState([]); // Add state to store all appointments
+    const [patients, setPatients] = useState({}); // State to store patient details
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
@@ -30,16 +31,28 @@ const MainContent = () => {
                         const appointmentDate = new Date(appointment.date);
                         const currentDate = new Date();
                         return appointmentDate >= currentDate; // Check if appointment date is in the future
-                    }).length;
+                    });
 
                     // Set appointments in state
                     setAppointments(allAppointments); // Save all appointments to state
 
-                    console.log("Upcoming Appointments:", upcomingAppointments);
+                    // Fetch patient details for each appointment
+                    const patientPromises = allAppointments.map(appointment => {
+                        return axios.get(`http://localhost:5000/api/patients/pati/${appointment.patient}`); // Adjust if patientId is different
+                    });
+
+                    const patientResponses = await Promise.all(patientPromises);
+                    const patientData = {};
+                    patientResponses.forEach(response => {
+                        const patient = response.data; // Adjust according to your API response
+                        patientData[patient._id] = patient; // Use patient ID as the key
+                    });
+
+                    setPatients(patientData); // Store patients data in state
 
                     setStats({
                         totalAppointments: totalAppointments,
-                        upcomingAppointments: upcomingAppointments, // Set the count of upcoming appointments
+                        upcomingAppointments: upcomingAppointments.length, // Set the count of upcoming appointments
                         totalPatients: response.data.totalPatients || 0 // Adjust according to your API response
                     });
                 }
@@ -76,18 +89,28 @@ const MainContent = () => {
                 <ul>
                     {/* Use the state variable `appointments` to display upcoming appointments */}
                     {appointments.filter(appointment => new Date(appointment.date) >= new Date())
-                        .map((appointment, index) => (
-                            <li key={index}>
-                                {appointment.date} - {appointment.time}
-                            </li>
-                    ))}
+                        .map((appointment, index) => {
+                            // const patient = patients[appointment.patient]; // Retrieve patient details
+                            // console.log(patient);
+                            return (
+                                <li key={index}>
+                                    {/* Format date and display patient name */}
+                                    {new Date(appointment.date).toLocaleDateString('en-US', { 
+                                        year: 'numeric', 
+                                        month: 'long', 
+                                        day: 'numeric' 
+                                    })} - {appointment.time} 
+                                </li>
+                            );
+                    })}
                 </ul>
             </div>
 
             <div className="card calendar">
                 <h3>Calendar</h3>
-                <p>Calendar widget goes here</p>
+                <p><AppointmentCalendar appointments={appointments} /></p>
             </div>
+             {/* Add Calendar Component */}
 
             <div className="card recent-activity">
                 <h3>Recent Activity</h3>
