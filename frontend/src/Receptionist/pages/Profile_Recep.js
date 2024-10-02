@@ -16,18 +16,21 @@ const Profile_Recep = () => {
         const fetchReceptionistProfile = async () => {
             try {
                 setLoading(true);
-                const receptionistId = auth.roleid;
-                const response = await axios.get(`http://localhost:5000/api/receptionists/${receptionistId}`);
-                console.log(response.data.receptionist); // Log the raw response for debugging
+                const receptionistId = auth.roleid; // Assuming 'auth.roleid' is the correct receptionist ID
+                const response = await axios.get(`http://localhost:5000/api/receptionists/recep/${receptionistId}`);
+                console.log(response.data.receptionist); // Log for debugging purposes
 
-                // Structure userProfile object based on response data
                 const receptionistData = response.data.receptionist;
+
+                // Format the address object as a string or render it in another way
+                const formattedAddress = `${receptionistData.address.streetOrSociety}, ${receptionistData.address.cityOrVillage}, ${receptionistData.address.state}, ${receptionistData.address.country}, ${receptionistData.address.pincode}`;
+
                 const formattedProfile = {
-                    name: receptionistData.name,
-                    email: receptionistData.email,
+                    name: receptionistData.name, 
+                    email: receptionistData.email, 
                     phone: receptionistData.phone,
-                    address: receptionistData.address,
-                    dob: receptionistData.DOB || '', // Assuming DOB may not be available
+                    address: formattedAddress, // Now a formatted string
+                    dob: receptionistData.DOB || '',
                     gender: receptionistData.gender || '',
                     imageUrl: receptionistData.imageUrl || 'https://tse1.mm.bing.net/th?id=OIP.lsBQVUAihgwVe46z7gNq5wAAAA&pid=Api&P=0&h=180'
                 };

@@ -12,6 +12,9 @@ const  receptionist= new Schema({
    receptionistContact: { type: String, required: true },
    receptionistEmail: { type: String, required: true },
    receptionistName: {type:String, require:true},
+   gender: { type: String, required: true},
+   DOB: { type: Date, required: true},
+   imageUrl: { type: String, required: true},
    receptionistAddress: {
        cityvillage:{ type: String },
        pincode:{ type: Number },

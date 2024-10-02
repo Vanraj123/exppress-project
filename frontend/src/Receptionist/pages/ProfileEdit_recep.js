@@ -18,7 +18,7 @@ const ProfileEdit_Recep = () => {
             try {
                 setLoading(true);
                 const receptionistId = auth.roleid;
-                const response = await axios.get(`http://localhost:5000/api/receptionists/${receptionistId}`);
+                const response = await axios.get(`http://localhost:5000/api/receptionists/recep/${receptionistId}`);
                 console.log(response.data.receptionist); // Log the raw response for debugging
 
                 // Structure userProfile object based on response data

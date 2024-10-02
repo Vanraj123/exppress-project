@@ -175,9 +175,38 @@ const updateReceptionist = async (req, res, next) => {
   res.status(200).json({ receptionist: receptionist.toObject({ getters: true }) });
 };
 
+const getReceptionistById = async (req, res) => {
+  try {
+    const receptionistId = req.params.recep_id; // match with your route param
+    const receptionist = await Receptionist.findById(receptionistId);
+
+    if (!receptionist) {
+      return res.status(404).json({ message: 'Receptionist not found' });
+    }
+
+    // Return receptionist data with field names matching the frontend
+    res.status(200).json({
+      receptionist: {
+        name: receptionist.receptionistName, // Frontend expects 'name'
+        email: receptionist.receptionistEmail, // Frontend expects 'email'
+        phone: receptionist.receptionistContact, // Frontend expects 'phone'
+        address: receptionist.receptionistAddress, // Frontend expects 'address'
+        DOB: receptionist.DOB, // Date of birth
+        gender: receptionist.gender, // Gender
+        imageUrl: receptionist.imageUrl // Image URL
+      }
+    });
+  } catch (error) {
+    console.error('Error fetching receptionist by ID:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+
 exports.getReceptionist = getReceptionist;
 exports.signup = signup;
 exports.getbyid = getbyid;
 exports.getbyuser = getbyuser;
 exports.deleteReceptionist = deleteReceptionist;
 exports.updateReceptionist = updateReceptionist;
+exports.getReceptionistById = getReceptionistById;

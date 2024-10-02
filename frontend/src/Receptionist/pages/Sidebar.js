@@ -5,9 +5,9 @@ const Sidebar = () => {
     <div className="sidebar">
       <NavLink to="/receptionist/">Dashboard</NavLink>
       <NavLink to="/receptionist/appointments">Appointments</NavLink>
-      <NavLink to="/receptionist/manage">Manage</NavLink>
+      {/* <NavLink to="/receptionist/manage">Manage</NavLink> */}
       <NavLink to="/receptionist/profile">Profile</NavLink>
-      <a href="#">Settings</a>
+      {/* <a href="#">Settings</a> */}
     </div>
   );
 };
