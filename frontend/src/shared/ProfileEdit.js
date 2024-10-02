@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './ProfileEdit.css';
-
+import moment from 'moment';
 const ProfileEdit = ({ userProfile, role, onSave }) => {
     const navigate = useNavigate();
 
@@ -11,11 +11,15 @@ const ProfileEdit = ({ userProfile, role, onSave }) => {
         email: userProfile.email || '',
         phone: userProfile.phone || '',
         address: userProfile.address || '',
-        dob: userProfile.dob || '',
+        dob: userProfile.dob ? moment(userProfile.dob, 'DD-MM-YYYY').isValid() 
+        ? moment(userProfile.dob, 'DD-MM-YYYY').format('YYYY-MM-DD') 
+        : '' 
+        : '',
+        specialization : userProfile.specialization || '',
         gender: userProfile.gender || '',
         image: userProfile.imageUrl || 'https://tse1.mm.bing.net/th?id=OIP.L-PLw9YL0s6ErCIcuprlKgAAAA&pid=Api&P=0&h=180' // Assuming imageUrl holds the current profile picture URL
     });
-
+    console.log(userProfile.dob);
     const [selectedImage, setSelectedImage] = useState(null);
 
     // Handle form input changes
@@ -105,7 +109,7 @@ const ProfileEdit = ({ userProfile, role, onSave }) => {
                                     type="date"
                                     name="dob"
                                     value={editProfile.dob}
-                                    onChange={handleInputChange}
+                                    onChange={handleInputChange}  
                                 />
                             </div>
                             <div className="profile-edit-field">
@@ -130,7 +134,7 @@ const ProfileEdit = ({ userProfile, role, onSave }) => {
                                 <input
                                     type="text"
                                     name="specialization"
-                                    value={editProfile.docSpeciality}
+                                    value={editProfile.specialization}
                                     onChange={handleInputChange}
                                 />
                             </div>

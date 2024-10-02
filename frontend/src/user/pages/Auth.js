@@ -9,6 +9,7 @@ const Auth = () => {
   const navigate = useNavigate();
   const [isLoginMode, setIsLoginMode] = useState(false);
   
+  const [errorMessage, setErrorMessage] = useState("");
 
   // State to hold email, password, and user type (Doctor or Patient)
   const [email, setEmail] = useState("");
@@ -81,7 +82,7 @@ const Auth = () => {
       }
       
     } catch (error) {
-      
+      setErrorMessage("Login failed! please fill correct Credentials");
     }
     // Add login logic here (e.g., Firebase authentication or other login service)
     console.log("Email:", email);
@@ -93,6 +94,7 @@ const Auth = () => {
   return (
     <div className="login-container">
       <h2>{isLoginMode ? "Signup" : "Login"}</h2>
+      {errorMessage && <p className="error-message">{errorMessage}</p>} {/* Display error message */}
       <form onSubmit={handleSubmit}>
         <input
           type="email"

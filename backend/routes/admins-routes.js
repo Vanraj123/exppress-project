@@ -25,6 +25,6 @@ router.patch('/:adminId', adminsController.updateAdmin);
 
 
 // router.post('/login', usersController.login);
-
-
+router.get('/metrics', adminsController.matrics);
+router.get('/notifications', adminsController.notification);
 module.exports = router;

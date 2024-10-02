@@ -1,7 +1,14 @@
 /* common.css */
 
 .list-container {
+    margin-left: 40vh;
+    margin-bottom: 40px;
+    margin-top: 20px;
     padding: 20px;
+    padding-top: 80px;
+    width: calc(200vh - 300px);
+    overflow-y: auto;
+    transition: margin-left 0.3s, width 0.3s;
 }
 
 .list-title {
@@ -37,6 +44,77 @@
 .list-item p {
     margin: 5px 0;
     color: #555;
+}
+.search-bar-admin {
+    position: fixed;
+    margin-left: 70vh;
+    width: 50%;
+    top: 50pt;
+    overflow-x: auto; /* Enable vertical scrolling if content overflows */
+    transition: margin-left 0.3s, width 0.3s;
+}
+
+.card-list {
+    /* display: flex; */
+   /* flex-wrap: wrap; /* Allow cards to wrap */
+    justify-content: space-between; /* Space out the cards */
+    display: grid; /* Use grid for layout */
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap:20px;
+}
+
+/* common.css */
+
+.hospital-cards-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); /* Ensure 3 columns or fewer per row */
+    gap: 20px;
+    padding: 20px;
+}
+
+.card {
+    background-color: #f9f9f9; /* Light background for card */
+    border: 1px solid #ccc; /* Light border */
+    border-radius: 8px; /* Rounded corners */
+    padding: 16px; /* Spacing inside card */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    transition: transform 0.2s; /* Animation effect */
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center the content inside the card */
+    text-align: center;
+}
+.card:hover {
+    transform: translateY(-2px); /* Lift effect on hover */
+}
+
+.card img {
+    margin: auto;
+    border-radius: 10px;
+    width: auto; /* Fixed size for the image */
+    height: 150px; /* Ensure the image remains a square */
+    /*border-radius: 50%; /* Create a circular image */
+    object-fit: cover; /* Cover the image fully within the circle, cropping excess */
+    object-position: center; /* Center the image */
+}
+
+.card-title {
+    margin: 0 0 10px; /* Space below title */
+}
+.card p{
+    font-size: 14px;
+  color: #666;
+  margin: 5px 0;
+}
+.search-bar {
+    margin-left: 60vh; /* Margin around search bar */
+}
+
+.search-bar input {
+    padding: 10px;
+    width: 100%; /* Full width input */
+    border: 1px solid #ccc; /* Border for input */
+    border-radius: 4px; /* Rounded corners */
 }
 
 /* Additional styles for responsiveness */

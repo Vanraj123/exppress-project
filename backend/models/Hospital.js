@@ -15,7 +15,7 @@ const hospitalSchema = new Schema({
         pincode:{ type: Number, required: true },
         state:{ type: String, required: true },
         country:{ type: String, required: true },
-        streerorsocity:{ type: String, required: true },
+        streetOrSociety:{ type: String, required: true },
     }
    
 },{ collection: 'Hospital' });

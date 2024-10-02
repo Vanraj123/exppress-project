@@ -2,6 +2,10 @@ const { validationResult } = require('express-validator');
 const HttpError = require('../models/http-error');
 const Admin = require('../models/Admin');
 const User = require('../models/User');
+const Doctor = require('../models/Doctor');  
+const Patient = require('../models/Patient');
+const Hospital = require('../models/Hospital');
+const Receptionist = require('../models/Receptionist');
 const mongoose = require('mongoose');
 const getAdmin = async (req, res, next) => {
   let admins;
@@ -140,7 +144,41 @@ const updateAdmin = async (req, res, next) => {
   res.status(200).json({ admin: admin.toObject({ getters: true }) });
 };
 
+const matrics = async (req, res) => {
+  try {
+      const [totalDoctors, totalPatients, totalHospitals, totalReceptionists] = await Promise.all([
+          Doctor.countDocuments(),
+          Patient.countDocuments(),
+          Hospital.countDocuments(),
+          Receptionist.countDocuments(),
+      ]);
+
+      const metrics = { totalDoctors, totalPatients, totalHospitals, totalReceptionists };
+      res.json(metrics);
+
+  } catch (error) {
+      console.error('Error fetching metrics:', error);  // Log the error for debugging
+      res.status(500).json({ message: 'Failed to fetch metrics.', error: error.message });
+  }
+};
+
+
+
+
+const notification = (req, res) => {
+  const notifications = [
+      "New patient registration pending approval.",
+      "Doctor Dr. Smith has updated their availability.",
+      "Hospital City Hospital has added new services.",
+      "Reminder: Monthly staff meeting on Friday."
+  ];
+
+  res.json({ notifications });
+};
+
 exports.getAdmin = getAdmin;
 exports.signup = signup;
 exports.deleteAdmin = deleteAdmin;
 exports.updateAdmin = updateAdmin;
+exports.matrics = matrics;
+exports.notification = notification;

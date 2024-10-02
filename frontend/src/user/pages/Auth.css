@@ -69,6 +69,14 @@
 .radio-group input[type="radio"] {
   margin-right: 8px;
 }
+
+.error-message {
+  color: red;
+  margin-top: 10px;
+  font-size: 14px;
+  margin-left: 5vh;
+}
+
 @media (max-width: 600px) {
   .login-container {
     padding: 15px;

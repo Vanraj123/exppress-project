@@ -62,16 +62,17 @@ function ProfileEdit_Doc() {
             const doctorId = auth.roleid;
 
             const updatedData = {
-                name: updatedProfile.name,
+                docName: updatedProfile.name,
                 email: updatedProfile.email,
                 phone: updatedProfile.phone,
-                specialization: updatedProfile.specialization,
+                docGender: updatedProfile.gender,
+                docSpeciality: updatedProfile.specialization,
                 dob: moment(updatedProfile.dob, 'MMMM Do YYYY').toISOString(), 
                 address: {
-                    city: updatedProfile.address.split(', ')[0],
-                    street: updatedProfile.address.split(', ')[1],
+                    cityOrVillage: updatedProfile.address.split(', ')[0],
+                    streetOrSociety: updatedProfile.address.split(', ')[1],
                     state: updatedProfile.address.split(', ')[2],
-                    zipcode: updatedProfile.address.split(', ')[3],
+                    pincode: updatedProfile.address.split(', ')[3],
                     country: updatedProfile.address.split(', ')[4]
                 },
                 imageUrl: updatedProfile.imageUrl || userProfile.imageUrl

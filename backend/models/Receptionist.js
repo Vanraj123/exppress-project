@@ -11,6 +11,7 @@ const  receptionist= new Schema({
    hospital: { type: mongoose.Types.ObjectId, required: true, ref: 'Hospital'},
    receptionistContact: { type: String, required: true },
    receptionistEmail: { type: String, required: true },
+   receptionistName: {type:String, require:true},
    receptionistAddress: {
        cityvillage:{ type: String },
        pincode:{ type: Number },

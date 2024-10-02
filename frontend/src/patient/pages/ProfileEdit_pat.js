@@ -32,7 +32,7 @@ function ProfileEdit_pat() {
                     email: patientData.patientEmail,
                     phone: patientData.patientContact,
                     address: formattedAddress,
-                    dob: moment(patientData.DOB).format('MMMM Do YYYY'), 
+                    dob: patientData.DOB,
                     gender: patientData.patientGender,
                     imageUrl: patientData.imageUrl || 'https://tse1.mm.bing.net/th?id=OIP.L-PLw9YL0s6ErCIcuprlKgAAAA&pid=Api&P=0&h=180' // Default image if none provided
                 };

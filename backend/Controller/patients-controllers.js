@@ -33,6 +33,10 @@ const getbyId = async (req, res, next) => {
      500
    );
  }
+ if(patient== null)
+ {
+  return next(new HttpError('Could not find user with the provided ID.', 404));
+ }
  res.status(200).json({ patient: patient.toObject({ getters: true }) });
 };
 
