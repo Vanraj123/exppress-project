@@ -56,56 +56,53 @@ const getbyid = async (req, res, next) => {
 };
 
 
+
 const signup = async (req, res, next) => {
- const errors = validationResult(req);
- if (!errors.isEmpty()) {
-   return next(
-     new HttpError('Invalid inputs passed, please check your data.', 422)
-   );
- }
- const {user,hospital,receptionistName,receptionistContact,receptionistEmail,adminAddress} = req.body;
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+      return next(
+          new HttpError('Invalid inputs passed, please check your data.', 422)
+      );
+  }
+  const { receptionistName, receptionistEmail, receptionistContact, user } = req.body;
 
+  let existingrec;
+  try {
+      existingrec = await Receptionist.findOne({ user: user });
+  } catch (err) {
+      const error = new HttpError(
+          'Signing up failed, please try again later.',
+          500
+      );
+      return next(error);
+  }
 
- let existingReceptionist 
- try {
-    existingReceptionist = await Receptionist .findOne({ user: user })
- } catch (err) {
-   const error = new HttpError(
-     'Signing up failed, please try again later.',
-     500
-   );
-   return next(error);
- }
-
-  if (existingReceptionist) {
-   const error = new HttpError(
-     'User exists already, please login instead.',
-     422
-   );
-   return next(error);
- }
-  const createdReceptionist = new Receptionist({
-    user,
-    hospital,
+  if (existingrec) {
+      const error = new HttpError(
+          'User exists already, please login instead.',
+          422
+      );
+      return next(error);
+  }
+  const createdrec = new Receptionist({
     receptionistName,
-    receptionistContact,
     receptionistEmail,
-    adminAddress
- });
+    receptionistContact,
+    user
+  });
 
+  try {
+      await createdrec.save();
+      await createNotification(`New Receptionist ${recName} has been added.`); // Create a notification
+  } catch (err) {
+      const error = new HttpError(
+          'Signing up failed, please try again.',
+          500
+      );
+      return next(error);
+  }
 
- try {
-   await createdReceptionist.save();
- } catch (err) {
-   const error = new HttpError(
-     err,
-     500
-   );
-   return next(error);
- }
-
-
- res.status(201).json({receptionist: createdReceptionist.toObject({ getters: true })});
+  res.status(201).json({ receptionist: createdrec.toObject({ getters: true }) });
 };
 
 // DELETE
@@ -146,7 +143,7 @@ const updateReceptionist = async (req, res, next) => {
     );
   }
 
-  const { user, hospital, receptionistContact, receptionistEmail, adminAddress } = req.body;
+  const {  receptionistName,receptionistContact,gender,DOB, receptionistEmail, receptionistAddress } = req.body;
   const receptionistId = req.params.receptionistId;
 
   let receptionist;
@@ -157,11 +154,12 @@ const updateReceptionist = async (req, res, next) => {
       return next(error);
     }
 
-    receptionist.user = user;
-    receptionist.hospital = hospital;
+    receptionist.receptionistName = receptionistName;
+    receptionist.gender = gender;
+    receptionist.DOB = DOB;
     receptionist.receptionistContact = receptionistContact;
     receptionist.receptionistEmail = receptionistEmail;
-    receptionist.adminAddress = adminAddress;
+    receptionist.receptionistAddress = receptionistAddress;
 
     await receptionist.save();
   } catch (err) {

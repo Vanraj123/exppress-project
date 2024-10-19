@@ -52,7 +52,7 @@ const Register = () => {
         });
   
         const data = await response.json();
-      }else
+      }else if(role == "doctor")
       {
         const response = await fetch('http://localhost:5000/api/doctors', {
           method: 'POST',
@@ -63,6 +63,21 @@ const Register = () => {
             "docName": fullname,
             "docEmail": email,
             "docContact":phonenumber,
+            "user":use,
+          }),
+        });
+  
+        const data = await response.json();
+      }else{
+        const response = await fetch('http://localhost:5000/api/receptionists', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            "receptionistName": fullname,
+            "receptionistEmail": email,
+            "receptionistContact":phonenumber,
             "user":use,
           }),
         });
@@ -125,7 +140,7 @@ const Register = () => {
         />
         
         {/* Radio buttons for selecting Doctor or Patient */}
-        <div className="role-selection">
+        <div className="radio-group">
           <label>
             <input
               type="radio"
@@ -143,6 +158,15 @@ const Register = () => {
               onChange={(e) => setRole(e.target.value)}
             />
             Doctor
+          </label>
+          <label>
+            <input
+              type="radio"
+              value="receptionist"
+              checked={role === "receptionist"}
+              onChange={(e) => setRole(e.target.value)}
+            />
+            Receptionist
           </label>
         </div>
         

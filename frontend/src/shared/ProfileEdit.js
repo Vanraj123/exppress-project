@@ -44,6 +44,8 @@ const ProfileEdit = ({ userProfile, role, onSave }) => {
         // Navigate back to the profile page after saving
         if(role=="patient"){
             navigate('/patient/profile/');
+        }else if(role=="receptionist"){
+            navigate('/receptionist/profile');
         }else{
             navigate('/doc/profile/');
         }

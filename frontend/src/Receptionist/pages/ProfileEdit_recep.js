@@ -58,12 +58,20 @@ const ProfileEdit_Recep = () => {
             const receptionistId = auth.roleid;
 
             const updatedData = {
-                name: updatedProfile.name,
-                email: updatedProfile.email,
-                phone: updatedProfile.phone,
+                receptionistName: updatedProfile.name,
+                receptionistEmail: updatedProfile.email,
+                receptionistContact: updatedProfile.phone,
                 gender: updatedProfile.gender,
                 DOB: moment(updatedProfile.dob, 'YYYY-MM-DD').toISOString(),
-                address: updatedProfile.address,
+                
+                receptionistAddress: {
+                    // Example structure, modify as per your backend requirement
+                    cityOrVillage: updatedProfile.address.split(', ')[0],
+                    streetOrSociety: updatedProfile.address.split(', ')[1],
+                    state: updatedProfile.address.split(', ')[2],
+                    pincode: updatedProfile.address.split(', ')[3],
+                    country: updatedProfile.address.split(', ')[4]
+                },
                 imageUrl: updatedProfile.imageUrl || userProfile.imageUrl
             };
 

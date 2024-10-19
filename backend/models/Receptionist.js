@@ -7,20 +7,20 @@ const Schema = mongoose.Schema;
 
 
 const  receptionist= new Schema({
-   user: { type: mongoose.Types.ObjectId, required: true, ref: 'User'},
-   hospital: { type: mongoose.Types.ObjectId, required: true, ref: 'Hospital'},
-   receptionistContact: { type: String, required: true },
-   receptionistEmail: { type: String, required: true },
-   receptionistName: {type:String, require:true},
-   gender: { type: String, required: true},
-   DOB: { type: Date, required: true},
-   imageUrl: { type: String, required: true},
+   hospital: { type: mongoose.Types.ObjectId,  ref: 'Hospital'},
+   receptionistName: {type:String },
+   receptionistEmail: { type: String },
+   receptionistContact: { type: String},
+   gender: { type: String },
+   DOB: { type: String},
+   imageUrl: { type: String},
+   user: { type: mongoose.Types.ObjectId, ref: 'User'},
    receptionistAddress: {
-       cityvillage:{ type: String },
+    cityOrVillage:{ type: String },
        pincode:{ type: Number },
        state:{ type: String },
        country:{ type: String },
-       streerorsocity:{ type: String },
+       streetOrSociety:{ type: String },
    }
 },{ collection: 'Receptionist' });
 

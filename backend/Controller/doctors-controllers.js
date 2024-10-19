@@ -119,7 +119,7 @@ const signup = async (req, res, next) => {
         docName,
         docEmail,
         docContact,
-        user,
+        user
     });
 
     try {
