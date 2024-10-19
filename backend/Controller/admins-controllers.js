@@ -21,6 +21,27 @@ const getAdmin = async (req, res, next) => {
   res.json({ admins: admins.map(admin => admin.toObject({ getters: true })) });
 };
 
+
+const getId = async (req, res, next) => {
+  const userId = req.params.adminid;
+  const user = new mongoose.Types.ObjectId(userId);
+  let admin;
+  try {
+    admin = await Admin.findOne({ user: user });
+  } catch (err) {
+      const error = new HttpError(
+          'Fetching users failed, please try again later.',
+          500
+      );
+      return next(error);
+  }
+  if (admin == null) {
+      return next(new HttpError('Could not find user with the provided ID.', 404));
+  }
+  res.status(200).json({ admin: admin.toObject({ getters: true }) });
+};
+
+
 const signup = async (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -144,7 +165,7 @@ const updateAdmin = async (req, res, next) => {
   res.status(200).json({ admin: admin.toObject({ getters: true }) });
 };
 
-const matrics = async (req, res) => {
+const matrics = async (req, res, next) => {
   try {
       const [totalDoctors, totalPatients, totalHospitals, totalReceptionists] = await Promise.all([
           Doctor.countDocuments(),
@@ -165,7 +186,7 @@ const matrics = async (req, res) => {
 
 
 
-const notification = (req, res) => {
+const notification = (req, res, next) => {
   const notifications = [
       "New patient registration pending approval.",
       "Doctor Dr. Smith has updated their availability.",
@@ -177,6 +198,7 @@ const notification = (req, res) => {
 };
 
 exports.getAdmin = getAdmin;
+exports.getId = getId;
 exports.signup = signup;
 exports.deleteAdmin = deleteAdmin;
 exports.updateAdmin = updateAdmin;

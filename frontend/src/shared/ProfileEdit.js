@@ -42,7 +42,12 @@ const ProfileEdit = ({ userProfile, role, onSave }) => {
         // Call the onSave function passed via props
         onSave(editProfile);
         // Navigate back to the profile page after saving
-        navigate('/patient/profile/');
+        if(role=="patient"){
+            navigate('/patient/profile/');
+        }else{
+            navigate('/doc/profile/');
+        }
+    
     };
 
     return (

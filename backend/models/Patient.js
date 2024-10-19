@@ -9,13 +9,14 @@ const patientSchema = new Schema({
    patientEmail: { type: String },
    patientContact: { type: String },
    patientGender: { type: String },
-   address:{
+   patientAddress:{
     cityvillage:{ type: String },
-    pincode:{ type: Number },
+    pincode:{ type: String },
     state:{ type: String },
     country:{ type: String},
     streerorsocity:{ type: String },
     },
+    DOB: { type: String },
    user: { type: mongoose.Types.ObjectId, required: true, ref: 'User'}
 },{ collection: 'Patient' });
 

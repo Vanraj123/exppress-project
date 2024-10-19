@@ -63,12 +63,12 @@ function ProfileEdit_Doc() {
 
             const updatedData = {
                 docName: updatedProfile.name,
-                email: updatedProfile.email,
-                phone: updatedProfile.phone,
+                docEmail: updatedProfile.email,
+                docContact: updatedProfile.phone,
                 docGender: updatedProfile.gender,
                 docSpeciality: updatedProfile.specialization,
-                dob: moment(updatedProfile.dob, 'MMMM Do YYYY').toISOString(), 
-                address: {
+                DOB: moment(updatedProfile.dob, 'MMMM Do YYYY').toISOString(), 
+                docAddress: {
                     cityOrVillage: updatedProfile.address.split(', ')[0],
                     streetOrSociety: updatedProfile.address.split(', ')[1],
                     state: updatedProfile.address.split(', ')[2],

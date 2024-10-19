@@ -1,0 +1,108 @@
+.login-container {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+  margin: 20% 20% 20% 90%;
+}
+
+.login-container h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 24px;
+}
+
+.login-container input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.login-container button {
+  width: 100%;
+  padding: 10px;
+  background-color: #007bff;
+  border: none;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.login-container button:hover {
+  background-color: #0056b3;
+}
+
+.login-container .links {
+  text-align: center;
+  margin-top: 10px;
+}
+
+.login-container .links a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.login-container .links a:hover {
+  text-decoration: underline;
+}
+
+/* New styles for the radio buttons */
+.login-container .radio-group {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 20px;
+}
+
+.radio-group label {
+  font-size: 14px;
+  color: #333;
+  display: flex;
+  align-items: center;
+}
+
+.radio-group input[type="radio"] {
+  margin-right: 8px;
+}
+
+.error-message {
+  color: red;
+  margin-top: 10px;
+  font-size: 14px;
+  margin-left: 5vh;
+}
+
+@media (max-width: 600px) {
+  .login-container {
+    padding: 15px;
+  }
+  .login-container h2 {
+    font-size: 20px;
+  }
+  .login-container button {
+    font-size: 14px;
+  }
+  .radio-group label {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 400px) {
+  .login-container {
+    padding: 10px;
+  }
+  .login-container h2 {
+    font-size: 18px;
+  }
+  .login-container button {
+    font-size: 12px;
+  }
+  .radio-group label {
+    font-size: 10px;
+  }
+}

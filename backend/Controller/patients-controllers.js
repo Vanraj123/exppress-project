@@ -198,7 +198,7 @@ const updatePatient = async (req, res, next) => {
     );
   }
 
-  const { patientName, patientEmail, patientContact, patientGender, address } = req.body;
+  const { patientName, patientEmail, patientContact, patientGender, patientAddress, DOB } = req.body;
   const patientId = req.params.patientId;
 
   let patient;
@@ -209,23 +209,35 @@ const updatePatient = async (req, res, next) => {
       return next(error);
     }
 
+    // Update patient fields
     patient.patientName = patientName;
     patient.patientEmail = patientEmail;
     patient.patientContact = patientContact;
     patient.patientGender = patientGender;
-    patient.address = address;
+    patient.DOB = String(DOB); 
+    console.log(patient.DOB);
+    console.log("hiii");
+    console.log(patientAddress);
+    // Update patient address
+    patient.patientAddress = {
+      cityOrVillage: patientAddress.cityOrVillage,
+      streetOrSociety: patientAddress.streetOrSociety,
+      state: patientAddress.state,
+      pincode: patientAddress.pincode,
+      country: patientAddress.country
+    };
+    console.log( patient.patientAddress);
 
     await patient.save();
+
   } catch (err) {
-    const error = new HttpError(
-      'Something went wrong, could not update patient.',
-      500
-    );
+    const error = new HttpError('Something went wrong, could not update patient.', 500);
     return next(error);
   }
 
   res.status(200).json({ patient: patient.toObject({ getters: true }) });
 };
+
 
 exports.getPatient = getPatient;
 exports.signup = signup;

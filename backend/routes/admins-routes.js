@@ -9,7 +9,7 @@ const router = express.Router();
 
 
 router.get('/', adminsController.getAdmin);
-
+router.get('/:adminid', adminsController.getId);
 
 router.post(
  '/',

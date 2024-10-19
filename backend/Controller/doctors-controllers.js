@@ -160,48 +160,46 @@ const deleteDoctor = async (req, res, next) => {
 };
 
 const updateDoctor = async (req, res, next) => {
+    console.log("Updating doctor profile...");
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        return next(
-            new HttpError('Invalid inputs passed, please check your data.', 422)
-        );
+      return next(new HttpError('Invalid inputs passed, please check your data.', 422));
     }
 
-    const { docName, docGender, docSpeciality, docEmail, docContact, docQualification, docQualificationForm, docAddress, user, hospital } = req.body;
+    const { docName, docEmail, docContact, docGender, docSpeciality, DOB, docAddress, imageUrl } = req.body;
     const doctorId = req.params.doctorId;
 
-    let doctor;
+    let doctor;  // Change from const to let
     try {
         doctor = await Doctor.findById(doctorId);
         if (!doctor) {
-            const error = new HttpError('Could not find doctor for this ID.', 404);
-            return next(error);
+            return next(new HttpError('Could not find doctor for the provided ID.', 404));
         }
 
-        // Update doctor details
+        // Update doctor fields
         doctor.docName = docName;
-        doctor.docGender = docGender;
-        doctor.docSpeciality = docSpeciality;
         doctor.docEmail = docEmail;
         doctor.docContact = docContact;
-        doctor.docQualification = docQualification;
-        doctor.docQualificationForm = docQualificationForm;
-        doctor.docAddress = docAddress;
-        doctor.user = user;
-        doctor.hospital = hospital;
+        doctor.docGender = docGender;
+        doctor.docSpeciality = docSpeciality;
+        doctor.docAddress = docAddress;  // Update address fields
+
+        // Only update DOB if it's provided, otherwise retain the existing DOB
+        if (DOB) {
+            doctor.DOB = String(DOB);
+        }
+
+        doctor.imageUrl = imageUrl;
 
         await doctor.save();
-        await createNotification(`Doctor ${docName} has been updated.`); // Create a notification
     } catch (err) {
-        const error = new HttpError(
-            'Something went wrong, could not update doctor.',
-            500
-        );
-        return next(error);
+        console.error('Error updating doctor profile:', err);
+        return next(new HttpError('Something went wrong, could not update doctor profile.', 500));
     }
 
     res.status(200).json({ doctor: doctor.toObject({ getters: true }) });
 };
+
 
 exports.getDoctors = getDoctor;
 exports.signup = signup;

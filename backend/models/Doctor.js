@@ -8,15 +8,15 @@ const Schema = mongoose.Schema;
 
 
 const doctorSchema = new Schema({
-   imgSrc: { type: String }, 
+    imageUrl: { type: String }, 
    docName: { type: String},
    docGender: { type: String},
    docSpeciality: { type: String },
-   docEmail: { type: String, required: true },
+   docEmail: { type: String  },
    docContact: { type: String},
    docQualification: { type: String},
    docQualificationForm: { type: String },
-   DOB: {type: Date},
+   DOB: { type: String },
    docAddress: {
     cityOrVillage: { type: String },
     pincode: { type: String },

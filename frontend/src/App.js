@@ -44,6 +44,7 @@ import ProfileEdit_Doc from './user/pages/ProfileEdit_Doc';
 import AdminDashboard from './admin/pages/AdminDashboard';
 import MedicalHistory from './appointment/pages/MedicalHistory';
 import HospitalList from './admin/pages/HospitalList';
+import Authlogin from './admin/pages/Auth';
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userId, setUserId] = useState(false);
@@ -91,6 +92,11 @@ const App = () => {
         <Route path="/places/new" element={<NewPlace />} />
         <Route path="/places/:placeId" element={<UpdatePlace />} />
         <Route path="*" element={<Navigate to="/" />} /> */}
+        <Route path="/admin" element={<AdminDashboard/>}/>
+           <Route path="/admin/doctors" element={<DoctorList/>}/>
+           <Route path="/admin/hospitals" element={<HospitalList/>}/>
+           <Route path="/admin/receptionists" element={<ReceptionistList/>}/>
+           <Route path="/admin/patients" element={<PatientList/>}/>
       </Routes>
     );
   } else {
@@ -106,11 +112,12 @@ const App = () => {
            <Route path="receptionist/profile/edit-profile" element={<ProfileEdit_recep />} />
            {/* <Route path="/receptionist/appointments" element={</>}/> */}
            
-           <Route path="/admin" element={<AdminDashboard/>}/>
-           <Route path="/admin/doctors" element={<DoctorList/>}/>
+           {/* <Route path="/admin" element={<AdminDashboard/>}/> */}
+            <Route path="/admin" element={<Authlogin/>}/>
+           {/* <Route path="/admin/doctors" element={<DoctorList/>}/>
            <Route path="/admin/hospitals" element={<HospitalList/>}/>
            <Route path="/admin/receptionists" element={<ReceptionistList/>}/>
-           <Route path="/admin/patients" element={<PatientList/>}/>
+           <Route path="/admin/patients" element={<PatientList/>}/> */} 
            {/* <Route path="/:userId/places" element={<UserPlaces />} />
            <Route path="/auth" element={<Auth />} />
            <Route path="*" element={<Navigate to="/auth" />} /> */}

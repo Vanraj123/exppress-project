@@ -54,7 +54,7 @@ const PatientList = () => {
                                 <p>Email: {patient.patientEmail}</p>
                                 <p>Contact: {patient.patientContact}</p>
                                 <p>Gender: {patient.patientGender}</p>
-                                <p>Address: {`${patient.patientAddress.streetOrSociety}, ${patient.patientAddress.cityOrVillage}, ${patient.patientAddress.state}, ${patient.patientAddress.country}`}</p>
+                                <p>Address: {`${patient.streetOrSociety}, ${patient.cityOrVillage}, ${patient.state}, ${patient.country}`}</p>
                                 <p>DOB: {new Date(patient.DOB).toLocaleDateString()}</p> {/* Formatting DOB */}
                             </div>
                         ))
