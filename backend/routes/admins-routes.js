@@ -1,21 +1,18 @@
 const express = require('express');
-const { check } = require('express-validator');
-
-
 const adminsController = require('../Controller/admins-controllers');
-
 
 const router = express.Router();
 
+// Static routes should come first
+router.get('/metrics', adminsController.matrics);
+router.get('/notifications', adminsController.notification);
 
-router.get('/', adminsController.getAdmin);
+// Dynamic routes
 router.get('/:adminid', adminsController.getId);
+router.get('/', adminsController.getAdmin);
 
-router.post(
- '/',
- adminsController.signup
-);
-
+// Signup route
+router.post('/', adminsController.signup);
 
 // DELETE
 router.delete('/:adminId', adminsController.deleteAdmin);
@@ -23,8 +20,4 @@ router.delete('/:adminId', adminsController.deleteAdmin);
 // UPDATE
 router.patch('/:adminId', adminsController.updateAdmin);
 
-
-// router.post('/login', usersController.login);
-router.get('/metrics', adminsController.matrics);
-router.get('/notifications', adminsController.notification);
 module.exports = router;

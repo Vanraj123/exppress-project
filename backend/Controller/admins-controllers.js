@@ -2,73 +2,59 @@ const { validationResult } = require('express-validator');
 const HttpError = require('../models/http-error');
 const Admin = require('../models/Admin');
 const User = require('../models/User');
-const Doctor = require('../models/Doctor');  
+const Doctor = require('../models/Doctor');
 const Patient = require('../models/Patient');
 const Hospital = require('../models/Hospital');
 const Receptionist = require('../models/Receptionist');
 const mongoose = require('mongoose');
+
 const getAdmin = async (req, res, next) => {
   let admins;
   try {
     admins = await Admin.find();
   } catch (err) {
-    const error = new HttpError(
-      'Fetching admins failed, please try again later.',
-      500
-    );
-    return next(error);
+    return next(new HttpError('Fetching admins failed, please try again later.', 500));
   }
   res.json({ admins: admins.map(admin => admin.toObject({ getters: true })) });
 };
 
-
 const getId = async (req, res, next) => {
   const userId = req.params.adminid;
-  const user = new mongoose.Types.ObjectId(userId);
+
+  // Validate ObjectId
+  if (!mongoose.Types.ObjectId.isValid(userId)) {
+    return next(new HttpError('Invalid admin ID format.', 400));
+  }
+
   let admin;
   try {
-    admin = await Admin.findOne({ user: user });
-  } catch (err) {
-      const error = new HttpError(
-          'Fetching users failed, please try again later.',
-          500
-      );
-      return next(error);
-  }
-  if (admin == null) {
+    admin = await Admin.findOne({ user: userId });
+    if (!admin) {
       return next(new HttpError('Could not find user with the provided ID.', 404));
+    }
+  } catch (err) {
+    return next(new HttpError('Fetching users failed, please try again later.', 500));
   }
+
   res.status(200).json({ admin: admin.toObject({ getters: true }) });
 };
-
 
 const signup = async (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    return next(
-      new HttpError('Invalid inputs passed, please check your data.', 422)
-    );
+    return next(new HttpError('Invalid inputs passed, please check your data.', 422));
   }
-  
+
   const { adminName, adminEmail, adminContact, adminAddress, user } = req.body;
 
   let existingAdmin;
   try {
     existingAdmin = await Admin.findOne({ user });
+    if (existingAdmin) {
+      return next(new HttpError('User exists already, please login instead.', 422));
+    }
   } catch (err) {
-    const error = new HttpError(
-      'Signing up failed, please try again later.',
-      500
-    );
-    return next(error);
-  }
-
-  if (existingAdmin) {
-    const error = new HttpError(
-      'User exists already, please login instead.',
-      422
-    );
-    return next(error);
+    return next(new HttpError('Signing up failed, please try again later.', 500));
   }
 
   const createdAdmin = new Admin({
@@ -76,17 +62,13 @@ const signup = async (req, res, next) => {
     adminEmail,
     adminContact,
     adminAddress,
-    user
+    user,
   });
 
   try {
     await createdAdmin.save();
   } catch (err) {
-    const error = new HttpError(
-      'Signing up failed, please try again.',
-      500
-    );
-    return next(error);
+    return next(new HttpError('Signing up failed, please try again.', 500));
   }
 
   res.status(201).json({ admin: createdAdmin.toObject({ getters: true }) });
@@ -95,35 +77,24 @@ const signup = async (req, res, next) => {
 const deleteAdmin = async (req, res, next) => {
   const adminId = req.params.adminId;
 
+  if (!mongoose.Types.ObjectId.isValid(adminId)) {
+    return next(new HttpError('Invalid admin ID format.', 400));
+  }
+
   let admin;
-  
   try {
-    // Find the admin by ID
     admin = await Admin.findById(adminId).populate('user');
     if (!admin) {
-      const error = new HttpError('Could not find admin for this id.', 404);
-      return next(error);
+      return next(new HttpError('Could not find admin for this id.', 404));
     }
-    const userId = admin.user;
-    const objectId = new mongoose.Types.ObjectId(userId);
 
-    userrr = await User.findById(objectId);
-    if (userrr) {
-      await userrr.deleteOne(); // Remove the associated Admin document
+    if (admin.user) {
+      await User.findByIdAndDelete(admin.user); // Remove associated user
     }
-    // Delete the associated user
-    // if (admin.user) {
-    //   await admin.user.deleteOne(); // Remove the associated user document
-    // }
-
-    // Delete the admin document
-    await Admin.findByIdAndDelete(adminId);
+    
+    await admin.deleteOne(); // Delete admin document
   } catch (err) {
-    const error = new HttpError(
-      err,
-      500
-    );
-    return next(error);
+    return next(new HttpError('Deleting admin failed, please try again.', 500));
   }
 
   res.status(200).json({ message: 'Deleted admin and associated user.' });
@@ -132,20 +103,21 @@ const deleteAdmin = async (req, res, next) => {
 const updateAdmin = async (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    return next(
-      new HttpError('Invalid inputs passed, please check your data.', 422)
-    );
+    return next(new HttpError('Invalid inputs passed, please check your data.', 422));
   }
 
   const { adminName, adminEmail, adminContact, adminAddress } = req.body;
   const adminId = req.params.adminId;
 
+  if (!mongoose.Types.ObjectId.isValid(adminId)) {
+    return next(new HttpError('Invalid admin ID format.', 400));
+  }
+
   let admin;
   try {
     admin = await Admin.findById(adminId);
     if (!admin) {
-      const error = new HttpError('Could not find admin for this id.', 404);
-      return next(error);
+      return next(new HttpError('Could not find admin for this id.', 404));
     }
 
     admin.adminName = adminName;
@@ -155,11 +127,7 @@ const updateAdmin = async (req, res, next) => {
 
     await admin.save();
   } catch (err) {
-    const error = new HttpError(
-      'Something went wrong, could not update admin.',
-      500
-    );
-    return next(error);
+    return next(new HttpError('Something went wrong, could not update admin.', 500));
   }
 
   res.status(200).json({ admin: admin.toObject({ getters: true }) });
@@ -167,31 +135,25 @@ const updateAdmin = async (req, res, next) => {
 
 const matrics = async (req, res, next) => {
   try {
-      const [totalDoctors, totalPatients, totalHospitals, totalReceptionists] = await Promise.all([
-          Doctor.countDocuments(),
-          Patient.countDocuments(),
-          Hospital.countDocuments(),
-          Receptionist.countDocuments(),
-      ]);
+    const [totalDoctors, totalPatients, totalHospitals, totalReceptionists] = await Promise.all([
+      Doctor.countDocuments(),
+      Patient.countDocuments(),
+      Hospital.countDocuments(),
+      Receptionist.countDocuments(),
+    ]);
 
-      const metrics = { totalDoctors, totalPatients, totalHospitals, totalReceptionists };
-      res.json(metrics);
-
+    res.json({ totalDoctors, totalPatients, totalHospitals, totalReceptionists });
   } catch (error) {
-      console.error('Error fetching metrics:', error);  // Log the error for debugging
-      res.status(500).json({ message: 'Failed to fetch metrics.', error: error.message });
+    res.status(500).json({ message: 'Failed to fetch metrics.', error: error.message });
   }
 };
 
-
-
-
 const notification = (req, res, next) => {
   const notifications = [
-      "New patient registration pending approval.",
-      "Doctor Dr. Smith has updated their availability.",
-      "Hospital City Hospital has added new services.",
-      "Reminder: Monthly staff meeting on Friday."
+    'New patient registration pending approval.',
+    'Doctor Dr. Smith has updated their availability.',
+    'Hospital City Hospital has added new services.',
+    'Reminder: Monthly staff meeting on Friday.',
   ];
 
   res.json({ notifications });
