@@ -41,18 +41,23 @@ const HospitalList = () => {
             const response = await axios.post('http://localhost:5000/api/hospitals', newHospital); // Adjust the API endpoint
             setHospitals([...hospitals, response.data.hospital]); // Update the state with the new hospital
         } catch (error) {
-            console.error("Error adding hospital:", error);
+            console.error("Error adding hospital:", error.response?.data || error.message); // Log detailed error response
         }
     };
+    
 
     const handleUpdateHospital = async (updatedHospital) => {
         try {
-            await axios.put(`http://localhost:5000/api/hospitals/${updatedHospital._id}`, updatedHospital); // Adjust the API endpoint
-            setHospitals(hospitals.map(hospital => hospital._id === updatedHospital._id ? updatedHospital : hospital)); // Update the state
+            console.log("Updating hospital with ID:", updatedHospital._id);
+            console.log("Updated hospital data:", updatedHospital);
+            
+            const response = await axios.put(`http://localhost:5000/api/hospitals/${updatedHospital._id}`, updatedHospital);
+            setHospitals(hospitals.map(hospital => hospital._id === updatedHospital._id ? response.data.hospital : hospital));
         } catch (error) {
-            console.error("Error updating hospital:", error);
+            console.error("Error updating hospital:", error.response?.data || error.message); // Log detailed error response
         }
     };
+    
 
     const handleDeleteHospital = async (id) => {
         try {
@@ -98,10 +103,10 @@ const HospitalList = () => {
                         filteredHospitals.map(hospital => (
                             <div key={hospital._id}>
                                 <HospitalCard
-                                    imgSrc={hospital.imgSrc || 'http://upload.wikimedia.org/wikipedia/commons/8/8a/Nationwide_Childrens_Hospital,_Exterior_from_Fragrance_Maze,_May_2013.jpg'}
+                                    imgSrc={hospital.image || 'http://upload.wikimedia.org/wikipedia/commons/8/8a/Nationwide_Childrens_Hospital,_Exterior_from_Fragrance_Maze,_May_2013.jpg'}
                                     Hos_Name={hospital.Hos_Name}
-                                    E_Date={hospital.E_date}
-                                    ManageBy={hospital.ManagedBy}
+                                    E_Date={hospital.E_Date}
+                                    ManageBy={hospital.ManageBy}
                                     hosaddress={hospital.hosaddress}
                                 />
                                 <center>
