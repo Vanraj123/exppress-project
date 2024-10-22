@@ -53,43 +53,44 @@ const Auth = () => {
         auth.login(data.user._id, patientData.patient.patientName, patientData.patient._id);
         navigate("/patient");
       } else if (userType === "receptionist") {
-        if (selectedHospital) {
+        // if (selectedHospital) {
           const receptionistResponse = await fetch(`http://localhost:5000/api/receptionists/${userId}`);
           const receptionistData = await receptionistResponse.json();
 
           // Check if the selected hospital matches the hospital associated with the receptionist
-          const receptionistHospital = receptionistData.receptionist.hospital; // Assuming 'hospital' contains the hospital ID
+          // const receptionistHospital = receptionistData.receptionist.hospital; // Assuming 'hospital' contains the hospital ID
 
-          if (receptionistHospital !== selectedHospital) {
-            setErrorMessage("Selected hospital is not associated with this receptionist.");
-            return;
-          }
+          // if (receptionistHospital !== selectedHospital) {
+          //   setErrorMessage("Selected hospital is not associated with this receptionist.");
+          //   return;
+          // }
 
           // Proceed with login if the hospital matches
           auth.login(data.user._id, receptionistData.receptionist.receptionistName, receptionistData.receptionist._id);
           navigate("/receptionist");
-        } else {
-          setErrorMessage("Please select a hospital");
-        }
+        // } else {
+        //   setErrorMessage("Please select a hospital");
+        // }
       } else if (userType === "doctor") {
-        if (selectedHospital) {
+        // if (selectedHospital) {
           const doctor = await fetch(`http://localhost:5000/api/doctors/${userId}`);
           const doctorData = await doctor.json();
           
           // Check if the selected hospital matches the hospital associated with the doctor
-          const doctorHospitals = doctorData.doctor.hospital; // Assuming 'hospital' is an array of associated hospital IDs
+          // const doctorHospitals = doctorData.doctor.hospital; // Assuming 'hospital' is an array of associated hospital IDs
 
-          if (!doctorHospitals.includes(selectedHospital)) {
-            setErrorMessage("Selected hospital is not associated with this doctor.");
-            return;
-          }
+          // if (!doctorHospitals.includes(selectedHospital)) {
+          //   setErrorMessage("Selected hospital is not associated with this doctor.");
+          //   return;
+          // }
 
           // Proceed with login if the hospital matches
           auth.login(data.user._id, doctorData.doctor.docName, doctorData.doctor._id);
           navigate("/doc");
-        } else {
-          setErrorMessage("Please select a hospital");
-        }
+        //  }
+        //  else {
+        //   setErrorMessage("Please select a hospital");
+        // }
       }
 
       if (!response.ok) {
@@ -152,7 +153,7 @@ const Auth = () => {
         </div>
 
         {/* Dropdown for hospital selection (visible when "Receptionist" or "Doctor" is selected) */}
-        {(userType === "receptionist" || userType === "doctor") && (
+        {/* {(userType === "receptionist" || userType === "doctor") && (
           <div className="hospital-dropdown">
             <label htmlFor="hospital-select">Select Hospital:</label>
             <select
@@ -169,7 +170,7 @@ const Auth = () => {
               ))}
             </select>
           </div>
-        )}
+        )} */}
 
         <button type="submit">Login</button>
         <div className="links">

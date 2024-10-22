@@ -10,13 +10,13 @@ const patientSchema = new Schema({
    patientContact: { type: String },
    patientGender: { type: String },
    patientAddress:{
-    cityvillage:{ type: String },
+   cityOrVillage:{ type: String },
     pincode:{ type: String },
     state:{ type: String },
     country:{ type: String},
-    streerorsocity:{ type: String },
+    streetOrSociety:{ type: String },
     },
-    DOB: { type: String },
+    DOB: { type: Date },
    user: { type: mongoose.Types.ObjectId, required: true, ref: 'User'}
 },{ collection: 'Patient' });
 

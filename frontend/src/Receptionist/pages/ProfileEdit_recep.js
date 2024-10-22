@@ -20,17 +20,19 @@ const ProfileEdit_Recep = () => {
                 const receptionistId = auth.roleid;
                 const response = await axios.get(`http://localhost:5000/api/receptionists/recep/${receptionistId}`);
                 console.log(response.data.receptionist); // Log the raw response for debugging
+                const receptionistData = response.data.receptionist;
+
+                const formattedAddress = `${receptionistData.address?.streetOrSociety || 'Street/Society'}, ${receptionistData.address?.cityOrVillage || 'City/Village'}, ${receptionistData.address?.state || 'State'}, ${receptionistData.address?.pincode || 'Pincode'}, ${receptionistData.address?.country || 'Country'}`;
 
                 // Structure userProfile object based on response data
-                const receptionistData = response.data.receptionist;
                 const formattedProfile = {
-                    name: receptionistData.name,
-                    email: receptionistData.email,
-                    phone: receptionistData.phone,
-                    address: receptionistData.address,
+                    name: receptionistData.name || '',
+                    email: receptionistData.email || '',
+                    phone: receptionistData.phone || '',
+                    address: formattedAddress,
                     dob: receptionistData.DOB ? moment(receptionistData.DOB).format('YYYY-MM-DD') : '', // Use YYYY-MM-DD for input date field
                     gender: receptionistData.gender || '',
-                    imageUrl: receptionistData.imageUrl || 'https://tse2.mm.bing.net/th?id=OIP.lsBQVUAihgwVe46z7gNq5wAAAA&pid=Api&P=0&h=180'
+                    imageUrl: receptionistData.imageUrl || 'https://tse1.mm.bing.net/th?id=OIP.L-PLw9YL0s6ErCIcuprlKgAAAA&pid=Api&P=0&h=180'
                 };
 
                 setUserProfile(formattedProfile);
@@ -62,7 +64,7 @@ const ProfileEdit_Recep = () => {
                 receptionistEmail: updatedProfile.email,
                 receptionistContact: updatedProfile.phone,
                 gender: updatedProfile.gender,
-                DOB: moment(updatedProfile.dob, 'YYYY-MM-DD').toISOString(),
+                DOB: moment(updatedProfile.dob,  'DD-MM-YYYY').utc().toDate(),
                 
                 receptionistAddress: {
                     // Example structure, modify as per your backend requirement

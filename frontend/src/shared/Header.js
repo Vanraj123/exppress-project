@@ -1,9 +1,18 @@
-import React, { useContext } from 'react';
+// Header.js
+import React, { useContext, useState } from 'react';
 import './Header.css'; // Apply custom styles from the CSS file
 import { AuthContext } from '../shared/context/auth-context'; // Adjust the path to where your AuthContext is defined
 import { NavLink } from 'react-router-dom';
+import ReviewForm from './ReviewPage'; // Import the ReviewForm component
+import { FaPen } from 'react-icons/fa'; // Import an icon for the review button
+
 const Header = () => {
   const { isLoggedIn, username, logout } = useContext(AuthContext); // Destructure values from context
+  const [isReviewFormVisible, setReviewFormVisible] = useState(false); // State to control visibility of the review form
+
+  const toggleReviewForm = () => {
+    setReviewFormVisible((prev) => !prev);
+  };
 
   return (
     <header className="header">
@@ -26,6 +35,9 @@ const Header = () => {
           </div>
         )}
       </div>
+      {/* <NavLink to="/reviews" className="nav-link">
+                <FaPen /> Reviews
+              </NavLink>     */}
     </header>
   );
 };

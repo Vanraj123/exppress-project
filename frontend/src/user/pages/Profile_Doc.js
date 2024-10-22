@@ -23,13 +23,14 @@ const Profile_Doc = () => {
 
                 // Structure userProfile object based on response data
                 const doctorData = response.data.doctor;
-                const formattedAddress = `${doctorData.docAddress.streetOrSociety}, ${doctorData.docAddress.cityOrVillage}, ${doctorData.docAddress.state}, ${doctorData.docAddress.pincode}, ${doctorData.docAddress.country}`;
+                const formattedAddress = `${doctorData.docAddress?.streetOrSociety || 'Street/Society'}, ${doctorData.docAddress?.cityOrVillage || 'City/Village'}, ${doctorData.docAddress?.state || 'State'}, ${doctorData.docAddress?.pincode || 'Pincode'}, ${doctorData.docAddress?.country || 'Country'}`;
 
                 const formattedProfile = {
                     name: doctorData.docName,
                     email: doctorData.docEmail,
                     phone: doctorData.docContact,
                     specialization: doctorData.docSpeciality,
+                    docQualification: doctorData.docQualification,
                     address: formattedAddress,
                     dob: moment(doctorData.DOB).format('MMMM Do YYYY'), 
                     gender: doctorData.docGender,

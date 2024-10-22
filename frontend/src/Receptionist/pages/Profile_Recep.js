@@ -4,6 +4,7 @@ import Sidebar from './Sidebar';
 import Profile from '../../shared/Profile';
 import axios from 'axios';
 import { AuthContext } from '../../shared/context/auth-context';
+import moment from 'moment';
 
 const Profile_Recep = () => {
     const [userProfile, setUserProfile] = useState(null);
@@ -21,18 +22,19 @@ const Profile_Recep = () => {
                 console.log(response.data.receptionist); // Log for debugging purposes
 
                 const receptionistData = response.data.receptionist;
-
+                console.log("tjere");
+                console.log(receptionistData);
                 // Format the address object as a string or render it in another way
-                const formattedAddress = `${receptionistData.address.streetOrSociety}, ${receptionistData.address.cityOrVillage}, ${receptionistData.address.state}, ${receptionistData.address.country}, ${receptionistData.address.pincode}`;
+                const formattedAddress = `${receptionistData.address?.streetOrSociety || 'Street/Society'}, ${receptionistData.address?.cityOrVillage || 'City/Village'}, ${receptionistData.address?.state || 'State'}, ${receptionistData.address?.pincode || 'Pincode'}, ${receptionistData.address?.country || 'Country'}`;
 
                 const formattedProfile = {
                     name: receptionistData.name, 
                     email: receptionistData.email, 
                     phone: receptionistData.phone,
                     address: formattedAddress, // Now a formatted string
-                    dob: receptionistData.DOB || '',
+                    dob: moment(receptionistData.DOB).utc().format('DD-MM-YYYY'),
                     gender: receptionistData.gender || '',
-                    imageUrl: receptionistData.imageUrl || 'https://tse1.mm.bing.net/th?id=OIP.lsBQVUAihgwVe46z7gNq5wAAAA&pid=Api&P=0&h=180'
+                    imageUrl: receptionistData.imageUrl || 'https://tse1.mm.bing.net/th?id=OIP.L-PLw9YL0s6ErCIcuprlKgAAAA&pid=Api&P=0&h=180'
                 };
 
                 setUserProfile(formattedProfile);

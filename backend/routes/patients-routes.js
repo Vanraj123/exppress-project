@@ -7,6 +7,7 @@ const patientsController = require('../Controller/patients-controllers');
 
 const router = express.Router();
 
+router.get('/byappointment/:appointmentId', patientsController.getByAppointment);
 
 router.get('/', patientsController.getPatient);
 router.get('/doc/:docid', patientsController.getbydoc);

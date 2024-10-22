@@ -24,8 +24,8 @@ const doctorSchema = new Schema({
     country: { type: String},
     streetOrSociety:{ type: String },
    },
-    user: [{ type: mongoose.Types.ObjectId, required: true, ref: 'User'}],
-    hospital: [{ type: mongoose.Types.ObjectId, ref: 'Hospital'}]
+    user: { type: mongoose.Types.ObjectId, required: true, ref: 'User'},
+    hospital: { type: mongoose.Types.ObjectId, ref: 'Hospital'},
   
 
 }, { collection: 'Doctor' });

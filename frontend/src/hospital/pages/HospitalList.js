@@ -57,10 +57,10 @@ const HospitalList = () => {
         {filteredHospitals.map((hospital, index) => (
           <HospitalCard
             key={index}
-            imgSrc={hospital.imgSrc || 'http://upload.wikimedia.org/wikipedia/commons/8/8a/Nationwide_Childrens_Hospital,_Exterior_from_Fragrance_Maze,_May_2013.jpg'}
+            imgSrc={hospital.image || 'http://upload.wikimedia.org/wikipedia/commons/8/8a/Nationwide_Childrens_Hospital,_Exterior_from_Fragrance_Maze,_May_2013.jpg'}
             Hos_Name={hospital.Hos_Name}
-            E_Date={hospital.E_date}
-            ManageBy={hospital.ManagedBy}
+            E_Date={hospital.E_Date}
+            ManageBy={hospital.ManageBy}
             hosaddress={hospital.hosaddress}
           />
         ))}

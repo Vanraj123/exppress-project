@@ -22,7 +22,7 @@ const Main = () => {
         const docid = auth.roleid;
         console.log("Fetching patients for doctor ID:", docid);
         
-        const response = await fetch(`http://localhost:5000/api/patients/doc/patients/${docid}`); // Adjust the URL
+        const response = await fetch(`http://localhost:5000/api/doctors/${docid}/patients`); // Adjust the URL
 
         // Check if the response is OK (status 200-299)
         if (!response.ok) {
@@ -43,7 +43,7 @@ const Main = () => {
         setLoading(false);
       } catch (error) {
         console.error('Error fetching patients:', error);
-        setError('Error fetching patients. Please try again later.');
+        // setError('No patients available Please try again later.');
         setLoading(false);
       }
     };

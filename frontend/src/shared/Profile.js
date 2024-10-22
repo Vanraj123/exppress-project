@@ -53,7 +53,10 @@ const Profile = ({ userProfile, role }) => {
                                 <span className="label">Gender:</span>
                                 <span className="value">{userProfile.gender}</span>
                             </div>
-
+                            <div className="profile-field">
+                                <span className="label">docQualification:</span>
+                                <span className="value">{userProfile.docQualification}</span>
+                            </div>
                         </>
                     )}
                 </div>

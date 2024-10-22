@@ -16,6 +16,7 @@ const Sidebar = () => {
             <NavLink to="/doc/patient">Patients</NavLink>
             {/* <NavLink to="/doc/doctor">Doctors</NavLink> */}
             <NavLink to="/doc/profile">Profile</NavLink>
+            <NavLink to="/doc/History">Appointment History</NavLink>
             {/* <NavLink to="/">Settings</NavLink> */}
         </div>
         </React.Fragment>

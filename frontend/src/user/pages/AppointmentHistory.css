@@ -1,0 +1,66 @@
+/* Dashboard.css */
+
+.appointment-history {
+    max-width: 1000px;
+    margin-left: 50vh;
+    margin-top: 20vh;
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: calc(108vw - 500px);
+    overflow-y: auto;
+    transition: margin-left 0.3s, width 0.3s;
+
+
+}
+
+.appointment-history h2 {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #343a40;
+}
+
+/* Appointment Table Styling */
+.appointment-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.appointment-table th, .appointment-table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.appointment-table th {
+    background-color: #007bff;
+    color: white;
+    font-weight: bold;
+}
+
+.appointment-table tr:hover {
+    background-color: #f1f1f1;
+}
+
+.appointment-table td {
+    color: #495057;
+}
+
+.appointment-table td:first-child {
+    font-weight: bold;
+}
+
+.appointment-table td:last-child {
+    text-transform: capitalize;
+}
+
+/* Message for no appointment history */
+.appointment-history div {
+    text-align: center;
+    font-size: 18px;
+    color: #6c757d;
+    margin-top: 20px;
+}

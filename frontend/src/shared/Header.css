@@ -60,3 +60,43 @@
   .user-menu a:hover {
     color: #ff2f2f;
   }
+
+  .review-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #4CAF50; /* Change to your desired color */
+    font-size: 1.5rem; /* Size of the icon */
+    margin-left: 1rem; /* Spacing */
+}
+
+.review-form {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    z-index: 1000; /* Ensure it appears above other elements */
+}
+
+.review-form textarea {
+    width: 100%;
+    height: 100px;
+    margin-bottom: 10px;
+}
+
+.review-form button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+.review-form button:hover {
+    background-color: #45a049;
+}
