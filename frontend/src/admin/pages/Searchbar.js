@@ -9,7 +9,7 @@ const SearchBar = ({ setSearchTerm }) => {
         <div className="search-bar-admin">
             <input
                 type="text"
-                placeholder="Search patients..."
+                placeholder="Search ..."
                 onChange={handleSearchChange}
             />
         </div>

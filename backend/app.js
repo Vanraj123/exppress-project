@@ -11,7 +11,12 @@ const patientsRoutes = require("./routes/patients-routes");
 const appointmentsRoutes = require("./routes/appointments-routes");
 const receptionistsRoutes = require("./routes/receptionists-routes");
 const reviewsRoutes = require("./routes/reviews-routes");
+<<<<<<< HEAD
 const notificationsRouter = require("./routes/notifications-routes");
+=======
+const notificationsRouter = require("./routes/notifications-routes")
+
+>>>>>>> aabb95b9b6a9405584d2975191e1351d515a45d4
 const app = express();
 
 app.use((req, res, next) => {
@@ -20,7 +25,7 @@ app.use((req, res, next) => {
     "Access-Control-Allow-Headers",
     "Origin, X-Requested-With, Content-Type, Accept, Authorization"
   );
-  res.setHeader("Access-Control-Allow-Methods", "GET, POST, PATCH, DELETE");
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, PATCH,PUT, DELETE");
 
   next();
 });
@@ -37,7 +42,12 @@ app.use("/api/reviews", reviewsRoutes);
 app.use("/api/admins", adminsRoutes);
 app.use("/api/hospitals", hospitalsRoutes);
 app.use("/api/receptionists", receptionistsRoutes);
+<<<<<<< HEAD
 app.use("/api/notifications", notificationsRouter);
+=======
+app.use('/api/notifications', notificationsRouter);
+
+>>>>>>> aabb95b9b6a9405584d2975191e1351d515a45d4
 app.use((req, res, next) => {
  const error = new HttpError("Could not find this route.", 404);
  throw error;
@@ -56,7 +66,7 @@ app.use((error, req, res, next) => {
 //You can replace local server uri with MongoDB Atlas connection link
 mongoose
  .connect(
-   "mongodb://localhost:27017/Project"
+   "mongodb://localhost:27017/DoctorManagementSystem"
  )
  .then(() => {
    app.listen(5000);
