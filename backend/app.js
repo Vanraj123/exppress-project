@@ -11,7 +11,7 @@ const patientsRoutes = require("./routes/patients-routes");
 const appointmentsRoutes = require("./routes/appointments-routes");
 const receptionistsRoutes = require("./routes/receptionists-routes");
 const reviewsRoutes = require("./routes/reviews-routes");
-
+const notificationsRouter = require("./routes/notifications-routes");
 const app = express();
 
 app.use((req, res, next) => {
@@ -37,7 +37,7 @@ app.use("/api/reviews", reviewsRoutes);
 app.use("/api/admins", adminsRoutes);
 app.use("/api/hospitals", hospitalsRoutes);
 app.use("/api/receptionists", receptionistsRoutes);
-
+app.use("/api/notifications", notificationsRouter);
 app.use((req, res, next) => {
  const error = new HttpError("Could not find this route.", 404);
  throw error;
