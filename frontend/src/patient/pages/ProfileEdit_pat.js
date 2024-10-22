@@ -59,28 +59,40 @@ function ProfileEdit_pat() {
 
     const handleSaveProfile = async (updatedProfile) => {
         try {
-            // Prepare the data to send
             const patientId = auth.roleid;
-
+            console.log("hi");
+            console.log(updatedProfile);
+            // Split the address string into parts
+            let addressParts = updatedProfile.address.split(',').map(part => part.trim());
+            
+            // Ensure we have exactly 5 parts, otherwise fill missing parts with empty strings
+            while (addressParts.length < 5) {
+                addressParts.push('');  // Fallback to empty string for missing parts
+            }
+    
+            // Destructure into components
+            const [cityOrVillage, streetOrSociety, state, pincode, country] = addressParts;
+            // console.log(cityOrVillage);
+            // console.log(streetOrSociety);
+            // Prepare the updated data object
             const updatedData = {
                 patientName: updatedProfile.name,
                 patientEmail: updatedProfile.email,
                 patientContact: updatedProfile.phone,
                 patientGender: updatedProfile.gender,
                 DOB: moment(updatedProfile.dob, 'MMMM Do YYYY').toISOString(), // Convert back to ISO format
-                // Add address fields as needed
                 patientAddress: {
-                    // Example structure, modify as per your backend requirement
-                    cityOrVillage: updatedProfile.address.split(', ')[0],
-                    streetOrSociety: updatedProfile.address.split(', ')[1],
-                    state: updatedProfile.address.split(', ')[2],
-                    pincode: updatedProfile.address.split(', ')[3],
-                    country: updatedProfile.address.split(', ')[4]
+                    cityOrVillage: cityOrVillage,  // Provide fallback if undefined
+                    streetOrSociety: streetOrSociety,
+                    state: state || '',
+                    pincode: pincode || '',
+                    country: country || '',
                 },
-                // Handle image URL if changed
                 imageUrl: updatedProfile.imageUrl || userProfile.imageUrl
             };
-
+    
+            console.log(updatedData);
+    
             // Send updated profile to the backend
             const response = await axios.patch(`http://localhost:5000/api/patients/${patientId}`, updatedData);
             console.log("Profile updated successfully:", response.data);
@@ -88,7 +100,7 @@ function ProfileEdit_pat() {
             // Update local state with new profile data
             setUserProfile({
                 ...userProfile,
-                ...updatedData, // merge updated fields
+                ...updatedData,
                 dob: moment(updatedData.DOB).format('MMMM Do YYYY') // Format back for display
             });
         } catch (err) {
@@ -96,6 +108,7 @@ function ProfileEdit_pat() {
             setError('Failed to save profile');
         }
     };
+    
 
     return (
         <div>

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './ProfileEdit.css';
 import moment from 'moment';
+
 const ProfileEdit = ({ userProfile, role, onSave }) => {
     const navigate = useNavigate();
 
@@ -11,15 +12,16 @@ const ProfileEdit = ({ userProfile, role, onSave }) => {
         email: userProfile.email || '',
         phone: userProfile.phone || '',
         address: userProfile.address || '',
-        dob: userProfile.dob ? moment(userProfile.dob, 'DD-MM-YYYY').isValid() 
-        ? moment(userProfile.dob, 'DD-MM-YYYY').format('YYYY-MM-DD') 
-        : '' 
-        : '',
-        specialization : userProfile.specialization || '',
+        dob: userProfile.dob 
+            ? moment(userProfile.dob, 'YYYY-MM-DD').isValid() 
+                ? moment(userProfile.dob, 'YYYY-MM-DD').format('YYYY-MM-DD') 
+                : '' 
+            : '',
+        specialization: userProfile.specialization || '',
         gender: userProfile.gender || '',
         image: userProfile.imageUrl || 'https://tse1.mm.bing.net/th?id=OIP.L-PLw9YL0s6ErCIcuprlKgAAAA&pid=Api&P=0&h=180' // Assuming imageUrl holds the current profile picture URL
     });
-    console.log(userProfile.dob);
+
     const [selectedImage, setSelectedImage] = useState(null);
 
     // Handle form input changes
@@ -41,15 +43,15 @@ const ProfileEdit = ({ userProfile, role, onSave }) => {
     const handleSave = () => {
         // Call the onSave function passed via props
         onSave(editProfile);
+
         // Navigate back to the profile page after saving
-        if(role=="patient"){
+        if (role === "patient") {
             navigate('/patient/profile/');
-        }else if(role=="receptionist"){
+        } else if (role === "receptionist") {
             navigate('/receptionist/profile');
-        }else{
+        } else {
             navigate('/doc/profile/');
         }
-    
     };
 
     return (
@@ -111,41 +113,39 @@ const ProfileEdit = ({ userProfile, role, onSave }) => {
                         />
                     </div>
                     <div className="profile-edit-field">
-                                <label className="label">Date of Birth:</label>
-                                <input
-                                    type="date"
-                                    name="dob"
-                                    value={editProfile.dob}
-                                    onChange={handleInputChange}  
-                                />
-                            </div>
-                            <div className="profile-edit-field">
-                                <label className="label">Gender:</label>
-                                <select
-                                    name="gender"
-                                    value={editProfile.gender}
-                                    onChange={handleInputChange}
-                                >
-                                    <option value="">Select Gender</option>
-                                    <option value="male">Male</option>
-                                    <option value="female">Female</option>
-                                    <option value="other">Other</option>
-                                </select>
-                            </div>
-                            
-                    {/* Patient-specific fields */}
+                        <label className="label">Date of Birth:</label>
+                        <input
+                            type="date"
+                            name="dob"
+                            value={editProfile.dob}
+                            onChange={handleInputChange}  
+                        />
+                    </div>
+                    <div className="profile-edit-field">
+                        <label className="label">Gender:</label>
+                        <select
+                            name="gender"
+                            value={editProfile.gender}
+                            onChange={handleInputChange}
+                        >
+                            <option value="">Select Gender</option>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+
+                    {/* Doctor-specific fields */}
                     {role === 'doctor' && (
-                        <>
-                            <div className="profile-edit-field">
-                                <label className="label">specialization:</label>
-                                <input
-                                    type="text"
-                                    name="specialization"
-                                    value={editProfile.specialization}
-                                    onChange={handleInputChange}
-                                />
-                            </div>
-                        </>
+                        <div className="profile-edit-field">
+                            <label className="label">Specialization:</label>
+                            <input
+                                type="text"
+                                name="specialization"
+                                value={editProfile.specialization}
+                                onChange={handleInputChange}
+                            />
+                        </div>
                     )}
                 </div>
 

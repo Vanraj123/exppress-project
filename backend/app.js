@@ -13,7 +13,7 @@ const receptionistsRoutes = require("./routes/receptionists-routes");
 const reviewsRoutes = require("./routes/reviews-routes");
 const notificationsRouter = require("./routes/notifications-routes");
 
-
+  
 
 const app = express();
 
@@ -64,7 +64,7 @@ app.use((error, req, res, next) => {
 //You can replace local server uri with MongoDB Atlas connection link
 mongoose
  .connect(
-   "mongodb://localhost:27017/DoctorManagementSystem"
+   "mongodb://localhost:27017/Project"
  )
  .then(() => {
    app.listen(5000);
