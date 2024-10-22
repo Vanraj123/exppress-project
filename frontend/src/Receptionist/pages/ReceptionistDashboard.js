@@ -7,8 +7,6 @@ import axios from 'axios'; // Add axios for API calls
 
 const ReceptionistDashboard = () => {
   const [appointments, setAppointments] = useState([]);
-  const [doctorDetails, setDoctorDetails] = useState({});
-  const [patientDetails, setPatientDetails] = useState({});
   const [loading, setLoading] = useState(true);
   const [hospitalId, setHospitalId] = useState(null);
   const [error, setError] = useState(null);
@@ -74,11 +72,12 @@ const ReceptionistDashboard = () => {
                   }
                 }
 
-                // Attach doctor and patient data to the appointment object
+                // Attach doctor and patient data to the appointment object, including patient contact
                 return {
                   ...appointment,
                   doctor: doctorResponse ? doctorResponse.data.doctor.docName : 'Unknown Doctor',
                   patient: patientResponse ? patientResponse.data.patient.patientName : 'Unknown Patient',
+                  patientContact: patientResponse ? patientResponse.data.patient.patientContact : 'Unknown Contact', // Adding contact here
                 };
               })
             );
@@ -148,8 +147,10 @@ const ReceptionistDashboard = () => {
         <div className="card pending-appointments">
           <ul>
             {appointments.map((appointment) => (
-              <li key={appointment._id}>
-                <b>Doctor:</b> {appointment.doctor} - <b>Patient:</b> {appointment.patient} - <b>Time:</b> {appointment.time}
+              <li key={appointment._id}> 
+                <b>Doctor: </b> {appointment.doctor}  
+                <b>Patient: </b> {appointment.patient} <b>Contact:</b> {appointment.patientContact}  
+                <b>Time: </b> {appointment.time}
                 <button
                   className='confirm_app'
                   type='button'
