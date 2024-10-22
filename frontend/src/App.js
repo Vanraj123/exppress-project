@@ -45,6 +45,9 @@ import AdminDashboard from './admin/pages/AdminDashboard';
 import MedicalHistory from './appointment/pages/MedicalHistory';
 import HospitalList from './admin/pages/HospitalList';
 import Authlogin from './admin/pages/Auth';
+
+import DoctorAppointmentHistory from './user/pages/AppointmentHistory';
+import ReviewPage from './shared/ReviewPage';
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userId, setUserId] = useState(false);
@@ -79,6 +82,7 @@ const App = () => {
         <Route path="/doc/patient" element={<Patient />} />
         <Route path="/patient/profile" element={<Profile_Pat />} />
         <Route path="/doc/profile" element={<Profile_Doc />} />
+        <Route path="/doc/History" element={< DoctorAppointmentHistory/>} />
         <Route path="/receptionist/profile" element={<Profile_Recep />} />
         <Route path="/admin/profile" element={<Profile_Admin />} />
         <Route path="/patient/hospital" element={<Hospital />} />
@@ -97,6 +101,8 @@ const App = () => {
            <Route path="/admin/hospitals" element={<HospitalList/>}/>
            <Route path="/admin/receptionists" element={<ReceptionistList/>}/>
            <Route path="/admin/patients" element={<PatientList/>}/>
+           <Route path=" /reviews" element={<ReviewPage/>}/>
+          
       </Routes>
     );
   } else {

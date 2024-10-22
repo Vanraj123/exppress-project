@@ -167,7 +167,7 @@ const updateDoctor = async (req, res, next) => {
       return next(new HttpError('Invalid inputs passed, please check your data.', 422));
     }
 
-    const { docName, docEmail, docContact, docGender, docSpeciality, DOB, docAddress, imageUrl } = req.body;
+    const { docName, docEmail, docContact, docGender, docSpeciality, DOB, docAddress, imageUrl ,docQualification} = req.body;
     const doctorId = req.params.doctorId;
 
     let doctor;  // Change from const to let
@@ -184,7 +184,7 @@ const updateDoctor = async (req, res, next) => {
         doctor.docGender = docGender;
         doctor.docSpeciality = docSpeciality;
         doctor.docAddress = docAddress;  // Update address fields
-
+        doctor.docQualification = docQualification;
         // Only update DOB if it's provided, otherwise retain the existing DOB
         if (DOB) {
             doctor.DOB = String(DOB);

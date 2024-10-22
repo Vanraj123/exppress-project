@@ -6,6 +6,7 @@ const HospitalModal = ({ isOpen, onClose, onSubmit, hospital }) => {
         Hos_Name: '',
         E_Date: '', // Ensure this is initialized correctly
         ManageBy: '',
+        image:'',
         hosaddress: {
             cityvillage: '',
             pincode: '',
@@ -28,6 +29,7 @@ const HospitalModal = ({ isOpen, onClose, onSubmit, hospital }) => {
                 Hos_Name: '',
                 E_Date: '',
                 ManageBy: '',
+                image:'',
                 hosaddress: {
                     cityvillage: '',
                     pincode: '',
@@ -92,6 +94,14 @@ const HospitalModal = ({ isOpen, onClose, onSubmit, hospital }) => {
                         name="ManageBy"
                         placeholder="Managed By"
                         value={hospitalData.ManageBy}
+                        onChange={handleChange}
+                        required
+                    />
+                     <input
+                        type="text"
+                        name="image" // Ensure this is correct according to your backend
+                        placeholder="image URL FROM online"
+                        value={hospitalData.image}
                         onChange={handleChange}
                         required
                     />

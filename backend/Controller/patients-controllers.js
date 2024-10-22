@@ -6,7 +6,26 @@ const HttpError = require('../models/http-error');
 const Patient = require('../models/Patient');
 const Appointment = require('../models/Appointment');
 
+const getByAppointment = async (req, res, next) => {
+  const appointmentId = req.params.appointmentId;
 
+  try {
+      // Find appointment by ID and populate the patient details
+      const appointment = await Appointment.findById(appointmentId).populate('patient', 'name');
+
+      if (!appointment) {
+          return res.status(404).json({ message: 'Appointment not found' });
+      }
+
+      // Return the patient's name from the populated data
+      res.json({
+          success: true,
+          patient: appointment.patient
+      });
+  } catch (error) {
+      return res.status(500).json({ success: false, message: 'Error fetching patient details', error });
+  }
+};
 const getPatient = async (req, res, next) => {
  let patients;
  try {
@@ -247,4 +266,7 @@ exports.getbyId = getbyId;
 exports.getbypati = getbypati;
 exports.getbydoc = getbydoc;
 exports.getByDoctor = getByDoctor;
+exports.getByAppointment =    getByAppointment;
+
+
 // exports.login = login;

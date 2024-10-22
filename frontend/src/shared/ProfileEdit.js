@@ -12,12 +12,18 @@ const ProfileEdit = ({ userProfile, role, onSave }) => {
         email: userProfile.email || '',
         phone: userProfile.phone || '',
         address: userProfile.address || '',
+<<<<<<< HEAD
         dob: userProfile.dob 
             ? moment(userProfile.dob, 'YYYY-MM-DD').isValid() 
                 ? moment(userProfile.dob, 'YYYY-MM-DD').format('YYYY-MM-DD') 
                 : '' 
             : '',
         specialization: userProfile.specialization || '',
+=======
+        dob: userProfile.dob ? moment(userProfile.dob, 'DD-MM-YYYY').format('YYYY-MM-DD') : '', // Convert to 'YYYY-MM-DD'
+        specialization : userProfile.specialization || '',
+        docQualification: userProfile.docQualification || '',
+>>>>>>> 5c0c4db39f3814b38d76fedc9d70a66f1c1c224e
         gender: userProfile.gender || '',
         image: userProfile.imageUrl || 'https://tse1.mm.bing.net/th?id=OIP.L-PLw9YL0s6ErCIcuprlKgAAAA&pid=Api&P=0&h=180' // Assuming imageUrl holds the current profile picture URL
     });
@@ -137,6 +143,7 @@ const ProfileEdit = ({ userProfile, role, onSave }) => {
 
                     {/* Doctor-specific fields */}
                     {role === 'doctor' && (
+<<<<<<< HEAD
                         <div className="profile-edit-field">
                             <label className="label">Specialization:</label>
                             <input
@@ -146,6 +153,28 @@ const ProfileEdit = ({ userProfile, role, onSave }) => {
                                 onChange={handleInputChange}
                             />
                         </div>
+=======
+                        <>
+                            <div className="profile-edit-field">
+                                <label className="label">docQualification:</label>
+                                <input
+                                    type="text"
+                                    name="docQualification"
+                                    value={editProfile.docQualification}
+                                    onChange={handleInputChange}
+                                />
+                            </div>
+                            <div className="profile-edit-field">
+                                <label className="label">specialization:</label>
+                                <input
+                                    type="text"
+                                    name="specialization"
+                                    value={editProfile.specialization}
+                                    onChange={handleInputChange}
+                                />
+                            </div>
+                        </>
+>>>>>>> 5c0c4db39f3814b38d76fedc9d70a66f1c1c224e
                     )}
                 </div>
 

@@ -12,7 +12,7 @@ const  receptionist= new Schema({
    receptionistEmail: { type: String },
    receptionistContact: { type: String},
    gender: { type: String },
-   DOB: { type: String},
+   DOB: { type: Date},
    imageUrl: { type: String},
    user: { type: mongoose.Types.ObjectId, ref: 'User'},
    receptionistAddress: {

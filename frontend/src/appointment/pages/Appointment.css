@@ -3,7 +3,7 @@
     margin-top: 10vh;
     padding: 20px;
     padding-top: 80px;
-    width: calc(250vh - 550px);
+    width: calc(250vh - 650px);
     /*height: calc(100vh - 200px); /* Adjust height to fit within the viewport */
     overflow-y: auto; /* Enable vertical scrolling if content overflows */
     transition: margin-left 0.3s, width 0.3s;
@@ -14,7 +14,7 @@
     margin-top: 10vh;
     padding: 20px;
     padding-top: 80px;
-    width: calc(250vh - 550px);
+    width: calc(250vh - 650px);
     /*height: calc(100vh - 200px); /* Adjust height to fit within the viewport */
     overflow-y: auto; /* Enable vertical scrolling if content overflows */
     transition: margin-left 0.3s, width 0.3s;

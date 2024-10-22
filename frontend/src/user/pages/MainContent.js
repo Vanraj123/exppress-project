@@ -112,14 +112,14 @@ const MainContent = () => {
             </div>
              {/* Add Calendar Component */}
 
-            <div className="card recent-activity">
+            {/* <div className="card recent-activity">
                 <h3>Recent Activity</h3>
                 <ul>
                     <li>User X booked an appointment.</li>
                     <li>User Y cancelled an appointment.</li>
                     <li>User Z updated their profile.</li>
                 </ul>
-            </div>
+            </div> */}
         </div>
     );
 };

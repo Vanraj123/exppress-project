@@ -23,15 +23,16 @@ function ProfileEdit_Doc() {
 
                 // Structure userProfile object based on response data
                 const doctorData = response.data.doctor;
-                const formattedAddress = `${doctorData.docAddress.streetOrSociety}, ${doctorData.docAddress.cityOrVillage}, ${doctorData.docAddress.state}, ${doctorData.docAddress.pincode}, ${doctorData.docAddress.country}`;
+                const formattedAddress = `${doctorData.docAddress?.streetOrSociety || 'Street/Society'}, ${doctorData.docAddress?.cityOrVillage || 'City/Village'}, ${doctorData.docAddress?.state || 'State'}, ${doctorData.docAddress?.pincode || 'Pincode'}, ${doctorData.docAddress?.country || 'Country'}`;
 
                 const formattedProfile = {
                     name: doctorData.docName,
                     email: doctorData.docEmail,
                     phone: doctorData.docContact,
                     specialization: doctorData.docSpeciality,
+                    docQualification: doctorData.docQualification,
                     address: formattedAddress,
-                    dob: moment(doctorData.DOB).format('MMMM Do YYYY'), 
+                    dob: moment(doctorData.DOB, 'DD-MM-YYYY').utc().toDate(),
                     gender: doctorData.docGender,
                     imageUrl: doctorData.imageUrl || 'https://img.freepik.com/free-photo/rendering-anime-doctor-job_23-2151151782.jpg' // Default image if none provided
                 };
@@ -67,6 +68,7 @@ function ProfileEdit_Doc() {
                 docContact: updatedProfile.phone,
                 docGender: updatedProfile.gender,
                 docSpeciality: updatedProfile.specialization,
+                docQualification: updatedProfile.docQualification,
                 DOB: moment(updatedProfile.dob, 'MMMM Do YYYY').toISOString(), 
                 docAddress: {
                     cityOrVillage: updatedProfile.address.split(', ')[0],

@@ -61,15 +61,16 @@ const DoctorList = () => {
                     {filteredDoctors.length > 0 ? (
                         filteredDoctors.map(doctor => (
                             <div key={doctor._id} className="card">
-                                <img src={doctor.imgSrc || defaultImage} alt={`Dr. ${doctor.docName}`} />
-                                <h4 className="card-title">{doctor.docName}</h4>
-                                <p>Specialization: {doctor.docSpeciality}</p>
-                                <p>Contact: {doctor.docContact}</p>
+                                <img src={doctor.imgSrc || defaultImage} alt={`Dr. ${doctor.docName || 'Unknown'}`} />
+                                <h4 className="card-title">{doctor.docName || 'No Name Provided'}</h4>
+                                <p>Specialization: {doctor.docSpeciality || 'Not specified'}</p>
+                                <p>Contact: {doctor.docContact || 'No contact available'}</p>
                                 <p>
-                                    Address: {doctor.docAddress.streetOrSociety}, {doctor.docAddress.cityOrVillage}, 
-                                    {doctor.docAddress.state}, {doctor.docAddress.pincode}, {doctor.docAddress.country}
+                                    Address: {doctor.docAddress?.streetOrSociety || 'N/A'}, {doctor.docAddress?.cityOrVillage || 'N/A'}, 
+                                    {doctor.docAddress?.state || 'N/A'}, {doctor.docAddress?.pincode || 'N/A'}, 
+                                    {doctor.docAddress?.country || 'N/A'}
                                 </p>
-                                <p>Qualification: {doctor.docQualification}</p>
+                                <p>Qualification: {doctor.docQualification || 'Not specified'}</p>
                                 <button 
                                     className="delete-button" 
                                     onClick={() => handleDeleteDoctor(doctor._id)}
