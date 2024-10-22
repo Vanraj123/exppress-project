@@ -5,7 +5,7 @@
   padding: 30px;
   background-color: #f4f4f9;
   min-height: 100vh;
-  width: calc(120vh - 20px);
+  width: calc(150vh - 20px);
   transition: margin-left 0.3s;
 }
 

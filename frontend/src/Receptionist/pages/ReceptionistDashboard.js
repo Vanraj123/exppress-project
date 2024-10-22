@@ -147,18 +147,23 @@ const ReceptionistDashboard = () => {
         <div className="card pending-appointments">
           <ul>
             {appointments.map((appointment) => (
-              <li key={appointment._id}> 
-                <b>Doctor: </b> {appointment.doctor}  
-                <b>Patient: </b> {appointment.patient} <b>Contact:</b> {appointment.patientContact}  
-                <b>Time: </b> {appointment.time}
-                <button
-                  className='confirm_app'
-                  type='button'
-                  onClick={() => handleConfirm(appointment._id)}
-                >
-                  Confirm
-                </button>
-              </li>
+             <li key={appointment._id}>
+             <b>Doctor: </b> {appointment.doctor}
+             <span style={{ margin: '0 10px' }}></span>
+             <b>Patient: </b> {appointment.patient}
+             <span style={{ margin: '0 10px' }}></span>
+             <b>Contact: </b> {appointment.patientContact}
+             <span style={{ margin: '0 10px' }}></span>
+             <b>Time: </b> {appointment.time}
+             <button
+               className='confirm_app'
+               type='button'
+               onClick={() => handleConfirm(appointment._id)}
+             >
+               Confirm
+             </button>
+           </li>
+           
             ))}
           </ul>
         </div>
