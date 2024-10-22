@@ -95,7 +95,7 @@ const signup = async (req, res, next) => {
             new HttpError('Invalid inputs passed, please check your data.', 422)
         );
     }
-    const { docName, docEmail, docContact, user } = req.body;
+    const { docName, docEmail, docContact, user , hospital} = req.body;
 
     let existingDoctor;
     try {
@@ -119,7 +119,8 @@ const signup = async (req, res, next) => {
         docName,
         docEmail,
         docContact,
-        user
+        user,
+        hospital
     });
 
     try {

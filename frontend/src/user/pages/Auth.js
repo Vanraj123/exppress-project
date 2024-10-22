@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import "./Auth.css"; // Move the CSS to a separate file for better organization.
 import { AuthContext } from "../../shared/context/auth-context";
 import { NavLink } from "react-router-dom";
@@ -8,15 +8,28 @@ const Auth = () => {
   const auth = useContext(AuthContext);
   const navigate = useNavigate();
   const [isLoginMode, setIsLoginMode] = useState(false);
-  
   const [errorMessage, setErrorMessage] = useState("");
-
-  // State to hold email, password, and user type (Doctor or Patient)
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [userType, setUserType] = useState("patient"); // Default to 'patient'
+  const [userType, setUserType] = useState("patient");
+  const [hospitals, setHospitals] = useState([]);
+  const [selectedHospital, setSelectedHospital] = useState("");
 
-  // Handle form submission
+  // Fetch hospitals when component loads
+  useEffect(() => {
+    const fetchHospitals = async () => {
+      try {
+        const response = await fetch('http://localhost:5000/api/hospitals'); // Your API endpoint for hospitals
+        const data = await response.json();
+        setHospitals(data.hospitals); // Assuming your backend returns an array under 'hospitals'
+      } catch (error) {
+        console.log("Failed to fetch hospitals:", error);
+      }
+    };
+
+    fetchHospitals();
+  }, []);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -26,75 +39,71 @@ const Auth = () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          "username":email,
-          "password":password,
+          "username": email,
+          "password": password,
         }),
       });
 
       const data = await response.json();
-      console.log(data);
-      if(userType == "patient"){
       const userId = data.user._id;
-      // console.log('Extracted userId:', userId);
-      
-      if (userId) {
-      const patient = await fetch(`http://localhost:5000/api/patients/${userId}`); 
-      const patientdata = await patient.json();
-      auth.login(data.user._id,patientdata.patient.patientName,patientdata.patient._id);
-      console.log('Login successful:', patientdata);
-      }
-      navigate("/patient");
-      }else if(userType == "receptionist"){
-        // console.log(":hghghghghhg");
-        const userId = data.user._id;
-        // console.log(userId);
-        if (userId) {
-          // console.log(":hiiiiiiiiii");
-          const receptionist = await fetch(`http://localhost:5000/api/receptionists/${userId}`); 
-          // console.log(receptionist);
-          const receptionistdata = await receptionist.json();
-          // console.log(receptionistdata);
-          auth.login(data.user._id,receptionistdata.receptionist.receptionistName ,receptionistdata.receptionist._id);
-          console.log('Login successful:', receptionistdata);
-          // console.log(receptionistdata.receptionist._id);
+
+      if (userType === "patient") {
+        const patient = await fetch(`http://localhost:5000/api/patients/${userId}`);
+        const patientData = await patient.json();
+        auth.login(data.user._id, patientData.patient.patientName, patientData.patient._id);
+        navigate("/patient");
+      } else if (userType === "receptionist") {
+        if (selectedHospital) {
+          const receptionistResponse = await fetch(`http://localhost:5000/api/receptionists/${userId}`);
+          const receptionistData = await receptionistResponse.json();
+
+          // Check if the selected hospital matches the hospital associated with the receptionist
+          const receptionistHospital = receptionistData.receptionist.hospital; // Assuming 'hospital' contains the hospital ID
+
+          if (receptionistHospital !== selectedHospital) {
+            setErrorMessage("Selected hospital is not associated with this receptionist.");
+            return;
           }
-        navigate("/receptionist");
-      }else {
-        const userId = data.user._id;
-        if (userId) {
-          const doctor = await fetch(`http://localhost:5000/api/doctors/${userId}`); 
-          const doctordata = await doctor.json();
-          auth.login(data.user._id,doctordata.doctor.docName,doctordata.doctor._id);
-          console.log('Login successful:', doctordata);
-          console.log(doctordata.doctor._id);
+
+          // Proceed with login if the hospital matches
+          auth.login(data.user._id, receptionistData.receptionist.receptionistName, receptionistData.receptionist._id);
+          navigate("/receptionist");
+        } else {
+          setErrorMessage("Please select a hospital");
+        }
+      } else if (userType === "doctor") {
+        if (selectedHospital) {
+          const doctor = await fetch(`http://localhost:5000/api/doctors/${userId}`);
+          const doctorData = await doctor.json();
+          
+          // Check if the selected hospital matches the hospital associated with the doctor
+          const doctorHospitals = doctorData.doctor.hospital; // Assuming 'hospital' is an array of associated hospital IDs
+
+          if (!doctorHospitals.includes(selectedHospital)) {
+            setErrorMessage("Selected hospital is not associated with this doctor.");
+            return;
           }
-        navigate("/doc");
+
+          // Proceed with login if the hospital matches
+          auth.login(data.user._id, doctorData.doctor.docName, doctorData.doctor._id);
+          navigate("/doc");
+        } else {
+          setErrorMessage("Please select a hospital");
+        }
       }
-      
-      if (response.ok) {
-        // Handle success, e.g., store the token, redirect, etc.
-        console.log('Login successful:', data);
-        // console.log('Login successful:', patientdata);
-        
-      } else {
-        // Handle error
+
+      if (!response.ok) {
         console.log(data.message || 'Login failed');
       }
-      
     } catch (error) {
-      setErrorMessage("Login failed! please fill correct Credentials");
+      setErrorMessage("Login failed! Please fill in the correct credentials.");
     }
-    // Add login logic here (e.g., Firebase authentication or other login service)
-    console.log("Email:", email);
-    console.log("Password:", password);
-    console.log("User Type:", userType); // Log the selected user type
-    
   };
 
   return (
     <div className="login-container">
       <h2>{isLoginMode ? "Signup" : "Login"}</h2>
-      {errorMessage && <p className="error-message">{errorMessage}</p>} {/* Display error message */}
+      {errorMessage && <p className="error-message">{errorMessage}</p>}
       <form onSubmit={handleSubmit}>
         <input
           type="email"
@@ -140,12 +149,31 @@ const Auth = () => {
             />
             Receptionist
           </label>
-          
         </div>
+
+        {/* Dropdown for hospital selection (visible when "Receptionist" or "Doctor" is selected) */}
+        {(userType === "receptionist" || userType === "doctor") && (
+          <div className="hospital-dropdown">
+            <label htmlFor="hospital-select">Select Hospital:</label>
+            <select
+              id="hospital-select"
+              value={selectedHospital}
+              onChange={(e) => setSelectedHospital(e.target.value)}
+              required
+            >
+              <option value="">-- Select a hospital --</option>
+              {hospitals.map((hospital) => (
+                <option key={hospital._id} value={hospital._id}>
+                  {hospital.Hos_Name} - {hospital.hosaddress.cityvillage}
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
 
         <button type="submit">Login</button>
         <div className="links">
-          <NavLink to="/forgot-password">Forgot Password?</NavLink> | <NavLink to="/register">Create Account</NavLink>
+          | <NavLink to="/register">Create Account</NavLink> |
         </div>
       </form>
     </div>

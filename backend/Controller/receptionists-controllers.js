@@ -58,48 +58,38 @@ const getbyid = async (req, res, next) => {
 
 
 const signup = async (req, res, next) => {
+  console.log(req.body); // Add this line to log the request body
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-      return next(
-          new HttpError('Invalid inputs passed, please check your data.', 422)
-      );
+    return next(new HttpError('Invalid inputs passed, please check your data.', 422));
   }
-  const { receptionistName, receptionistEmail, receptionistContact, user } = req.body;
+
+  const { receptionistName, receptionistEmail, receptionistContact, user, hospital } = req.body;
 
   let existingrec;
   try {
-      existingrec = await Receptionist.findOne({ user: user });
+    existingrec = await Receptionist.findOne({ user: user });
   } catch (err) {
-      const error = new HttpError(
-          'Signing up failed, please try again later.',
-          500
-      );
-      return next(error);
+    return next(new HttpError('Signing up failed, please try again later.', 500));
   }
 
   if (existingrec) {
-      const error = new HttpError(
-          'User exists already, please login instead.',
-          422
-      );
-      return next(error);
+    return next(new HttpError('User exists already, please login instead.', 422));
   }
+
   const createdrec = new Receptionist({
     receptionistName,
     receptionistEmail,
     receptionistContact,
-    user
+    user,
+    hospital
   });
 
   try {
-      await createdrec.save();
-      await createNotification(`New Receptionist ${recName} has been added.`); // Create a notification
+    await createdrec.save();
+    // Optionally handle notification creation here
   } catch (err) {
-      const error = new HttpError(
-          'Signing up failed, please try again.',
-          500
-      );
-      return next(error);
+    return next(new HttpError('Creating receptionist failed, please try again.', 500));
   }
 
   res.status(201).json({ receptionist: createdrec.toObject({ getters: true }) });
